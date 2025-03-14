@@ -29,7 +29,6 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 [[portfolio](https://www.linkedin.com/in/zhao-wenrui-47208131a/)]
 
 * Role: Developer
-* Responsibilities: UI
 
 ### Johnny Doe
 
