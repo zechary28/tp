@@ -21,14 +21,14 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 * Role: Project Advisor
 
-### Zhao Wenrui
+### Jane Doe
 
-<img src="images/wenruu.png" width="200px">
+<img src="images/johndoe.png" width="200px">
 
-[[github](https://github.com/wenruu/)]
-[[portfolio](https://www.linkedin.com/in/zhao-wenrui-47208131a/)]
+[[github](http://github.com/johndoe)]
+[[portfolio](team/johndoe.md)]
 
-* Role: Developer
+* Role: Team Lead
 * Responsibilities: UI
 
 ### Johnny Doe
