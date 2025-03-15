@@ -82,7 +82,7 @@ public abstract class Loan {
         }
 
         // instanceof handles nulls
-        if (!(other instanceof Address)) {
+        if (!(other instanceof Loan)) {
             return false;
         }
 
