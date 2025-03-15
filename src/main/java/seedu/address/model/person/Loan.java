@@ -1,11 +1,11 @@
 package seedu.address.model.person;
 
-import java.util.Objects;
+//import static java.util.Objects.requireNonNull;
+//import static seedu.address.commons.util.AppUtil.checkArgument;
 
-import java.util.Date;
 import java.text.SimpleDateFormat;
-import static java.util.Objects.requireNonNull;
-import static seedu.address.commons.util.AppUtil.checkArgument;
+import java.util.Date;
+import java.util.Objects;
 
 import seedu.address.commons.util.ToStringBuilder;
 
@@ -15,7 +15,7 @@ import seedu.address.commons.util.ToStringBuilder;
 public abstract class Loan {
 
     public static final String MESSAGE_CONSTRAINTS = "Addresses can take any values, and it should not be blank";
-   /*
+    /*
      * The first character of the address must not be a whitespace,
      * otherwise " " (a blank string) becomes a valid input.
      */
@@ -23,19 +23,19 @@ public abstract class Loan {
 
     public static final int MONTHLY_DUE_DATE = 1; // to signifies the 1 day of every month
     public final int amount;
-    public int remainder;
-    public int interest;
-    public Date dueDate;
-    public Date dateLastPaid = null;
-    public Date dateCreated;
-    public Boolean paid = false;
+    private int remainder;
+    private int interest;
+    private Date dueDate;
+    private Date dateLastPaid = null;
+    private Date dateCreated;
+    private Boolean isPaid = false;
 
     /**
      * Constructs an {@code a loan}.
      *
      * @param amount cost of loan.
      * @param interest % of interest, >= 0, 1 represents 100% interest
-     * @param due_date date which loan should be completely paid off 
+     * @param due_date date which loan should be completely paid off
      */
     public Loan(int amount, int interest, Date dueDate) {
         // TODO create validations
@@ -70,7 +70,7 @@ public abstract class Loan {
         .add("interest", interest)
         .add("dueDate", dateToString(dueDate))
         .add("dateLastPaid", dateToString(dateLastPaid))
-        .add("paid", paid)
+        .add("isPaid", isPaid)
         .toString();
 
     }
@@ -87,26 +87,43 @@ public abstract class Loan {
         }
 
         Loan otherLoan = (Loan) other;
-        return interest == otherLoan.interest
-                && dueDate.equals(otherLoan.dueDate)
-                && dateLastPaid.equals(otherLoan.dateLastPaid)
-                && dateCreated.equals(otherLoan.dateCreated)
-                && paid == otherLoan.paid;
+        return amount == otherLoan.amount
+                && remainder == otherLoan.getRemainder()
+                && interest == otherLoan.getInterest()
+                && dueDate.equals(otherLoan.getDueDate())
+                && dateLastPaid.equals(otherLoan.getDateLastPaid())
+                && dateCreated.equals(otherLoan.getDateCreated())
+                && isPaid == otherLoan.getIsPaid();
 
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(interest, dueDate, dateLastPaid, dateCreated, paid);
+        return Objects.hash(amount, remainder, interest, dueDate, dateLastPaid, dateCreated, isPaid);
+    }
+
+    public int getRemainder() {
+        return this.remainder;
+    }
+
+    public int getInterest() {
+        return this.interest;
+    }
+
+    public Date getDueDate() {
+        return this.dueDate;
+    }
+
+    public Date getDateLastPaid() {
+        return this.dateLastPaid;
+    }
+
+    public Date getDateCreated() {
+        return this.dateCreated;
+    }
+
+    public Boolean getIsPaid() {
+        return this.isPaid;
     }
 }
 
-/*
-  private int amount;
-    private int interest;
-    private Date dueDate;
-    private Date dateLastPaid = null;
-    private Date dateCreated;
-    private Boolean paid = false;
-
- */
