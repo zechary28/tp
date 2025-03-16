@@ -1,6 +1,5 @@
 package seedu.address.model.person;
 
-import java.util.Calendar;
 import java.util.Date;
 
 /**
