@@ -4,7 +4,11 @@ package seedu.address.model.person;
 //import static seedu.address.commons.util.AppUtil.checkArgument;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.temporal.ChronoUnit;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.Locale;
 import java.util.Objects;
 
 import seedu.address.commons.util.ToStringBuilder;
@@ -25,9 +29,9 @@ public abstract class Loan {
     public final int amount;
     private int remainder;
     private int interest;
-    private Date dueDate;
-    private Date dateLastPaid = null;
-    private Date dateCreated;
+    private LocalDate dueDate;
+    private LocalDate dateLastPaid = null;
+    private LocalDate dateCreated;
     private Boolean isPaid = false;
 
     /**
@@ -37,14 +41,14 @@ public abstract class Loan {
      * @param interest % of interest, >= 0, 1 represents 100% interest
      * @param due_date date which loan should be completely paid off
      */
-    public Loan(int amount, int interest, Date dueDate) {
+    public Loan(int amount, int interest, String dueDate) {
         // TODO create validations
 
         this.amount = amount;
         this.remainder = amount;
         this.interest = interest;
-        this.dueDate = dueDate;
-        this.dateCreated = new Date();
+        this.dueDate = LocalDate.now(); // to parse dueDate string
+        this.dateCreated = LocalDate.now();
     }
 
     /**
@@ -54,12 +58,24 @@ public abstract class Loan {
         return true;
     }
 
-    abstract void pay(int payment);
+    abstract void pay();
 
-    private String dateToString(Date date) {
-        SimpleDateFormat formatter = new SimpleDateFormat("EEE MMM yyyy");
-        String formattedDate = formatter.format(date);
-        return formattedDate;
+    public long getOverDueDays() {
+        // Get the current date
+        LocalDate currentDate = LocalDate.now();
+
+        // Get the first day of the current month
+        LocalDate firstDayOfMonth = currentDate.withDayOfMonth(1);
+
+        // Calculate the difference in days
+        long daysBetween = ChronoUnit.DAYS.between(dateLastPaid, firstDayOfMonth);
+
+        return daysBetween;
+    }
+    
+    private static String dateToString(LocalDate date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE MMM yyyy", Locale.ENGLISH);
+        return date.format(formatter);
     }
 
     @Override
@@ -110,15 +126,15 @@ public abstract class Loan {
         return this.interest;
     }
 
-    public Date getDueDate() {
+    public LocalDate getDueDate() {
         return this.dueDate;
     }
 
-    public Date getDateLastPaid() {
+    public LocalDate getDateLastPaid() {
         return this.dateLastPaid;
     }
 
-    public Date getDateCreated() {
+    public LocalDate getDateCreated() {
         return this.dateCreated;
     }
 
