@@ -35,7 +35,7 @@ public abstract class Loan {
      *
      * @param amount cost of loan.
      * @param interest % of interest, >= 0, 1 represents 100% interest
-     * @param due_date date which loan should be completely paid off
+     * @param dueDate date which loan should be completely paid off
      */
     public Loan(int amount, int interest, Date dueDate) {
         // TODO create validations
@@ -125,5 +125,20 @@ public abstract class Loan {
     public Boolean getIsPaid() {
         return this.isPaid;
     }
-}
 
+    public int getAmount() {
+        return this.amount;
+    }
+
+    protected void setRemainder(int remainder) {
+        this.remainder = remainder;
+    }
+
+    protected void setDateLastPaid(Date dateLastPaid) {
+        this.dateLastPaid = dateLastPaid;
+    }
+
+    public void setIsPaid(Boolean isPaid) {
+        this.isPaid = isPaid;
+    }
+}
