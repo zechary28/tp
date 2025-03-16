@@ -68,8 +68,8 @@ public class CompoundInterestLoan extends Loan {
         int compoundingFrequency = 12; // Assume monthly compounding
         double years = calculateLoanDurationInYears();
 
-        double amountWithInterest = getAmount() * Math.pow((1 + rateDecimal / compoundingFrequency),
-                (compoundingFrequency * years));
+        double amountWithInterest = getAmount() * Math.pow((1 + rateDecimal / compoundingFrequency), (
+                compoundingFrequency * years));
         return (int) Math.round(amountWithInterest - getAmount());
     }
 
