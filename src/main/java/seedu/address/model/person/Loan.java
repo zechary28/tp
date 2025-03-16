@@ -125,5 +125,21 @@ public abstract class Loan {
     public Boolean getIsPaid() {
         return this.isPaid;
     }
+
+    public int getAmount() {
+        return this.amount;
+    }
+
+    protected void setRemainder(int remainder) {
+        this.remainder = remainder;
+    }
+
+    protected void setDateLastPaid(Date dateLastPaid) {
+        this.dateLastPaid = dateLastPaid;
+    }
+
+    public void setIsPaid(Boolean isPaid) {
+        this.isPaid = isPaid;
+    }
 }
 
