@@ -2,11 +2,14 @@ package seedu.address.model.person;
 
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.tag.Tag;
 
@@ -24,9 +27,23 @@ public class Person {
     // Data fields
     private final Address address;
     private final Set<Tag> tags = new HashSet<>();
+    private final ArrayList<Loan> loanList = new ArrayList<>();
 
     /**
      * Every field must be present and not null.
+     */
+    public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags, Loan loan) {
+        requireAllNonNull(name, phone, email, address, tags);
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.address = address;
+        this.tags.addAll(tags);
+        loanList.add(loan);
+    }
+
+    /**
+     * Overloaded constructor for a Person with no Loans.
      */
     public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags) {
         requireAllNonNull(name, phone, email, address, tags);
@@ -51,6 +68,28 @@ public class Person {
 
     public Address getAddress() {
         return address;
+    }
+
+    /**
+     * Returns an immutable loan list, which throws {@code UnsupportedOperationException}
+     * if modification is attempted.
+     */
+    public List<Loan> getLoans() {
+        return Collections.unmodifiableList(loanList);
+    }
+
+    /**
+     * Adds a loan to the loan list.
+     */
+    public void addLoan(Loan loan) {
+        loanList.add(loan);
+    }
+
+    /**
+     * Removes a loan from the loan list.
+     */
+    public void removeLoan(Loan loan) {
+        loanList.remove(loan);
     }
 
     /**
