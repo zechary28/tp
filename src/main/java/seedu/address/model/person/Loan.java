@@ -49,7 +49,7 @@ public abstract class Loan {
 
     /**
      * Returns true if a given date string is a valid date.
-    */
+     */
     public static boolean isValidDateString(String test) {
         return true;
     }
@@ -65,13 +65,13 @@ public abstract class Loan {
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-        .add("amount", amount)
-        .add("remainder", remainder)
-        .add("interest", interest)
-        .add("dueDate", dateToString(dueDate))
-        .add("dateLastPaid", dateToString(dateLastPaid))
-        .add("isPaid", isPaid)
-        .toString();
+                .add("amount", amount)
+                .add("remainder", remainder)
+                .add("interest", interest)
+                .add("dueDate", dateToString(dueDate))
+                .add("dateLastPaid", dateToString(dateLastPaid))
+                .add("isPaid", isPaid)
+                .toString();
 
     }
 
