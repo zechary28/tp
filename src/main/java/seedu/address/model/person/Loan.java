@@ -1,10 +1,11 @@
 package seedu.address.model.person;
 
 //import static java.util.Objects.requireNonNull;
-//import static seedu.address.commons.util.AppUtil.checkArgument;
+import static seedu.address.commons.util.AppUtil.checkArgument;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.Locale;
 import java.util.Objects;
@@ -16,12 +17,8 @@ import seedu.address.commons.util.ToStringBuilder;
  */
 public abstract class Loan {
 
-    public static final String MESSAGE_CONSTRAINTS = "Addresses can take any values, and it should not be blank";
-    /*
-     * The first character of the address must not be a whitespace,
-     * otherwise " " (a blank string) becomes a valid input.
-     */
-    public static final String VALIDATION_REGEX = "[^\\s].*";
+    public static final String MESSAGE_CONSTRAINTS = "The due date of a Loan has to be a valid date string"
+        + "greater than the current date.";
 
     public static final int MONTHLY_DUE_DATE = 1; // to signifies the 1 day of every month
 
@@ -41,22 +38,30 @@ public abstract class Loan {
      * @param dueDate date which loan should be completely paid off
      */
     public Loan(int amount, int interest, String dueDate) {
-        // TODO create validations
+        // validations
+        checkArgument(Loan.isValidDateString(dueDate), MESSAGE_CONSTRAINTS);
+        this.dueDate = LocalDate.parse(dueDate, DateTimeFormatter.ISO_LOCAL_DATE);
 
+        LocalDate currentDate = LocalDate.now();
         this.amount = amount;
         this.remainder = amount;
         this.interest = interest;
-        this.dueDate = LocalDate.now(); // to parse dueDate string
-        this.dateLastPaid = LocalDate.now();
-        this.dateCreated = LocalDate.now();
+        this.dateLastPaid = currentDate;
+        this.dateCreated = currentDate;
     }
 
     /**
      * Returns true if a given date string is a valid date.
      */
-    public static boolean isValidDateString(String test) {
-        // !!!!!!! need to do
-        return true;
+    public static boolean isValidDateString(String dateString) {
+        try {
+            LocalDate currentDate = LocalDate.now();
+            // parse the string to LocalDate
+            LocalDate date = LocalDate.parse(dateString, DateTimeFormatter.ISO_LOCAL_DATE);
+            return date.isAfter(currentDate);
+        } catch (DateTimeParseException e) {
+            return false;
+        }
     }
 
     abstract void pay(int amt);
