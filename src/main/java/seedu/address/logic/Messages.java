@@ -60,6 +60,9 @@ public class Messages {
         return builder.toString();
     }
 
+    /**
+     * Formats the {@code loan} for display to the user.
+     */
     public static String format(Loan loan) {
         return loan.getName()
                 + "; Amount: $"

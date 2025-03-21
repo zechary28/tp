@@ -204,5 +204,5 @@ public abstract class Loan {
         this.isPaid = isPaid;
     }
 
-    abstract public String getName();
+    public abstract String getName();
 }
