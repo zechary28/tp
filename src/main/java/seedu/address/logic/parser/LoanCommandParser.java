@@ -7,7 +7,11 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.LoanCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
+/**
+ * Parses input arguments and creates a new LoanCommand object
+ */
 public class LoanCommandParser implements Parser<LoanCommand> {
+
     /**
      * Parses the given {@code String} of arguments in the context of the LoanCommand
      * and returns a LoanCommand object for execution.
@@ -26,7 +30,7 @@ public class LoanCommandParser implements Parser<LoanCommand> {
                         + "(\\d{4}-\\d{2}-\\d{2})$" // Matches due date in YYYY-MM-DD format
         )) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, LoanCommand.MESSAGE_USAGE));
-        };
+        }
 
         String[] arguments = args.split("\\s+");
 
