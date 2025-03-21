@@ -3,8 +3,6 @@ package seedu.address.model.person;
 //import static java.util.Objects.requireNonNull;
 //import static seedu.address.commons.util.AppUtil.checkArgument;
 
-import java.text.SimpleDateFormat;
-import java.time.temporal.ChronoUnit;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -26,11 +24,12 @@ public abstract class Loan {
     public static final String VALIDATION_REGEX = "[^\\s].*";
 
     public static final int MONTHLY_DUE_DATE = 1; // to signifies the 1 day of every month
+
     public final int amount;
     private int remainder;
     private int interest;
     private LocalDate dueDate;
-    private LocalDate dateLastPaid = null;
+    private LocalDate dateLastPaid;
     private LocalDate dateCreated;
     private Boolean isPaid = false;
 
@@ -48,6 +47,7 @@ public abstract class Loan {
         this.remainder = amount;
         this.interest = interest;
         this.dueDate = LocalDate.now(); // to parse dueDate string
+        this.dateLastPaid = LocalDate.now();
         this.dateCreated = LocalDate.now();
     }
 
@@ -55,24 +55,40 @@ public abstract class Loan {
      * Returns true if a given date string is a valid date.
      */
     public static boolean isValidDateString(String test) {
+        // !!!!!!! need to do
         return true;
     }
 
-    abstract void pay();
+    abstract void pay(int amt);
 
-    public long getOverDueDays() {
-        // Get the current date
+    abstract int getMoneyOwed();
+
+    public int getOverDueDays() {
+        // get the current date
         LocalDate currentDate = LocalDate.now();
 
-        // Get the first day of the current month
-        LocalDate firstDayOfMonth = currentDate.withDayOfMonth(1);
+        // get the due day of the current month
+        LocalDate dueDayOfMonth = currentDate.withDayOfMonth(Loan.MONTHLY_DUE_DATE);
 
-        // Calculate the difference in days
-        long daysBetween = ChronoUnit.DAYS.between(dateLastPaid, firstDayOfMonth);
+        // Calculate the difference in days (safe to cast as days will never overflow)
+        int daysBetween = (int) ChronoUnit.DAYS.between(dateLastPaid, dueDayOfMonth);
 
         return daysBetween;
     }
-    
+
+    public int getOverDueMonths() {
+        // Get the current date
+        LocalDate currentDate = LocalDate.now();
+
+        // get the due day of the current month
+        LocalDate dueDayOfMonth = currentDate.withDayOfMonth(Loan.MONTHLY_DUE_DATE);
+
+        // Calculate the difference in months (safe to cast as months will never overflow)
+        int monthsBetween = (int) ChronoUnit.MONTHS.between(dateLastPaid, dueDayOfMonth);
+
+        return monthsBetween;
+    }
+
     private static String dateToString(LocalDate date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE MMM yyyy", Locale.ENGLISH);
         return date.format(formatter);
@@ -84,8 +100,8 @@ public abstract class Loan {
                 .add("amount", amount)
                 .add("remainder", remainder)
                 .add("interest", interest)
-                .add("dueDate", dateToString(dueDate))
-                .add("dateLastPaid", dateToString(dateLastPaid))
+                .add("dueDate", Loan.dateToString(dueDate))
+                .add("dateLastPaid", Loan.dateToString(dateLastPaid))
                 .add("isPaid", isPaid)
                 .toString();
 
@@ -150,7 +166,7 @@ public abstract class Loan {
         this.remainder = remainder;
     }
 
-    protected void setDateLastPaid(Date dateLastPaid) {
+    protected void setDateLastPaid(LocalDate dateLastPaid) {
         this.dateLastPaid = dateLastPaid;
     }
 
