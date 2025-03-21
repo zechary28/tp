@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import seedu.address.logic.parser.Prefix;
+import seedu.address.model.person.Loan;
 import seedu.address.model.person.Person;
 
 /**
@@ -45,7 +46,28 @@ public class Messages {
                 .append(person.getAddress())
                 .append("; Tags: ");
         person.getTags().forEach(builder::append);
+        builder.append("; Loans: ");
+        if (person.getLoans().isEmpty()) {
+            builder.append("None"); // Handle case where there are no loans
+        } else {
+            person.getLoans().forEach(loan -> builder.append(format(loan)).append(" | "));
+            // Remove the trailing " | " after the last loan
+            if (builder.length() >= 3 && builder.substring(builder.length() - 3).equals(" | ")) {
+                builder.delete(builder.length() - 3, builder.length());
+            }
+        }
+
         return builder.toString();
+    }
+
+    public static String format(Loan loan) {
+        return loan.getName()
+                + "; Amount: $"
+                + String.format("%.2f", loan.getAmount())
+                + "; Interest: "
+                + loan.getInterest()
+                + "%; Due Date: "
+                + loan.getDueDate();
     }
 
 }
