@@ -13,7 +13,7 @@ public class SimpleInterestLoan extends Loan {
      * @param interest Interest rate in percentage (e.g., 5 means 5%).
      * @param dueDate  Due date for full repayment.
      */
-    public SimpleInterestLoan(int amount, int interest, String dueDate) {
+    public SimpleInterestLoan(String amount, String interest, String dueDate) {
         super(amount, interest, dueDate);
     }
 

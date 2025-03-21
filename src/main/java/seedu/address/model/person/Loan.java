@@ -17,10 +17,17 @@ import seedu.address.commons.util.ToStringBuilder;
  */
 public abstract class Loan {
 
-    public static final String MESSAGE_CONSTRAINTS = "The due date of a Loan has to be a valid date string"
+    public static final String DATE_MESSAGE_CONSTRAINTS = "The due date of a Loan has to be a valid date string"
         + "greater than the current date.";
 
+    public static final String INTEREST_MESSAGE_CONSTRAINTS = "The interest must be a valid integer"
+        + "and be greater than or equals to 0";
+    public static final String AMOUNT_MESSAGE_CONSTRAINTS = "The amount must be a valid integer"
+        + "and be greater than or equals to 0";
+
     public static final int MONTHLY_DUE_DATE = 1; // to signifies the 1 day of every month
+
+    public static final String VALIDATION_REGEX = "-?\\d+";
 
     public final int amount;
     private int remainder;
@@ -34,18 +41,30 @@ public abstract class Loan {
      * Constructs an {@code a loan}.
      *
      * @param amount cost of loan.
-     * @param interest % of interest, >= 0, 1 represents 100% interest
+     * @param interest % of interest, >= 0, 1 represents 1% interest
      * @param dueDate date which loan should be completely paid off
      */
-    public Loan(int amount, int interest, String dueDate) {
-        // validations
-        checkArgument(Loan.isValidDateString(dueDate), MESSAGE_CONSTRAINTS);
+    public Loan(String strAmount, String strInterest, String dueDate) {
+        // check interest is valid int
+        checkArgument(strInterest.matches(VALIDATION_REGEX), INTEREST_MESSAGE_CONSTRAINTS);
+        this.interest = Integer.parseInt(strInterest);
+
+        // check amount is valid int
+        checkArgument(strAmount.matches(VALIDATION_REGEX), AMOUNT_MESSAGE_CONSTRAINTS);
+        this.amount = Integer.parseInt(strAmount);
+
+        // check interest
+        checkArgument(this.interest >= 0, INTEREST_MESSAGE_CONSTRAINTS);
+
+        // check amount
+        checkArgument(this.amount > 0, AMOUNT_MESSAGE_CONSTRAINTS);
+
+        // check due date string
+        checkArgument(Loan.isValidDateString(dueDate), DATE_MESSAGE_CONSTRAINTS);
         this.dueDate = LocalDate.parse(dueDate, DateTimeFormatter.ISO_LOCAL_DATE);
 
         LocalDate currentDate = LocalDate.now();
-        this.amount = amount;
-        this.remainder = amount;
-        this.interest = interest;
+        this.remainder = this.amount;
         this.dateLastPaid = currentDate;
         this.dateCreated = currentDate;
     }
@@ -62,6 +81,13 @@ public abstract class Loan {
         } catch (DateTimeParseException e) {
             return false;
         }
+    }
+
+    /**
+     * Returns true if a loan is valid.
+     */
+    public static boolean isValidLoan(Loan loan) {
+        return loan.getAmount() > 0 && loan.getInterest() >= 0;
     }
 
     abstract void pay(int amt);
