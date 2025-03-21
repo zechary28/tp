@@ -7,6 +7,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -28,6 +30,16 @@ public abstract class Loan {
     public static final int MONTHLY_DUE_DATE = 1; // to signifies the 1 day of every month
 
     public static final String VALIDATION_REGEX = "^(\\d+(\\.\\d{1,2})?)"; // allows floats up to 2 d.p.
+
+    private static final List<DateTimeFormatter> DATE_FORMATTERS = Arrays.asList(
+        DateTimeFormatter.ISO_LOCAL_DATE, // yyyy-MM-dd
+        DateTimeFormatter.ofPattern("dd/MM/yyyy"),
+        DateTimeFormatter.ofPattern("MM/dd/yyyy"),
+        DateTimeFormatter.ofPattern("yyyyMMdd"),
+        DateTimeFormatter.ofPattern("dd-MM-yyyy"),
+        DateTimeFormatter.ofPattern("MM-dd-yyyy"),
+        DateTimeFormatter.ofPattern("EEE MMM d yyyy", Locale.ENGLISH) // Wed Dec 27 2023
+    );
 
     public final float amount;
     private float remainder;
@@ -60,8 +72,9 @@ public abstract class Loan {
         checkArgument(this.amount > 0, AMOUNT_MESSAGE_CONSTRAINTS);
 
         // check due date string
-        checkArgument(Loan.isValidDateString(dueDate), DATE_MESSAGE_CONSTRAINTS);
-        this.dueDate = LocalDate.parse(dueDate, DateTimeFormatter.ISO_LOCAL_DATE);
+        LocalDate date = Loan.toValidLocalDate(dueDate);
+        checkArgument(date != null, DATE_MESSAGE_CONSTRAINTS);
+        this.dueDate = date;
 
         LocalDate currentDate = LocalDate.now();
         this.remainder = this.amount;
@@ -70,17 +83,27 @@ public abstract class Loan {
     }
 
     /**
-     * Returns true if a given date string is a valid date.
+     * Convert date string to LocalDate, return null if date string is not valid
      */
-    public static boolean isValidDateString(String dateString) {
-        try {
-            LocalDate currentDate = LocalDate.now();
-            // parse the string to LocalDate
-            LocalDate date = LocalDate.parse(dateString, DateTimeFormatter.ISO_LOCAL_DATE);
-            return date.isAfter(currentDate);
-        } catch (DateTimeParseException e) {
-            return false;
+    public static LocalDate toValidLocalDate(String dateString) {
+        // handle null or empty input
+        if (dateString == null || dateString.trim().isEmpty()) {
+            return null;
         }
+
+        LocalDate currentDate = LocalDate.now();
+        for (DateTimeFormatter formatter : DATE_FORMATTERS) {
+            try {
+                LocalDate date = LocalDate.parse(dateString, formatter);
+                if (date.isAfter(currentDate)) {
+                    return date;
+                }
+            } catch (DateTimeParseException e) {
+                continue;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -121,8 +144,7 @@ public abstract class Loan {
     }
 
     private static String dateToString(LocalDate date) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE MMM yyyy", Locale.ENGLISH);
-        return date.format(formatter);
+        return date.format(DATE_FORMATTERS.get(0)); // change to enum
     }
 
     @Override
@@ -136,6 +158,23 @@ public abstract class Loan {
                 .add("isPaid", isPaid)
                 .toString();
     }
+
+    /*
+    public String toSaveString() {
+        StringBuilder saveString = new StringBuilder();
+        saveString.append(amount)
+            .ap
+    }
+
+    public static String loanListToString(List<Loan> loans) {
+        StringBuilder loanList = new StringBuilder();
+        for (Loan loan : loans) {
+            loanList.app
+        }
+
+        return "";
+    }
+    */
 
     @Override
     public boolean equals(Object other) {
