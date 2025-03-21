@@ -5,7 +5,6 @@ package seedu.address.model.person;
  * Represents a simple interest loan.
  */
 public class SimpleInterestLoan extends Loan {
-
     /**
      * Constructs a {@code SimpleInterestLoan}.
      *
@@ -31,8 +30,7 @@ public class SimpleInterestLoan extends Loan {
         return 1;
     }
 
-    @Override
-    public String toString() {
-        return "Simple Interest Loan: " + super.toString();
+    public String getName() {
+        return "Simple Interest Loan";
     }
 }
