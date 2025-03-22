@@ -302,7 +302,8 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `*`      | ethical loanshark                          | log time of reminders for each client         | have a record of communication                                    |
 | `*`      | ethical loanshark                          | view a log of all reminders sent to a client  | know when to schedule future reminders                            |
 |          | **Loan Tracking and Analysis**                                                                                                                                 |
-| `* * *`  | ethical loanshark                          | add and delete loans by client                | track when a client pays their loan                               |
+| `* * *`  | ethical loanshark                          | add loan by client                            | track when money is lent to a client loan                               |
+| `* * *`  | ethical loanshark                          | delete loan by client                         | track when a client pays their loanloan                               |
 | `* * *`  | ethical loanshark                          | view loans by client                          | track when a client pays their loan                               |
 | `* * *`  | ethical loanshark                          | edit loans                                    | update details as needed                                          |
 | `* * *`  | ethical loanshark                          | handle multiple interest calculation methods  | use the most suitable one for each loan                           |
@@ -334,16 +335,33 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 (For all use cases below, the **System** is the `AddressBook` and the **Actor** is the `user`, unless specified otherwise)
 
-**Use case: Delete a person**
+**Use case: Add a client**
 
 **MSS**
 
-1.  User requests to list persons
-2.  AddressBook shows a list of persons
-3.  User requests to delete a specific person in the list
-4.  AddressBook deletes the person
+1.  User requests to add a client and his details to the list
+2.  AddressBook adds the person
 
-    Use case ends.
+   Use case ends.
+
+**Extensions**
+
+* 1a. The given input is invalid
+    * 1a1. AddressBook shows an error message.
+
+      Use case resumes at step 1
+
+
+**Use case: Delete a client**
+
+**MSS**
+
+1.  User requests to list clients
+2.  AddressBook shows a list of clients
+3.  User requests to delete a specific client in the list
+4.  AddressBook deletes the client
+
+      Use case ends.
 
 **Extensions**
 
@@ -352,10 +370,78 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
   Use case ends.
 
 * 3a. The given index is invalid.
+    * 3a1. AddressBook shows an error message.
+      
+      Use case resumes at step 2.
 
+
+**Use case: Edit a client**
+
+**MSS**
+
+1.  User requests to list clients
+2.  AddressBook shows a list of clients
+3.  User requests an amendment to an existing entry in the list
+4.  AddressBook updates the client details
+
+      Use case ends.
+
+**Extensions**
+
+* 2a. The list is empty.
+
+  Use case ends.
+
+* 3a. The given index or client details are invalid.
     * 3a1. AddressBook shows an error message.
 
       Use case resumes at step 2.
+
+**Use case: Add a loan for a client**
+
+**MSS**
+
+1.  User requests to list clients
+2.  AddressBook shows a list of clients
+3.  User requests to add a loan to a specific client in the list
+4.  AddressBook adds a loan entry to the client
+
+      Use case ends.
+
+**Extensions**
+
+* 2a. The list is empty.
+
+  Use case ends.
+
+* 3a. The given index or loan details are invalid.
+    * 3a1. AddressBook shows an error message.
+      
+      Use case resumes at step 2.
+
+
+**Use case: Delete a loan for a client**
+
+**MSS**
+
+1.  User requests to list clients
+2.  AddressBook shows a list of clients
+3.  User requests to delete a loan to a specific client in the list
+4.  AddressBook removes the loan entry to the client
+
+      Use case ends.
+
+**Extensions**
+
+* 2a. The list is empty.
+
+  Use case ends.
+
+* 3a. The given index of client or loan are invalid.
+    * 3a1. AddressBook shows an error message.
+      
+      Use case resumes at step 2.
+
 
 *{More to be added}*
 
