@@ -100,7 +100,7 @@ public abstract class Loan {
                     return date;
                 }
             } catch (DateTimeParseException e) {
-                continue;
+                System.out.println(e.getMessage());
             }
         }
 
