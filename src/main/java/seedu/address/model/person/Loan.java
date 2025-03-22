@@ -7,7 +7,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -331,29 +330,6 @@ public abstract class Loan {
         }
     }
 
-    // (this should be abstracted into a future LoanList Class)
-    /**
-     * creates a loan list string where each loan string is sepearated by ','
-    */
-    public static String loanListToString(List<Loan> loans) {
-        StringBuilder loanList = new StringBuilder();
-        for (Loan loan : loans) {
-            loanList.append(loan.toSaveString()).append(',');
-        }
-
-        return loanList.toString();
-    }
-
-    public static boolean isValidLoanListString(String loanListStr) {
-        return false;
-    }
-
-    public static List<Loan> stringToLoanList(String loanListStr) {
-        return new ArrayList<Loan>();
-    }
-    // code for loan end
-
-
     @Override
     public boolean equals(Object other) {
         if (other == this) {
@@ -420,6 +396,17 @@ public abstract class Loan {
 
     public void setIsPaid(Boolean isPaid) {
         this.isPaid = isPaid;
+    }
+
+    /**
+     * Updates the isPaid status
+    */
+    public void updateIsPaid() {
+        if (this.amtPaid >= this.getLoanValue()) {
+            this.isPaid = true;
+        } else {
+            this.isPaid = false;
+        }
     }
 
     public abstract String getName();

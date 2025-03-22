@@ -19,17 +19,6 @@ public class CompoundInterestLoan extends Loan {
         super(amount, interest, dueDate);
     }
 
-    public float getMonthlyInterest() {
-        // monthly interest = principal * (1 + (r / 12))^monthsSinceLoan - principal
-        int monthsSinceLoan = this.getMonthsSinceLoan();
-        float monthlyRate = (this.getInterest() / 100) / 12;
-        return (float) (this.amount * Math.pow(1 + monthlyRate, monthsSinceLoan) - this.amount);
-    }
-
-    public float getTotalMonthlyCost() {
-        return this.getMonthlyPrincipalPayment() + this.getMonthlyInterest();
-    }
-
     /**
      * Constructs an {@code a CompoundInterestLoan}.
      *
@@ -45,6 +34,17 @@ public class CompoundInterestLoan extends Loan {
     public CompoundInterestLoan(String strAmount, String strAmtPaid, String strInterest, String strDueDate,
         String strDateLastPaid, String strDateCreated, String strIsPaid) {
         super(strAmount, strAmtPaid, strInterest, strDueDate, strDateLastPaid, strDateCreated, strIsPaid);
+    }
+
+    public float getMonthlyInterest() {
+        // monthly interest = principal * (1 + (r / 12))^monthsSinceLoan - principal
+        int monthsSinceLoan = this.getMonthsSinceLoan();
+        float monthlyRate = (this.getInterest() / 100) / 12;
+        return (float) (this.amount * Math.pow(1 + monthlyRate, monthsSinceLoan) - this.amount);
+    }
+
+    public float getTotalMonthlyCost() {
+        return this.getMonthlyPrincipalPayment() + this.getMonthlyInterest();
     }
 
     /**
