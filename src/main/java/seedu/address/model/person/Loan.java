@@ -280,13 +280,14 @@ public abstract class Loan {
      */
     public String toSaveString() { // creates a string where fields are seperated by '/'
         StringBuilder saveString = new StringBuilder();
-        return saveString.append(amount + '/')
-            .append(amtPaid + '/')
-            .append(interest + '/')
+        return saveString.append(String.format("%.2f", amount) + '/')
+            .append(String.format("%.2f", amtPaid) + '/')
+            .append(String.format("%.2f", interest) + '/')
             .append(Loan.dateToString(dueDate) + '/')
             .append(Loan.dateToString(dateLastPaid) + '/')
             .append(Loan.dateToString(dateCreated) + '/')
-            .append(this.getName())
+            .append(this.getName() + '/')
+            .append(this.isPaid ? "1" : "0")
             .toString();
     }
 

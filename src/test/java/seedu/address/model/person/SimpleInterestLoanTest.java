@@ -14,7 +14,8 @@ public class SimpleInterestLoanTest {
     public static final String VALID_INTEREST = "20";
     public static final String VALID_DATE = "27/12/2050";
 
-    public static final String VALID_LOAN_STRING = "1000.91/45.6/4.19/27-12-2050/24-12-2023/24-12-2004/S/0";
+    // date format is important as save string saves in yyyy-mm-dd
+    public static final String VALID_LOAN_STRING = "1000.91/45.60/4.19/2050-12-27/2023-12-24/2004-12-24/S/0";
 
     @Test
     public void constructor_invalidArguments_throwsIllegalArgumentException() {
@@ -36,6 +37,7 @@ public class SimpleInterestLoanTest {
         Loan loan = new SimpleInterestLoan(VALID_AMT, VALID_INTEREST, VALID_DATE);
         assertTrue(Loan.isValidLoan(loan));
 
-        assertTrue(Loan.isValidLoanString(VALID_LOAN_STRING));
+        loan = Loan.stringToLoan(VALID_LOAN_STRING);
+        assertTrue(loan.toSaveString().equals(VALID_LOAN_STRING));
     }
 }
