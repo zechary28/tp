@@ -17,6 +17,6 @@ public class LoanListTest {
     @Test
     public void isValidLoan() {
         LoanList loanList = LoanList.stringToLoanList(VALID_LOAN_STRING);
-        assertTrue(loanList.loanListToSaveString().equals(VALID_OUTPUT_LOAN_STRING));
+        assertTrue(loanList.toSaveString().equals(VALID_OUTPUT_LOAN_STRING));
     }
 }
