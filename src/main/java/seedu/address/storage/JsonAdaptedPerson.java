@@ -106,9 +106,13 @@ class JsonAdaptedPerson {
         }
         final Address modelAddress = new Address(address);
 
+        if (loanList == null) { // makes this better
+            throw new IllegalValueException("ERROR");
+        }
         final LoanList modelLoanList = LoanList.stringToLoanList(loanList);
 
         final Set<Tag> modelTags = new HashSet<>(personTags);
+
         return new Person(modelName, modelPhone, modelEmail, modelAddress, modelTags, modelLoanList);
     }
 
