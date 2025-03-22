@@ -41,7 +41,7 @@ public class LoanCommandTest {
     @Test
     public void execute_invalidIndex_throwsCommandException() {
         Index outOfBounds = Index.fromOneBased(model.getFilteredPersonList().size() + 1);
-        LoanCommand command = new LoanCommand(outOfBounds, 
+        LoanCommand command = new LoanCommand(outOfBounds,
                 "s", "1000", "5", "2025-12-12");
 
         assertThrows(CommandException.class, () -> command.execute(model));
