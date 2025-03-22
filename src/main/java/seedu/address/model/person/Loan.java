@@ -7,6 +7,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
+//import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -20,17 +23,27 @@ public abstract class Loan {
     public static final String DATE_MESSAGE_CONSTRAINTS = "The due date of a Loan has to be a valid date string"
         + " greater than the current date.";
 
-    public static final String INTEREST_MESSAGE_CONSTRAINTS = "The interest must be a valid integer"
+    public static final String INTEREST_MESSAGE_CONSTRAINTS = "The interest must be a valid float"
         + " and be greater than or equals to 0";
-    public static final String AMOUNT_MESSAGE_CONSTRAINTS = "The amount must be a valid integer"
+    public static final String AMOUNT_MESSAGE_CONSTRAINTS = "The amount must be a valid float"
         + " and be greater than or equals to 0";
 
     public static final int MONTHLY_DUE_DATE = 1; // to signifies the 1 day of every month
 
     public static final String VALIDATION_REGEX = "^(\\d+(\\.\\d{1,2})?)"; // allows floats up to 2 d.p.
 
+    private static final List<DateTimeFormatter> DATE_FORMATTERS = Arrays.asList(
+        DateTimeFormatter.ISO_LOCAL_DATE, // yyyy-MM-dd
+        DateTimeFormatter.ofPattern("dd/MM/yyyy"),
+        DateTimeFormatter.ofPattern("MM/dd/yyyy"),
+        DateTimeFormatter.ofPattern("yyyyMMdd"),
+        DateTimeFormatter.ofPattern("dd-MM-yyyy"),
+        DateTimeFormatter.ofPattern("MM-dd-yyyy"),
+        DateTimeFormatter.ofPattern("EEE MMM d yyyy", Locale.ENGLISH) // Wed Dec 27 2023
+    );
+
     public final float amount;
-    private float remainder;
+    private float amtPaid = 0;
     private float interest;
     private LocalDate dueDate;
     private LocalDate dateLastPaid;
@@ -41,7 +54,7 @@ public abstract class Loan {
      * Constructs an {@code a loan}.
      *
      * @param strAmount cost of loan.
-     * @param strInterest % of interest, >= 0, 1 represents 1% interest
+     * @param strInterest % of yearly interest, >= 0, 1 represents 1% interest
      * @param dueDate date which loan should be completely paid off
      */
     public Loan(String strAmount, String strInterest, String dueDate) {
@@ -60,27 +73,38 @@ public abstract class Loan {
         checkArgument(this.amount > 0, AMOUNT_MESSAGE_CONSTRAINTS);
 
         // check due date string
-        checkArgument(Loan.isValidDateString(dueDate), DATE_MESSAGE_CONSTRAINTS);
-        this.dueDate = LocalDate.parse(dueDate, DateTimeFormatter.ISO_LOCAL_DATE);
+        LocalDate date = Loan.toValidLocalDate(dueDate);
+        checkArgument(date != null, DATE_MESSAGE_CONSTRAINTS);
+        this.dueDate = date;
 
         LocalDate currentDate = LocalDate.now();
-        this.remainder = this.amount;
+        this.amtPaid = this.amount;
         this.dateLastPaid = currentDate;
         this.dateCreated = currentDate;
     }
 
     /**
-     * Returns true if a given date string is a valid date.
+     * Convert date string to LocalDate, return null if date string is not valid
      */
-    public static boolean isValidDateString(String dateString) {
-        try {
-            LocalDate currentDate = LocalDate.now();
-            // parse the string to LocalDate
-            LocalDate date = LocalDate.parse(dateString, DateTimeFormatter.ISO_LOCAL_DATE);
-            return date.isAfter(currentDate);
-        } catch (DateTimeParseException e) {
-            return false;
+    public static LocalDate toValidLocalDate(String dateString) {
+        // handle null or empty input
+        if (dateString == null || dateString.trim().isEmpty()) {
+            return null;
         }
+
+        LocalDate currentDate = LocalDate.now();
+        for (DateTimeFormatter formatter : DATE_FORMATTERS) {
+            try {
+                LocalDate date = LocalDate.parse(dateString, formatter);
+                if (date.isAfter(currentDate)) {
+                    return date;
+                }
+            } catch (DateTimeParseException e) {
+                continue;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -90,11 +114,22 @@ public abstract class Loan {
         return loan.getAmount() > 0 && loan.getInterest() >= 0;
     }
 
-    abstract void pay(int amt);
+    abstract void pay(float amt);
 
-    abstract int getMoneyOwed();
+    abstract float getMoneyOwed();
 
-    public int getOverDueDays() {
+    abstract float getLoanValue();
+
+    abstract boolean isOverDue();
+
+    // is an estimation (amount owed over monthly cost)
+    abstract int getOverDueMonths();
+
+    public float getMontlyPrincipalPayment() {
+        return amount / this.getLoanLengthMonths();
+    }
+
+    public int getDaysSinceLastPaid() {
         // get the current date
         LocalDate currentDate = LocalDate.now();
 
@@ -107,7 +142,8 @@ public abstract class Loan {
         return daysBetween;
     }
 
-    public int getOverDueMonths() {
+    // when using be careful, months could be 0, in which case, you should show days
+    public int getMonthsSinceLastPaid() {
         // Get the current date
         LocalDate currentDate = LocalDate.now();
 
@@ -120,22 +156,71 @@ public abstract class Loan {
         return monthsBetween;
     }
 
+    public int getMonthsSinceLoan() {
+        // Get the current date
+        LocalDate currentDate = LocalDate.now();
+
+        // get the due day of the current month
+        LocalDate dueDayOfMonth = currentDate.withDayOfMonth(Loan.MONTHLY_DUE_DATE);
+
+        // Calculate the difference in months (safe to cast as months will never overflow)
+        int monthsBetween = (int) ChronoUnit.MONTHS.between(dateLastPaid, dueDayOfMonth);
+
+        return monthsBetween;
+    }
+
+    public int getLoanLengthMonths() {
+        // Calculate the difference in months (safe to cast as months will never overflow)
+        int months = (int) ChronoUnit.MONTHS.between(dateCreated, dueDate);
+        if (months == 0) {
+            return 1; // case where due date is not a full month after date created
+        } else {
+            return months;
+        }
+    }
+
     private static String dateToString(LocalDate date) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE MMM yyyy", Locale.ENGLISH);
-        return date.format(formatter);
+        return date.format(DATE_FORMATTERS.get(0)); // change to enum
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this)
                 .add("amount", amount)
-                .add("remainder", remainder)
+                .add("amtPaid", amtPaid)
                 .add("interest", interest)
                 .add("dueDate", Loan.dateToString(dueDate))
                 .add("dateLastPaid", Loan.dateToString(dateLastPaid))
                 .add("isPaid", isPaid)
                 .toString();
     }
+
+    /* TODO for save
+    public String toSaveString() {
+        StringBuilder saveString = new StringBuilder();
+        saveString.append(amount)
+            .ap
+    }
+
+    public static String loanListToString(List<Loan> loans) {
+        StringBuilder loanList = new StringBuilder();
+        for (Loan loan : loans) {
+            loanList.app
+        }
+
+        return "";
+    }
+
+    public static boolean isValidLoanListString(String loanListStr) {
+        return false;
+    }
+
+    public static List<Loan> stringToLoanList(String loanListStr) {
+        return new ArrayList<Loan>();
+    }
+    */
+
+
 
     @Override
     public boolean equals(Object other) {
@@ -150,7 +235,7 @@ public abstract class Loan {
 
         Loan otherLoan = (Loan) other;
         return amount == otherLoan.amount
-                && remainder == otherLoan.getRemainder()
+                && amtPaid == otherLoan.getAmtPaid()
                 && interest == otherLoan.getInterest()
                 && dueDate.equals(otherLoan.getDueDate())
                 && dateLastPaid.equals(otherLoan.getDateLastPaid())
@@ -161,11 +246,11 @@ public abstract class Loan {
 
     @Override
     public int hashCode() {
-        return Objects.hash(amount, remainder, interest, dueDate, dateLastPaid, dateCreated, isPaid);
+        return Objects.hash(amount, amtPaid, interest, dueDate, dateLastPaid, dateCreated, isPaid);
     }
 
-    public float getRemainder() {
-        return this.remainder;
+    public float getAmtPaid() {
+        return this.amtPaid;
     }
 
     public float getInterest() {
@@ -192,8 +277,8 @@ public abstract class Loan {
         return this.amount;
     }
 
-    protected void setRemainder(int remainder) {
-        this.remainder = remainder;
+    public void incrementAmtPaid(float pay) {
+        this.amtPaid += pay;
     }
 
     protected void setDateLastPaid(LocalDate dateLastPaid) {

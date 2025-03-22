@@ -12,7 +12,7 @@ public class SimpleInterestLoanTest {
 
     public static final String VALID_AMT = "2000";
     public static final String VALID_INTEREST = "20";
-    public static final String VALID_DATE = "2050-12-27";
+    public static final String VALID_DATE = "27/12/2050";
 
     @Test
     public void constructor_invalidArguments_throwsIllegalArgumentException() {
