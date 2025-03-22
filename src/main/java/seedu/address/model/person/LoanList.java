@@ -42,7 +42,7 @@ public class LoanList {
     /**
      * creates a loan list string where each loan string is sepearated by ','
     */
-    public String loanListToSaveString() {
+    public String toSaveString() {
         if (this.loanList.isEmpty()) {
             return EMPTY_STRING;
         }
@@ -60,8 +60,9 @@ public class LoanList {
         return loanList.toString();
     }
 
+    // might not be needed
     public static boolean isValidLoanListString(String loanListStr) {
-        return loanListStr != null && !loanListStr.trim().isEmpty();
+        return loanListStr != null;
     }
 
     /**
@@ -69,7 +70,7 @@ public class LoanList {
     */
     public static LoanList stringToLoanList(String loanListStr) {
         LoanList loanList = new LoanList();
-        if (loanListStr.equals(EMPTY_STRING)) {
+        if (loanListStr.equals(EMPTY_STRING) || loanListStr.trim().isEmpty() || loanListStr == null) {
             return loanList;
         }
 
