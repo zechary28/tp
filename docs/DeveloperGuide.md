@@ -287,14 +287,46 @@ _{Explain here how the data archiving feature will be implemented}_
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
-| Priority | As a …​                                    | I want to …​                 | So that I can…​                                                        |
-|----------|--------------------------------------------|------------------------------|------------------------------------------------------------------------|
-| `* * *`  | new user                                   | see usage instructions       | refer to instructions when I forget how to use the App                 |
-| `* * *`  | user                                       | add a new person             |                                                                        |
-| `* * *`  | user                                       | delete a person              | remove entries that I no longer need                                   |
-| `* * *`  | user                                       | find a person by name        | locate details of persons without having to go through the entire list |
-| `* *`    | user                                       | hide private contact details | minimize chance of someone else seeing them by accident                |
-| `*`      | user with many persons in the address book | sort persons by name         | locate a person easily                                                 |
+| Priority | As a …​                                     | I want to …​                                   | So that I can…​                                                    |
+|----------|--------------------------------------------|-----------------------------------------------|-------------------------------------------------------------------|
+| `* * *`  | new user                                   | see usage instructions                        | refer to instructions when I forget how to use the app            |
+|          | **Client Tracking**                                                                                                                                            |
+| `* * *`  | licensed moneylender                       | add a new person                              |                                                                   |
+| `* * *`  | licensed moneylender                       | delete a person                               | remove entries that I no longer need                              |
+| `* * *`  | ethical loanshark                          | view client profiles                          | track client contact details                                      |
+| `* * *`  | ethical loanshark                          | edit client profiles                          | keep records up to date                                           |
+| `* *`    | ethical loanshark                          | tag clients with labels                       | quickly identify and categorize them                              |
+| `* *`    | ethical loanshark                          | search clients by name, contact number, loan ID | quickly locate their records                                      |
+| `* *`    | ethical loanshark                          | predict client risk                           | assess the risk of a new client                                   |
+| `* *`    | ethical loanshark                          | archive inactive client profiles              | declutter active records while keeping history accessible         |
+| `*`      | ethical loanshark                          | log time of reminders for each client         | have a record of communication                                    |
+| `*`      | ethical loanshark                          | view a log of all reminders sent to a client  | know when to schedule future reminders                            |
+|          | **Loan Tracking and Analysis**                                                                                                                                 |
+| `* * *`  | ethical loanshark                          | add and delete loans by client                | track when a client pays their loan                               |
+| `* * *`  | ethical loanshark                          | view loans by client                          | track when a client pays their loan                               |
+| `* * *`  | ethical loanshark                          | edit loans                                    | update details as needed                                          |
+| `* * *`  | ethical loanshark                          | handle multiple interest calculation methods  | use the most suitable one for each loan                           |
+| `* *`    | ethical loanshark                          | sort loans by priority                        | know which loans to chase                                         |
+| `*`      | ethical loanshark                          | generate a summary of all loans connected to a guarantor | assess their risk exposure                                       |
+| `*`      | ethical loanshark                          | summarize outstanding loans, due dates, and overdue payments on a dashboard | have an overview of my business                                  |
+| `*`      | ethical loanshark                          | view overdue payments as a percentage of total active loans | gauge my portfolio’s health                                      |
+| `*`      | ethical loanshark                          | view repayment trends (weekly, monthly, yearly) | identify seasonal patterns in client payments                     |
+| `*`      | ethical loanshark                          | apply discounts or waive fees in special cases | accommodate loyal clients or challenging situations               |
+| `*`      | ethical loanshark                          | compare repayment rates between loan types    | optimize my offerings                                             |
+|          | **Related Party Management**                                                                             |
+| `* *`    | ethical loanshark                          | add related parties for each client           | categorize them as family, guarantors, or friends                 |
+| `* *`    | ethical loanshark                          | track contact preferences of related parties  | approach them respectfully                                        |
+| `* *`    | ethical loanshark                          | store multiple contact methods for related parties | have options for reminders                                      |
+| `*`      | ethical loanshark                          | identify the most responsive related party    | know who to contact first if necessary                            |
+|          | **Data Management**                                                                                       |
+| `* * *`  | ethical loanshark                          | save data locally at end of session           | keep record history from previous session                         |
+| `* *`    | ethical loanshark                          | import data                                   | ensure seamless onboarding of information                         |
+| `* *`    | ethical loanshark                          | export data                                   | share or back up information                                      |
+| `*`      | ethical loanshark                          | purge all data                                | cleanse the system                                                |
+| `*`      | ethical loanshark                          | save data selectively (filter/sort)          | save only certain data                                            |
+| `*`      | ethical loanshark                          | log all data changes (e.g., updates to client profiles, loan terms) | have a clear audit trail                                        |
+| `*`      | ethical loanshark                          | encrypt all data                              | ensure client data safety in the event of a leak                  |
+
 
 *{More to be added}*
 
