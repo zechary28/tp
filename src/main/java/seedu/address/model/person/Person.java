@@ -2,7 +2,6 @@ package seedu.address.model.person;
 
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -26,7 +25,7 @@ public class Person {
     // Data fields
     private final Address address;
     private final Set<Tag> tags = new HashSet<>();
-    private final ArrayList<Loan> loanList = new ArrayList<>();
+    private final LoanList loanList;
 
     /**
      * Every field must be present and not null.
@@ -38,7 +37,21 @@ public class Person {
         this.email = email;
         this.address = address;
         this.tags.addAll(tags);
+        this.loanList = new LoanList();
         loanList.add(loan);
+    }
+
+    /**
+     * Every field must be present and not null.
+     */
+    public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags, LoanList loanList) {
+        requireAllNonNull(name, phone, email, address, tags);
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.address = address;
+        this.tags.addAll(tags);
+        this.loanList = loanList;
     }
 
     /**
@@ -51,6 +64,7 @@ public class Person {
         this.email = email;
         this.address = address;
         this.tags.addAll(tags);
+        this.loanList = new LoanList();
     }
 
     public Name getName() {
@@ -74,9 +88,15 @@ public class Person {
      * if modification is attempted.
      */
     public List<Loan> getLoans() {
-        return Collections.unmodifiableList(loanList);
+        return loanList.getLoanList();
     }
 
+    /**
+     * Returns the LoanList object representing a loan list.
+     */
+    public LoanList getLoanList() {
+        return loanList;
+    }
     /**
      * Adds a loan to the loan list.
      */
