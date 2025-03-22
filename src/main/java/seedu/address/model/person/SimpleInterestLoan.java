@@ -23,7 +23,7 @@ public class SimpleInterestLoan extends Loan {
     }
 
     public float getTotalMonthlyCost() {
-        return this.getMontlyPrincipalPayment() + this.getMonthlyInterest();
+        return this.getMonthlyPrincipalPayment() + this.getMonthlyInterest();
     }
 
     public float getLoanValue() {
