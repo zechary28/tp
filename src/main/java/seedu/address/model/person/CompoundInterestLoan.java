@@ -23,12 +23,27 @@ public class CompoundInterestLoan extends Loan {
      * @param payment The amount paid.
      */
     @Override
-    void pay(int payment) {
+    void pay(float payment) {
     }
 
     @Override
-    int getMoneyOwed() {
+    float getMoneyOwed() {
         return 1;
+    }
+
+    @Override
+    float getLoanValue() {
+        return 1;
+    }
+
+    @Override
+    int getOverDueMonths() {
+        return 1;
+    }
+
+    @Override
+    boolean isOverDue() {
+        return true;
     }
 
     public String getName() {
