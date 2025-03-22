@@ -14,6 +14,8 @@ public class SimpleInterestLoanTest {
     public static final String VALID_INTEREST = "20";
     public static final String VALID_DATE = "27/12/2050";
 
+    public static final String VALID_LOAN_STRING = "1000.91/45.6/4.19/27-12-2050/24-12-2023/24-12-2004/S/0";
+
     @Test
     public void constructor_invalidArguments_throwsIllegalArgumentException() {
         // invalid amt
@@ -33,5 +35,7 @@ public class SimpleInterestLoanTest {
     public void isValidLoan() {
         Loan loan = new SimpleInterestLoan(VALID_AMT, VALID_INTEREST, VALID_DATE);
         assertTrue(Loan.isValidLoan(loan));
+
+        assertTrue(Loan.isValidLoanString(VALID_LOAN_STRING));
     }
 }
