@@ -31,8 +31,7 @@ public class CompoundInterestLoan extends Loan {
         return 1;
     }
 
-    @Override
-    public String toString() {
-        return "Compound Interest Loan: " + super.toString();
+    public String getName() {
+        return "Compound Interest Loan";
     }
 }
