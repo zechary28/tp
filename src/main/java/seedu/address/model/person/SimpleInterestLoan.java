@@ -6,6 +6,8 @@ import java.time.LocalDate;
  * Represents a simple interest loan.
  */
 public class SimpleInterestLoan extends Loan {
+    public static final String LOAN_TYPE = "S";
+
     /**
      * Constructs a {@code SimpleInterestLoan}.
      *
@@ -15,6 +17,23 @@ public class SimpleInterestLoan extends Loan {
      */
     public SimpleInterestLoan(String amount, String interest, String dueDate) {
         super(amount, interest, dueDate);
+    }
+
+    /**
+     * Constructs an {@code a SimpleInterestLoan}.
+     *
+     * @param strAmount cost of loan.
+     * @param strAmtPaid amount paid of loan
+     * @param strInterest % of yearly interest, >= 0, 1 represents 1% interest
+     * @param strDueDate date which loan should be completely paid off
+     * @param strDateLastPaid date which loan was last paid
+     * @param strDateCreated date which loan was created
+     * @param strIsPaid boolean if loan is paid
+     *
+    */
+    public SimpleInterestLoan(String strAmount, String strAmtPaid, String strInterest, String strDueDate,
+        String strDateLastPaid, String strDateCreated, String strIsPaid) {
+        super(strAmount, strAmtPaid, strInterest, strDueDate, strDateLastPaid, strDateCreated, strIsPaid);
     }
 
     public float getMonthlyInterest() {
@@ -87,6 +106,6 @@ public class SimpleInterestLoan extends Loan {
     }
 
     public String getName() {
-        return "Simple Interest Loan";
+        return LOAN_TYPE;
     }
 }

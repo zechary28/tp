@@ -8,6 +8,8 @@ import java.util.List;
  * Represents a loan list containing the loans a person has.
  */
 public class LoanList {
+    public static final String EMPTY_STRING = "EMPTY";
+
     private final ArrayList<Loan> loanList = new ArrayList<>();
 
     /**
@@ -35,6 +37,57 @@ public class LoanList {
      */
     public void remove(Loan loan) {
         loanList.remove(loan);
+    }
+
+    /**
+     * creates a loan list string where each loan string is sepearated by ','
+    */
+    public String loanListToSaveString() {
+        if (this.loanList.isEmpty()) {
+            return EMPTY_STRING;
+        }
+
+        StringBuilder loanList = new StringBuilder();
+        for (Loan loan : this.loanList) {
+            loanList.append(loan.toSaveString()).append(',');
+        }
+
+        // remove the trailing comma
+        if (loanList.length() > 0) {
+            loanList.deleteCharAt(loanList.length() - 1);
+        }
+
+        return loanList.toString();
+    }
+
+    public static boolean isValidLoanListString(String loanListStr) {
+        return loanListStr != null && !loanListStr.trim().isEmpty();
+    }
+
+    /**
+     * parses loan list string to LoanList object
+    */
+    public static LoanList stringToLoanList(String loanListStr) {
+        LoanList loanList = new LoanList();
+        if (loanListStr.equals(EMPTY_STRING)) {
+            return loanList;
+        }
+
+        String[] loans = loanListStr.split(",");
+        for (String loanStr : loans) {
+            try {
+                Loan loan = Loan.stringToLoan(loanStr);
+                if (loan == null) {
+                    continue;
+                } else {
+                    loan.updateIsPaid();
+                    loanList.add(loan);
+                }
+            } catch (IllegalArgumentException e) {
+                continue;
+            }
+        }
+        return loanList;
     }
 
     @Override
