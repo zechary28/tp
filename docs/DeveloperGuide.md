@@ -274,13 +274,13 @@ _{Explain here how the data archiving feature will be implemented}_
 
 **Target user profile**:
 
-* has a need to manage a significant number of contacts
-* prefer desktop apps over other types
-* can type fast
-* prefers typing to mouse interactions
-* is reasonably comfortable using CLI apps
+* licenced moneylender with a significant number of clients
+* needs to keep track of client contacts 
+* needs to keep track of clients' loans
+* prefers desktop apps over other types
+* prefers typing input on CLI to mouse interactions
 
-**Value proposition**: manage contacts faster than a typical mouse/GUI driven app
+**Value proposition**: manage client contacts and loans faster than a typical mouse/GUI driven app
 
 
 ### User stories
