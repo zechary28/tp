@@ -26,7 +26,7 @@ public class Person {
     // Data fields
     private final Address address;
     private final Set<Tag> tags = new HashSet<>();
-    private final ArrayList<Loan> loanList = new ArrayList<>();
+    private final LoanList loanList = new LoanList();
 
     /**
      * Every field must be present and not null.
@@ -74,9 +74,15 @@ public class Person {
      * if modification is attempted.
      */
     public List<Loan> getLoans() {
-        return Collections.unmodifiableList(loanList);
+        return loanList.getLoanList();
     }
 
+    /**
+     * Returns the LoanList object representing a loan list.
+     */
+    public LoanList getLoanList() {
+        return loanList;
+    }
     /**
      * Adds a loan to the loan list.
      */
