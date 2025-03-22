@@ -99,7 +99,9 @@ public abstract class Loan {
                 if (date.isAfter(currentDate)) {
                     return date;
                 }
-            } catch (DateTimeParseException ignored) {}
+            } catch (DateTimeParseException e) {
+                System.out.println(e.getMessage());
+            }
         }
 
         return null;
