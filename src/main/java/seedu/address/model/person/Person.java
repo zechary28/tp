@@ -25,7 +25,7 @@ public class Person {
     // Data fields
     private final Address address;
     private final Set<Tag> tags = new HashSet<>();
-    private final LoanList loanList = new LoanList();
+    private final LoanList loanList;
 
     /**
      * Every field must be present and not null.
@@ -37,7 +37,21 @@ public class Person {
         this.email = email;
         this.address = address;
         this.tags.addAll(tags);
+        this.loanList = new LoanList();
         loanList.add(loan);
+    }
+
+    /**
+     * Every field must be present and not null.
+     */
+    public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags, LoanList loanList) {
+        requireAllNonNull(name, phone, email, address, tags);
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.address = address;
+        this.tags.addAll(tags);
+        this.loanList = loanList;
     }
 
     /**
@@ -50,6 +64,7 @@ public class Person {
         this.email = email;
         this.address = address;
         this.tags.addAll(tags);
+        this.loanList = new LoanList();
     }
 
     public Name getName() {
