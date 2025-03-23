@@ -70,95 +70,85 @@ The Sharkives is a **desktop application for managing loan records**, optimized 
 Adds a loan to a contact in the address book. Loans can be either **Simple Interest Loans** or **Compound Interest Loans**.
 
 Format: `loan INDEX TYPE AMOUNT INTEREST_RATE DUE_DATE​`
+- `INDEX` refers to the index number of the contact as displayed in the contact list.
+- `TYPE` is either `s` (Simple Interest Loan) or `c` (Compound Interest Loan).
+- `AMOUNT` is the principal loan amount (e.g., `100.00`).
+- `INTEREST_RATE` is the percentage interest rate (e.g., `5.5` for `5.5%`).
+- `DUE_DATE` is the loan's due date in `YYYY-MM-DD` format.
+
 
 Examples:
 * `loan 1 s 100.00 5.5 2025-12-31`
 * `loam 2 c 500.00 7.0 2026-06-15`
 
-### Viewing help : `help`
+---
 
-Shows a message explaning how to access the help page.
+### Recording a Payment: `pay`
 
-![help message](images/helpMessage.png)
+Marks a payment made by the loanee.
 
-Format: `help`
+**Fromat:** `pay INDEX AMOUNT DUE`
+- `INDEX` refers to the index number of the loanee in the contact list.
+- `AMOUNT` is the amount paid.
+- `DATE` is the payment date in `YYYY-MM-DD` format.
 
+**Example:** `pay 1 50.00 2025-06-01`
 
-### Adding a person: `add`
+---
 
-Adds a person to the address book.
+### Deleting a Loanee: `delete`
 
-Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​`
+Deletes all loan details associated with a loanee.
 
-<box type="tip" seamless>
+**Format:** `delete INDEX`
+- `INDEX` refers to the index number of the loanee in the contact list.
 
-**Tip:** A person can have any number of tags (including 0)
-</box>
+**Example:** `delete 2`
 
-Examples:
-* `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01`
-* `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 t/criminal`
+---
 
-### Listing all persons : `list`
+### Sending a Reminder: `remind`
 
-Shows a list of all persons in the address book.
+Sends a reminder to the loanee about their loan repayment.
 
-Format: `list`
+**Format:** `remind INDEX`
+- `INDEX` refers to the index number of the loanee in the contact list.
 
-### Editing a person : `edit`
+**Example:** `remind 3`
 
-Edits an existing person in the address book.
+---
 
-Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`
+### Listing all Loanees: `list`
 
-* Edits the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
-* At least one of the optional fields must be provided.
-* Existing values will be updated to the input values.
-* When editing tags, the existing tags of the person will be removed i.e adding of tags is not cumulative.
-* You can remove all the person’s tags by typing `t/` without
-    specifying any tags after it.
+Displays a list of all loanees in the address book.
 
-Examples:
-*  `edit 1 p/91234567 e/johndoe@example.com` Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
-*  `edit 2 n/Betsy Crower t/` Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.
+**Format:** `list`
 
-### Locating persons by name: `find`
+---
 
-Finds persons whose names contain any of the given keywords.
+### Editing Loanee Details: `edit`
 
-Format: `find KEYWORD [MORE_KEYWORDS]`
+Edits the details of a loanee.
 
-* The search is case-insensitive. e.g `hans` will match `Hans`
-* The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`
-* Only the name is searched.
-* Only full words will be matched e.g. `Han` will not match `Hans`
-* Persons matching at least one keyword will be returned (i.e. `OR` search).
-  e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`
+**Format:** `edit INDEX FIELD NEW_VALUE`
+- `INDEX` refers to the index number of the loanee in the contact list.
+- `FIELD` specifies which detail to edit (`name`, `phone`, `email`, `address`).
+- `NEW_VALUE` is the updated information.
 
-Examples:
-* `find John` returns `john` and `John Doe`
-* `find alex david` returns `Alex Yeoh`, `David Li`<br>
-  ![result for 'find alex david'](images/findAlexDavidResult.png)
+**Example:** `edit 1 phone 91234567`
 
-### Deleting a person : `delete`
+---
 
-Deletes the specified person from the address book.
+### Viewing payment history: `history`
 
-Format: `delete INDEX`
+Displays the payment history of a loanee.
 
-* Deletes the person at the specified `INDEX`.
-* The index refers to the index number shown in the displayed person list.
-* The index **must be a positive integer** 1, 2, 3, …​
+**Format:** `history INDEX`
+- `INDEX` refers to the index number of the loanee in the contact list.
 
-Examples:
-* `list` followed by `delete 2` deletes the 2nd person in the address book.
-* `find Betsy` followed by `delete 1` deletes the 1st person in the results of the `find` command.
+**Example:** `history 1`
 
-### Clearing all entries : `clear`
-
-Clears all entries from the address book.
-
-Format: `clear`
+---
 
 ### Exiting the program : `exit`
 
