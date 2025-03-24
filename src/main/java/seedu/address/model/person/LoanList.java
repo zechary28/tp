@@ -70,7 +70,7 @@ public class LoanList {
     */
     public static LoanList stringToLoanList(String loanListStr) {
         LoanList loanList = new LoanList();
-        if (loanListStr.equals(EMPTY_STRING) || loanListStr.trim().isEmpty() || loanListStr == null) {
+        if (loanListStr == null || loanListStr.equals(EMPTY_STRING) || loanListStr.trim().isEmpty()) {
             return loanList;
         }
 
@@ -78,9 +78,7 @@ public class LoanList {
         for (String loanStr : loans) {
             try {
                 Loan loan = Loan.stringToLoan(loanStr);
-                if (loan == null) {
-                    continue;
-                } else {
+                if (loan != null) {
                     loan.updateIsPaid();
                     loanList.add(loan);
                 }

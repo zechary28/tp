@@ -29,6 +29,8 @@ public abstract class Loan {
 
     public static final int MONTHLY_DUE_DATE = 1; // to signifies the 1 day of every month
 
+    public static final String UNAVAILABLE_DATE = "NA";
+
     public static final int NUMBER_OF_FIELDS = 8; // add 1 for loan type
 
     public static final String VALIDATION_REGEX = "^(\\d+(\\.\\d{1,2})?)"; // allows floats up to 2 d.p.
@@ -119,22 +121,28 @@ public abstract class Loan {
         // check amtPaid
         checkArgument(this.amtPaid >= 0);
 
-        LocalDate currenDate = LocalDate.now();
+        LocalDate currentDate = LocalDate.now();
 
         // check date created
         this.dateCreated = Loan.toValidLocalDate(strDateCreated);
+
         // date created cannot be null and cannot be in the future
-        checkArgument(this.dateCreated != null && this.dateCreated.isBefore(currenDate));
+        checkArgument(this.dateCreated != null
+            && (this.dateCreated.isBefore(currentDate) || this.dateCreated.isEqual(currentDate)));
 
         // check due date
         this.dueDate = Loan.toValidLocalDate(strDueDate);
         // due date cannot be null and cannot be before date created
         checkArgument(this.dueDate != null && this.dueDate.isAfter(dateCreated));
 
+
         // check date last paid
-        this.dateLastPaid = Loan.toValidLocalDate(strDateLastPaid);
-        // date last paid can be null but cannot be before date created
-        checkArgument(dateLastPaid.isAfter(dateCreated));
+        if (strDateLastPaid.equals(UNAVAILABLE_DATE)) { // date is unavailable
+            this.dateLastPaid = null;
+        } else {
+            this.dateLastPaid = Loan.toValidLocalDate(strDateLastPaid);
+            checkArgument(this.dateLastPaid != null && dateLastPaid.isAfter(dateCreated));
+        }
 
         // check strIsPaid
         checkArgument(strIsPaid.equals("1") || strIsPaid.equals("0"));
@@ -150,7 +158,7 @@ public abstract class Loan {
     */
     public static LocalDate toValidLocalDate(String dateString) {
         // handle null or empty input
-        if (dateString == null || dateString.trim().isEmpty()) {
+        if (dateString == null) {
             return null;
         }
 
@@ -242,7 +250,7 @@ public abstract class Loan {
         LocalDate dueDayOfMonth = currentDate.withDayOfMonth(Loan.MONTHLY_DUE_DATE);
 
         // Calculate the difference in months (safe to cast as months will never overflow)
-        int monthsBetween = (int) ChronoUnit.MONTHS.between(dateLastPaid, dueDayOfMonth);
+        int monthsBetween = (int) ChronoUnit.MONTHS.between(dateCreated, dueDayOfMonth);
 
         return monthsBetween;
     }
@@ -258,6 +266,9 @@ public abstract class Loan {
     }
 
     private static String dateToString(LocalDate date) {
+        if (date == null) {
+            return UNAVAILABLE_DATE;
+        }
         return date.format(DATE_FORMATTERS.get(0)); // change to enum
     }
 
@@ -295,6 +306,7 @@ public abstract class Loan {
     */
     public static Loan stringToLoan(String loanStr) {
         String[] fields = loanStr.split("/");
+
         if (fields.length != NUMBER_OF_FIELDS) {
             return null;
         }
@@ -307,6 +319,7 @@ public abstract class Loan {
         String strDateCreated = fields[5];
         String loanType = fields[6];
         String strIsPaid = fields[7];
+
         if (loanType.equals(SimpleInterestLoan.LOAN_TYPE)) {
             return new SimpleInterestLoan(strAmount, strAmtPaid, strInterest, strDueDate, strDateLastPaid,
                 strDateCreated, strIsPaid);
