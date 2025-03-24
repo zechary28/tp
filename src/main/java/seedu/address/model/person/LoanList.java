@@ -28,7 +28,7 @@ public class LoanList {
      * Returns an immutable loan list, which throws {@code UnsupportedOperationException}
      * if modification is attempted.
      */
-    public List<Loan> getLoanList() {
+    public List<Loan> getLoans() {
         return Collections.unmodifiableList(loanList);
     }
 
@@ -124,6 +124,6 @@ public class LoanList {
         if (!(other instanceof LoanList otherLoanList)) {
             return false;
         }
-        return otherLoanList.getLoanList().equals(getLoanList());
+        return otherLoanList.getLoans().equals(getLoans());
     }
 }
