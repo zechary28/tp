@@ -8,6 +8,10 @@ import java.util.List;
 
 import static java.util.Objects.requireNonNull;
 
+/**
+ * Filters and displays all loans across all persons in the address book
+ * based on their paid status (paid or unpaid).
+ */
 public class LoanFilterCommand extends Command {
     public static final String COMMAND_WORD = "filterLoan";
 
@@ -17,10 +21,22 @@ public class LoanFilterCommand extends Command {
 
     private final boolean isPaid;
 
+    /**
+     * Constructs a LoanFilterCommand.
+     *
+     * @param isPaid true to filter paid loans, false to filter unpaid loans.
+     */
     public LoanFilterCommand(boolean isPaid) {
         this.isPaid = isPaid;
     }
 
+    /**
+     * Executes the filterLoan command, displaying all loans that match the paid status.
+     * For each person, any matching loans are displayed under their name.
+     *
+     * @param model The model containing the list of persons and their loans.
+     * @return A CommandResult with the filtered loan information or a message if none found.
+     */
     @Override
     public CommandResult execute(Model model) {
         requireNonNull(model);

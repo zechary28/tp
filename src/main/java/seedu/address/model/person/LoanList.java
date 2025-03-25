@@ -39,6 +39,13 @@ public class LoanList {
         loanList.remove(loan);
     }
 
+    /**
+     * Returns a list of loans filtered by their paid status.
+     *
+     * @param isPaid If true, returns loans that are marked as paid; 
+     *               if false, returns loans that are not fully paid.
+     * @return A list of loans matching the specified paid status.
+     */
     public List<Loan> filterLoansByPaidStatus(boolean isPaid) {
         List<Loan> filteredLoans = new ArrayList<>();
         for (Loan loan : loanList) {
