@@ -88,7 +88,7 @@ public class Person {
      * if modification is attempted.
      */
     public List<Loan> getLoans() {
-        return loanList.getLoanList();
+        return loanList.getLoans();
     }
 
     /**
@@ -97,11 +97,22 @@ public class Person {
     public LoanList getLoanList() {
         return loanList;
     }
+
     /**
      * Adds a loan to the loan list.
      */
     public void addLoan(Loan loan) {
         loanList.add(loan);
+    }
+
+    /**
+     * Adds the loans in a {@link LoanList} to this person's loan list.
+     */
+    public void addLoanList(LoanList loanList) {
+        List<Loan> loansToAdd = loanList.getLoans();
+        for (Loan loan : loansToAdd) {
+            addLoan(loan);
+        }
     }
 
     /**

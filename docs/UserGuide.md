@@ -4,9 +4,9 @@
   pageNav: 3
 ---
 
-# AB-3 User Guide
+# 🦈 The Sharkives User Guide
 
-AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized for use via a  Line Interface** (CLI) while still having the benefits of a Graphical User Interface (GUI). If you can type fast, AB3 can get your contact management tasks done faster than traditional GUI apps.
+The Sharkives is a **desktop application for managing loan records**, optimized for use via a **Command Line Interface (CLI)** while still offering a **Graphical User Interface (GUI)**. If you can type fast, The Sharkives helps you manage loans, repayments, and outstanding debts **more efficiently** than traditional GUI apps.
 
 <!-- * Table of Contents -->
 <page-nav-print />
@@ -18,28 +18,26 @@ AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized fo
 1. Ensure you have Java `17` or above installed in your Computer.<br>
    **Mac users:** Ensure you have the precise JDK version prescribed [here](https://se-education.org/guides/tutorials/javaInstallationMac.html).
 
-1. Download the latest `.jar` file from [here](https://github.com/se-edu/addressbook-level3/releases).
+2. Download the latest `.jar` file from [here](https://github.com/se-edu/addressbook-level3/releases).
 
-1. Copy the file to the folder you want to use as the _home folder_ for your AddressBook.
+3. Copy the file to the folder you want to use as the _home folder_ for your AddressBook.
 
-1. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar addressbook.jar` command to run the application.<br>
+4. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar sharkives.jar` command to run the application.<br>
    A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
    ![Ui](images/Ui.png)
 
-1. Type the command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open the help window.<br>
+5. Type the command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open the help window.<br>
    Some example commands you can try:
 
-   * `list` : Lists all contacts.
+   * `list` : Lists all recorded loans.
 
-   * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01` : Adds a contact named `John Doe` to the Address Book.
+   * `delete 3` : Deletes the 3rd loan record shown in the current list.
 
-   * `delete 3` : Deletes the 3rd contact shown in the current list.
-
-   * `clear` : Deletes all contacts.
+   * `clear` : Clears all loan records.
 
    * `exit` : Exits the app.
 
-1. Refer to the [Features](#features) below for details of each command.
+6. Refer to the [Features](#features) below for details of each command.
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -67,90 +65,90 @@ AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized fo
 * If you are using a PDF version of this document, be careful when copying and pasting commands that span multiple lines as space characters surrounding line-breaks may be omitted when copied over to the application.
 </box>
 
-### Viewing help : `help`
+### Adding a Loan : `loan`
 
-Shows a message explaning how to access the help page.
+Adds a loan to a contact in the address book. Loans can be either **Simple Interest Loans** or **Compound Interest Loans**.
 
-![help message](images/helpMessage.png)
+Format: `loan INDEX TYPE AMOUNT INTEREST_RATE DUE_DATE​`
+- `INDEX` refers to the index number of the contact as displayed in the contact list.
+- `TYPE` is either `s` (Simple Interest Loan) or `c` (Compound Interest Loan).
+- `AMOUNT` is the principal loan amount (e.g., `100.00`).
+- `INTEREST_RATE` is the percentage interest rate (e.g., `5.5` for `5.5%`).
+- `DUE_DATE` is the loan's due date in `YYYY-MM-DD` format.
 
-Format: `help`
-
-
-### Adding a person: `add`
-
-Adds a person to the address book.
-
-Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​`
-
-<box type="tip" seamless>
-
-**Tip:** A person can have any number of tags (including 0)
-</box>
 
 Examples:
-* `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01`
-* `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 t/criminal`
+* `loan 1 s 100.00 5.5 2025-12-31`
+* `loam 2 c 500.00 7.0 2026-06-15`
 
-### Listing all persons : `list`
+---
 
-Shows a list of all persons in the address book.
+### Recording a Payment: `pay`
 
-Format: `list`
+Marks a payment made by the loanee.
 
-### Editing a person : `edit`
+**Fromat:** `pay INDEX AMOUNT DUE`
+- `INDEX` refers to the index number of the loanee in the contact list.
+- `AMOUNT` is the amount paid.
+- `DATE` is the payment date in `YYYY-MM-DD` format.
 
-Edits an existing person in the address book.
+**Example:** `pay 1 50.00 2025-06-01`
 
-Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`
+---
 
-* Edits the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
-* At least one of the optional fields must be provided.
-* Existing values will be updated to the input values.
-* When editing tags, the existing tags of the person will be removed i.e adding of tags is not cumulative.
-* You can remove all the person’s tags by typing `t/` without
-    specifying any tags after it.
+### Deleting a Loanee: `delete`
 
-Examples:
-*  `edit 1 p/91234567 e/johndoe@example.com` Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
-*  `edit 2 n/Betsy Crower t/` Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.
+Deletes all loan details associated with a loanee.
 
-### Locating persons by name: `find`
+**Format:** `delete INDEX`
+- `INDEX` refers to the index number of the loanee in the contact list.
 
-Finds persons whose names contain any of the given keywords.
+**Example:** `delete 2`
 
-Format: `find KEYWORD [MORE_KEYWORDS]`
+---
 
-* The search is case-insensitive. e.g `hans` will match `Hans`
-* The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`
-* Only the name is searched.
-* Only full words will be matched e.g. `Han` will not match `Hans`
-* Persons matching at least one keyword will be returned (i.e. `OR` search).
-  e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`
+### Sending a Reminder: `remind`
 
-Examples:
-* `find John` returns `john` and `John Doe`
-* `find alex david` returns `Alex Yeoh`, `David Li`<br>
-  ![result for 'find alex david'](images/findAlexDavidResult.png)
+Sends a reminder to the loanee about their loan repayment.
 
-### Deleting a person : `delete`
+**Format:** `remind INDEX`
+- `INDEX` refers to the index number of the loanee in the contact list.
 
-Deletes the specified person from the address book.
+**Example:** `remind 3`
 
-Format: `delete INDEX`
+---
 
-* Deletes the person at the specified `INDEX`.
-* The index refers to the index number shown in the displayed person list.
-* The index **must be a positive integer** 1, 2, 3, …​
+### Listing all Loanees: `list`
 
-Examples:
-* `list` followed by `delete 2` deletes the 2nd person in the address book.
-* `find Betsy` followed by `delete 1` deletes the 1st person in the results of the `find` command.
+Displays a list of all loanees in the address book.
 
-### Clearing all entries : `clear`
+**Format:** `list`
 
-Clears all entries from the address book.
+---
 
-Format: `clear`
+### Editing Loanee Details: `edit`
+
+Edits the details of a loanee.
+
+**Format:** `edit INDEX FIELD NEW_VALUE`
+- `INDEX` refers to the index number of the loanee in the contact list.
+- `FIELD` specifies which detail to edit (`name`, `phone`, `email`, `address`).
+- `NEW_VALUE` is the updated information.
+
+**Example:** `edit 1 phone 91234567`
+
+---
+
+### Viewing payment history: `history`
+
+Displays the payment history of a loanee.
+
+**Format:** `history INDEX`
+- `INDEX` refers to the index number of the loanee in the contact list.
+
+**Example:** `history 1`
+
+---
 
 ### Exiting the program : `exit`
 
