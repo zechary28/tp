@@ -39,6 +39,16 @@ public class LoanList {
         loanList.remove(loan);
     }
 
+    public List<Loan> filterLoansByPaidStatus(boolean isPaid) {
+        List<Loan> filteredLoans = new ArrayList<>();
+        for (Loan loan : loanList) {
+            if (loan.getIsPaid() == isPaid) {
+                filteredLoans.add(loan);
+            }
+        }
+        return filteredLoans;
+    }
+
     /**
      * creates a loan list string where each loan string is sepearated by ','
     */
