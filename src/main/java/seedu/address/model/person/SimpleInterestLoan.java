@@ -96,10 +96,10 @@ public class SimpleInterestLoan extends Loan {
      */
     @Override
     public void pay(float payment) throws IllegalValueException {
-        final String MESSAGE_PAID_TOO_MUCH = "Payment exceeds the remaining owed!";
 
         if (payment < 0 || payment > getRemainingOwed()) {
-            throw new IllegalValueException(MESSAGE_PAID_TOO_MUCH);
+            String paidTooMuchMessage = "Payment exceeds the remaining owed!";
+            throw new IllegalValueException(paidTooMuchMessage);
         }
 
         this.incrementAmtPaid(payment);

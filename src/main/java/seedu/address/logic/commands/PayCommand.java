@@ -32,6 +32,9 @@ public class PayCommand extends Command {
     private final int loanIndex;
     private final float amount;
 
+    /**
+     * Pays a loan identified using person's and loan's displayed indices from the address book.
+     */
     public PayCommand(Index targetIndex, int loanIndex, float amount) {
         requireNonNull(targetIndex);
         this.targetIndex = targetIndex;
