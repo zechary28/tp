@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.logic.Messages;
+
 /**
  * Represents a loan list containing the loans a person has.
  */
@@ -40,6 +43,34 @@ public class LoanList {
     }
 
     /**
+     * Pays a loan and removes it if it is fully paid.
+     */
+    public void payLoan(int index, float amount) throws IllegalValueException {
+        Loan loanToPay = loanList.get(index);
+        loanToPay.pay(amount);
+
+        if (loanToPay.isPaid()) {
+            remove(loanToPay);
+        }
+    }
+    /**
+     * Returns a list of loans filtered by their paid status.
+     *
+     * @param isPaid If true, returns loans that are marked as paid;
+     *               if false, returns loans that are not fully paid.
+     * @return A list of loans matching the specified paid status.
+     */
+    public List<Loan> filterLoansByPaidStatus(boolean isPaid) {
+        List<Loan> filteredLoans = new ArrayList<>();
+        for (Loan loan : loanList) {
+            if (loan.isPaid() == isPaid) {
+                filteredLoans.add(loan);
+            }
+        }
+        return filteredLoans;
+    }
+
+    /**
      * creates a loan list string where each loan string is sepearated by ','
     */
     public String toSaveString() {
@@ -53,7 +84,7 @@ public class LoanList {
         }
 
         // remove the trailing comma
-        if (loanList.length() > 0) {
+        if (!loanList.isEmpty()) {
             loanList.deleteCharAt(loanList.length() - 1);
         }
 
@@ -102,14 +133,8 @@ public class LoanList {
         for (int i = 0; i < loanList.size(); i++) {
             Loan loan = loanList.get(i);
             builder.append(String.format((i + 1) + ". "));
-            builder.append(loan.getName());
-            builder.append(": [Amount: $");
-            builder.append(loan.getAmount());
-            builder.append(", Interest Rate: ");
-            builder.append(loan.getInterest());
-            builder.append("%, Due Date: ");
-            builder.append(loan.getDueDate());
-            builder.append("]\n");
+            builder.append(Messages.format(loan));
+            builder.append("\n");
         }
 
         return builder.toString();

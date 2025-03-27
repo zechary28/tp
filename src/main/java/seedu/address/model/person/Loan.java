@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.commons.util.ToStringBuilder;
 
 /**
@@ -45,8 +46,9 @@ public abstract class Loan {
         DateTimeFormatter.ofPattern("EEE MMM d yyyy", Locale.ENGLISH) // Wed Dec 27 2023
     );
 
-    public final float amount;
-    private float amtPaid = 0;
+    public final float principal;
+    private float amountOwed;
+    private float amtPaid;
     private float interest;
     private LocalDate dueDate;
     private LocalDate dateLastPaid;
@@ -56,32 +58,30 @@ public abstract class Loan {
     /**
      * Constructs an {@code a loan}.
      *
-     * @param strAmount cost of loan.
+     * @param strPrincipal cost of loan.
      * @param strInterest % of yearly interest, >= 0, 1 represents 1% interest
      * @param dueDate date which loan should be completely paid off
      */
-    public Loan(String strAmount, String strInterest, String dueDate) {
+    public Loan(String strPrincipal, String strInterest, String dueDate) {
         // check interest is valid float
         checkArgument(strInterest.matches(VALIDATION_REGEX), INTEREST_MESSAGE_CONSTRAINTS);
         this.interest = Float.parseFloat(strInterest);
 
         // check amount is valid float
-        checkArgument(strAmount.matches(VALIDATION_REGEX), AMOUNT_MESSAGE_CONSTRAINTS);
-        this.amount = Float.parseFloat(strAmount);
+        checkArgument(strPrincipal.matches(VALIDATION_REGEX), AMOUNT_MESSAGE_CONSTRAINTS);
+        this.principal = Float.parseFloat(strPrincipal);
 
         // check interest
         checkArgument(this.interest >= 0, INTEREST_MESSAGE_CONSTRAINTS);
 
         // check amount
-        checkArgument(this.amount > 0, AMOUNT_MESSAGE_CONSTRAINTS);
+        checkArgument(this.principal > 0, AMOUNT_MESSAGE_CONSTRAINTS);
 
         // check due date string
         LocalDate currentDate = LocalDate.now();
         LocalDate date = Loan.toValidLocalDate(dueDate);
         checkArgument(Loan.isValidDueDate(date, currentDate), DATE_MESSAGE_CONSTRAINTS);
         this.dueDate = date;
-
-        this.amtPaid = this.amount;
         this.dateLastPaid = null;
         this.dateCreated = currentDate;
     }
@@ -89,7 +89,7 @@ public abstract class Loan {
     /**
      * Constructs an {@code a loan}.
      *
-     * @param strAmount cost of loan.
+     * @param strPrincipal cost of loan.
      * @param strAmtPaid amount paid of loan
      * @param strInterest % of yearly interest, >= 0, 1 represents 1% interest
      * @param strDueDate date which loan should be completely paid off
@@ -98,15 +98,15 @@ public abstract class Loan {
      * @param strIsPaid boolean if loan is paid
      *
     */
-    public Loan(String strAmount, String strAmtPaid, String strInterest, String strDueDate, String strDateLastPaid,
-        String strDateCreated, String strIsPaid) {
+    public Loan(String strPrincipal, String strAmtPaid, String strInterest, String strDueDate, String strDateLastPaid,
+                String strDateCreated, String strIsPaid) {
         // check interest is valid float
         checkArgument(strInterest.matches(VALIDATION_REGEX));
         this.interest = Float.parseFloat(strInterest);
 
         // check amount is valid float
-        checkArgument(strAmount.matches(VALIDATION_REGEX));
-        this.amount = Float.parseFloat(strAmount);
+        checkArgument(strPrincipal.matches(VALIDATION_REGEX));
+        this.principal = Float.parseFloat(strPrincipal);
 
         // check strAmtPaid is valid float
         checkArgument(strAmtPaid.matches(VALIDATION_REGEX));
@@ -116,7 +116,7 @@ public abstract class Loan {
         checkArgument(this.interest >= 0);
 
         // check amount
-        checkArgument(this.amount > 0);
+        checkArgument(this.principal > 0);
 
         // check amtPaid
         checkArgument(this.amtPaid >= 0);
@@ -189,22 +189,28 @@ public abstract class Loan {
      * Returns true if a loan is valid.
     */
     public static boolean isValidLoan(Loan loan) {
-        return loan.getAmount() > 0 && loan.getInterest() >= 0;
+        return loan.getPrincipal() > 0 && loan.getInterest() >= 0;
     }
 
-    abstract void pay(float amt);
+    /**
+     * Deducts the amount from the amount owed.
+     * @throws IllegalValueException if loan amount is negative or more than remaining owed.
+     */
+    public abstract void pay(float amt) throws IllegalValueException;
 
-    abstract float getMoneyOwed();
-
-    abstract float getLoanValue();
+    /**
+     * Compares amount paid with amount owed in preceding months.
+     * @return a positive number if client paid less than owed in previous months, negative if client paid more.
+     */
+    abstract float getPaymentDifference();
 
     abstract boolean isOverDue();
 
     // is an estimation (amount owed over monthly cost)
     abstract int getOverDueMonths();
 
-    public float getMonthlyPrincipalPayment() {
-        return amount / this.getLoanLengthMonths();
+    public float getMonthlyAveragePrincipal() {
+        return principal / this.getLoanLengthMonths();
     }
 
     public int getDaysSinceLastPaid() {
@@ -242,6 +248,9 @@ public abstract class Loan {
         return monthsBetween;
     }
 
+    /**
+     * Gets number of months since loan, not rounded up.
+     */
     public int getMonthsSinceLoan() {
         // Get the current date
         LocalDate currentDate = LocalDate.now();
@@ -255,6 +264,17 @@ public abstract class Loan {
         return monthsBetween;
     }
 
+    /**
+     * Gets months until due date, unrounded.
+     */
+    public int getMonthsUntilDueDate() {
+        LocalDate currentDate = LocalDate.now();
+
+        LocalDate dueDayOfMonth = currentDate.withDayOfMonth(Loan.MONTHLY_DUE_DATE);
+
+        return (int) ChronoUnit.MONTHS.between(dueDayOfMonth, dueDate);
+    }
+
     public int getLoanLengthMonths() {
         // Calculate the difference in months (safe to cast as months will never overflow)
         int months = (int) ChronoUnit.MONTHS.between(dateCreated, dueDate);
@@ -263,6 +283,11 @@ public abstract class Loan {
         } else {
             return months;
         }
+    }
+
+    public int getLoanLengthDays() {
+        // Calculate the difference in days
+        return (int) ChronoUnit.DAYS.between(dateCreated, dueDate);
     }
 
     private static String dateToString(LocalDate date) {
@@ -275,7 +300,7 @@ public abstract class Loan {
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .add("amount", amount)
+                .add("amount", principal)
                 .add("amtPaid", amtPaid)
                 .add("interest", interest)
                 .add("dueDate", Loan.dateToString(dueDate))
@@ -289,16 +314,14 @@ public abstract class Loan {
      * Converts a loan to a save string for storage
      */
     public String toSaveString() { // creates a string where fields are seperated by '/'
-        StringBuilder saveString = new StringBuilder();
-        return saveString.append(String.format("%.2f", amount) + '/')
-            .append(String.format("%.2f", amtPaid) + '/')
-            .append(String.format("%.2f", interest) + '/')
-            .append(Loan.dateToString(dueDate) + '/')
-            .append(Loan.dateToString(dateLastPaid) + '/')
-            .append(Loan.dateToString(dateCreated) + '/')
-            .append(this.getName() + '/')
-            .append(this.isPaid ? "1" : "0")
-            .toString();
+        return String.format("%.2f", principal) + '/'
+                + String.format("%.2f", amtPaid) + '/'
+                + String.format("%.2f", interest) + '/'
+                + Loan.dateToString(dueDate) + '/'
+                + Loan.dateToString(dateLastPaid) + '/'
+                + Loan.dateToString(dateCreated) + '/'
+                + this.getName() + '/'
+                + (this.isPaid ? "1" : "0");
     }
 
     /**
@@ -355,22 +378,25 @@ public abstract class Loan {
         }
 
         Loan otherLoan = (Loan) other;
-        return amount == otherLoan.amount
+        return principal == otherLoan.principal
                 && amtPaid == otherLoan.getAmtPaid()
                 && interest == otherLoan.getInterest()
                 && dueDate.equals(otherLoan.getDueDate())
                 && dateLastPaid.equals(otherLoan.getDateLastPaid())
                 && dateCreated.equals(otherLoan.getDateCreated())
-                && isPaid == otherLoan.getIsPaid()
+                && isPaid == otherLoan.isPaid()
                 && this.getName().equals(otherLoan.getName());
 
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(amount, amtPaid, interest, dueDate, dateLastPaid, dateCreated, isPaid, this.getName());
+        return Objects.hash(principal, amtPaid, interest, dueDate, dateLastPaid, dateCreated, isPaid, this.getName());
     }
 
+    /**
+     * Returns total amount of money paid.
+     */
     public float getAmtPaid() {
         return this.amtPaid;
     }
@@ -391,12 +417,12 @@ public abstract class Loan {
         return this.dateCreated;
     }
 
-    public Boolean getIsPaid() {
+    public boolean isPaid() {
         return this.isPaid;
     }
 
-    public float getAmount() {
-        return this.amount;
+    public float getPrincipal() {
+        return this.principal;
     }
 
     public void incrementAmtPaid(float pay) {
@@ -407,20 +433,30 @@ public abstract class Loan {
         this.dateLastPaid = dateLastPaid;
     }
 
-    public void setIsPaid(Boolean isPaid) {
+    public void setIsPaid(boolean isPaid) {
         this.isPaid = isPaid;
+    }
+
+    public float getAmountOwed() {
+        return this.amountOwed;
+    }
+
+    public float getRemainingOwed() {
+        return Math.round((amountOwed - amtPaid) * 100) / 100f;
+    }
+
+    protected void setAmountOwed(float amountOwed) {
+        this.amountOwed = amountOwed;
     }
 
     /**
      * Updates the isPaid status
     */
     public void updateIsPaid() {
-        if (this.amtPaid >= this.getLoanValue()) {
-            this.isPaid = true;
-        } else {
-            this.isPaid = false;
-        }
+        this.isPaid = getRemainingOwed() == 0f;
     }
 
     public abstract String getName();
+
+    public abstract float getMonthlyInstalmentAmount();
 }

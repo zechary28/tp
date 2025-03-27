@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.tag.Tag;
 
@@ -120,6 +121,19 @@ public class Person {
      */
     public void removeLoan(Loan loan) {
         loanList.remove(loan);
+    }
+
+    /**
+     * Pays a specified amount to a loan.
+     */
+    public void payLoan(int index, float amount) throws IllegalValueException {
+        loanList.payLoan(index, amount);
+    }
+    /**
+     * Returns the number of loans the loan list contains.
+     */
+    public int getLoanCount() {
+        return getLoans().size();
     }
 
     /**
