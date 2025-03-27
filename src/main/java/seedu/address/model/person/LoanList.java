@@ -53,6 +53,34 @@ public class LoanList {
             remove(loanToPay);
         }
     }
+
+    /**
+     * Returns most overdue loan amount in float(months)
+    */
+    public float getMostOverdueMonths() {
+        float overdue = Float.NEGATIVE_INFINITY;
+
+        for (Loan loan : loanList) {
+            float loanOverdue = loan.getOverDueMonthsPrecise();
+            if (loanOverdue > overdue) {
+                overdue = loanOverdue;
+            }
+        }
+        return overdue;
+    }
+
+    /**
+     * Returns total value of all loans
+    */
+    public float getTotalLoanOwed() {
+        float owed = 0;
+
+        for (Loan loan : loanList) {
+            owed += loan.getAmountOwed();
+        }
+        return owed;
+    }
+
     /**
      * Returns a list of loans filtered by their paid status.
      *

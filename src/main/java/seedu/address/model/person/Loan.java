@@ -211,6 +211,9 @@ public abstract class Loan {
     // is an estimation (amount owed over monthly cost)
     abstract int getOverDueMonths();
 
+    // is an estimation (amount owed over monthly cost)
+    abstract float getOverDueMonthsPrecise();
+
     public float getMonthlyAveragePrincipal() {
         return principal / this.getLoanLengthMonths();
     }

@@ -75,13 +75,18 @@ public class SimpleInterestLoan extends Loan {
 
     @Override
     int getOverDueMonths() {
+        return (int) Math.ceil(this.getOverDueMonthsPrecise());
+    }
+
+    @Override
+    float getOverDueMonthsPrecise() {
         float moneyOwed = this.getPaymentDifference();
 
         if (moneyOwed <= 0) { // loan is not overdue
             return 0;
         }
 
-        return (int) Math.ceil(this.getPaymentDifference() / this.getMonthlyInstalmentAmount());
+        return this.getPaymentDifference() / this.getMonthlyInstalmentAmount();
     }
 
     @Override
