@@ -3,7 +3,6 @@ package seedu.address.logic.parser;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 
-import java.time.DateTimeException;
 import java.time.LocalDate;
 
 import seedu.address.commons.core.index.Index;
