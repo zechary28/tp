@@ -3,9 +3,13 @@ package seedu.address.logic.parser;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 
+import java.time.DateTimeException;
+import java.time.LocalDate;
+
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.LoanCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.person.Loan;
 
 /**
  * Parses input arguments and creates a new LoanCommand object
@@ -39,6 +43,12 @@ public class LoanCommandParser implements Parser<LoanCommand> {
         String amount = arguments[2];
         String interest = arguments[3];
         String dueDate = arguments[4];
+
+        LocalDate date = Loan.toValidLocalDate(dueDate);
+
+        if (date == null) {
+            throw new ParseException("Invalid date format! \n" + LoanCommand.MESSAGE_USAGE);
+        }
 
         return new LoanCommand(index, type, amount, interest, dueDate);
     }

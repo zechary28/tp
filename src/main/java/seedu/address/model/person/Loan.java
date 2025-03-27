@@ -80,6 +80,7 @@ public abstract class Loan {
         // check due date string
         LocalDate currentDate = LocalDate.now();
         LocalDate date = Loan.toValidLocalDate(dueDate);
+
         checkArgument(Loan.isValidDueDate(date, currentDate), DATE_MESSAGE_CONSTRAINTS);
         this.dueDate = date;
         this.dateLastPaid = null;
@@ -164,10 +165,9 @@ public abstract class Loan {
 
         for (DateTimeFormatter formatter : DATE_FORMATTERS) {
             try {
-                LocalDate date = LocalDate.parse(dateString, formatter);
-                return date;
+                return LocalDate.parse(dateString, formatter);
             } catch (DateTimeParseException e) {
-                System.out.println(e.getMessage());
+                continue;
             }
         }
 
