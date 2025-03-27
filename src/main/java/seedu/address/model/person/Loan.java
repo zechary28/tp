@@ -204,8 +204,6 @@ public abstract class Loan {
      */
     abstract float getPaymentDifference();
 
-    abstract float getLoanValue();
-
     abstract boolean isOverDue();
 
     // is an estimation (amount owed over monthly cost)
@@ -455,11 +453,7 @@ public abstract class Loan {
      * Updates the isPaid status
     */
     public void updateIsPaid() {
-        if (this.amtPaid >= this.getLoanValue()) {
-            this.isPaid = true;
-        } else {
-            this.isPaid = false;
-        }
+        this.isPaid = getRemainingOwed() == 0f;
     }
 
     public abstract String getName();
