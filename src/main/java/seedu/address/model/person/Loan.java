@@ -414,7 +414,7 @@ public abstract class Loan {
     /**
      * Updates the isPaid status
     */
-    public void updateIsPaid() {
+    public void updateIsPaid() { // might need to change this
         if (this.amtPaid >= this.getLoanValue()) {
             this.isPaid = true;
         } else {
