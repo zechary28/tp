@@ -209,6 +209,9 @@ public abstract class Loan {
     // is an estimation (amount owed over monthly cost)
     abstract int getOverDueMonths();
 
+    // is an estimation (amount owed over monthly cost)
+    abstract float getOverDueMonthsPrecise();
+
     public float getMonthlyAveragePrincipal() {
         return principal / this.getLoanLengthMonths();
     }
@@ -454,6 +457,7 @@ public abstract class Loan {
     */
     public void updateIsPaid() {
         this.isPaid = getRemainingOwed() == 0f;
+
     }
 
     public abstract String getName();
