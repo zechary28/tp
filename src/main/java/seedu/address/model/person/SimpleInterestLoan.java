@@ -47,6 +47,7 @@ public class SimpleInterestLoan extends Loan {
         return getRemainingOwed() / getMonthsUntilDueDate();
     }
 
+    // Currently unused method, removed abstract declaration fromm loan.
     public float getLoanValue() {
         int monthsSinceLoan = this.getMonthsSinceLoan();
         int loanLength = this.getLoanLengthMonths();

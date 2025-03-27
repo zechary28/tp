@@ -80,6 +80,7 @@ public abstract class Loan {
         // check due date string
         LocalDate currentDate = LocalDate.now();
         LocalDate date = Loan.toValidLocalDate(dueDate);
+
         checkArgument(Loan.isValidDueDate(date, currentDate), DATE_MESSAGE_CONSTRAINTS);
         this.dueDate = date;
         this.dateLastPaid = null;
@@ -164,10 +165,9 @@ public abstract class Loan {
 
         for (DateTimeFormatter formatter : DATE_FORMATTERS) {
             try {
-                LocalDate date = LocalDate.parse(dateString, formatter);
-                return date;
+                return LocalDate.parse(dateString, formatter);
             } catch (DateTimeParseException e) {
-                System.out.println(e.getMessage());
+                continue;
             }
         }
 
@@ -203,8 +203,6 @@ public abstract class Loan {
      * @return a positive number if client paid less than owed in previous months, negative if client paid more.
      */
     abstract float getPaymentDifference();
-
-    abstract float getLoanValue();
 
     abstract boolean isOverDue();
 
@@ -457,12 +455,9 @@ public abstract class Loan {
     /**
      * Updates the isPaid status
     */
-    public void updateIsPaid() { // might need to change this
-        if (this.amtPaid >= this.getLoanValue()) {
-            this.isPaid = true;
-        } else {
-            this.isPaid = false;
-        }
+    public void updateIsPaid() {
+        this.isPaid = getRemainingOwed() == 0f;
+
     }
 
     public abstract String getName();
