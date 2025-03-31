@@ -65,12 +65,15 @@ public class Messages {
      */
     public static String format(Loan loan) {
         return loan.getName()
-                + "; Amount: $"
-                + String.format("%.2f", loan.getAmount())
-                + "; Interest: "
+                + ": [Amount owed: $"
+                + String.format("%.2f", loan.getAmountOwed() - loan.getAmtPaid())
+                + ", Interest: "
                 + loan.getInterest()
-                + "%; Due Date: "
-                + loan.getDueDate();
+                + "%, Due Date: "
+                + loan.getDueDate()
+                + ", Amount monthly: $"
+                + String.format("%.2f", loan.getMonthlyInstalmentAmount())
+                + "] ";
     }
 
 }

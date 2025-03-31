@@ -40,6 +40,15 @@ public class AddressBook implements ReadOnlyAddressBook {
 
     //// list overwrite operations
 
+
+    /**
+     * Replaces the contents of the person list with {@code persons}.
+     * {@code persons} must not contain duplicate persons.
+     */
+    public void sortPeople(String sort, String order) {
+        this.persons.sort(sort, order);
+    }
+
     /**
      * Replaces the contents of the person list with {@code persons}.
      * {@code persons} must not contain duplicate persons.

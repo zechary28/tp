@@ -2,6 +2,8 @@ package seedu.address.model.person;
 
 import java.time.LocalDate;
 
+import seedu.address.commons.exceptions.IllegalValueException;
+
 /**
  * Represents a compound interest loan.
  */
@@ -17,6 +19,7 @@ public class CompoundInterestLoan extends Loan {
      */
     public CompoundInterestLoan(String amount, String interest, String dueDate) {
         super(amount, interest, dueDate);
+        this.setAmountOwed(this.getLoanValue());
     }
 
     /**
@@ -29,54 +32,69 @@ public class CompoundInterestLoan extends Loan {
      * @param strDateLastPaid date which loan was last paid
      * @param strDateCreated date which loan was created
      * @param strIsPaid boolean if loan is paid
-     *
      */
     public CompoundInterestLoan(String strAmount, String strAmtPaid, String strInterest, String strDueDate,
-        String strDateLastPaid, String strDateCreated, String strIsPaid) {
+                                String strDateLastPaid, String strDateCreated, String strIsPaid) {
         super(strAmount, strAmtPaid, strInterest, strDueDate, strDateLastPaid, strDateCreated, strIsPaid);
+        this.setAmountOwed(this.getLoanValue());
     }
 
+    /**
+     * Calculates the monthly interest for the loan.
+     */
     public float getMonthlyInterest() {
-        // monthly interest = principal * (1 + (r / 12))^monthsSinceLoan - principal
         int monthsSinceLoan = this.getMonthsSinceLoan();
         float monthlyRate = (this.getInterest() / 100) / 12;
-        return (float) (this.amount * Math.pow(1 + monthlyRate, monthsSinceLoan) - this.amount);
+        return (float) (this.principal * Math.pow(1 + monthlyRate, monthsSinceLoan) - this.principal);
     }
 
+    /**
+     * Calculates the total monthly cost (principal + interest).
+     */
     public float getTotalMonthlyCost() {
-        return this.getMonthlyPrincipalPayment() + this.getMonthlyInterest();
+        return this.getMonthlyAveragePrincipal() + this.getMonthlyInterest();
     }
 
     /**
      * Pays a certain amount towards the loan.
-     *
-     * @param payment The amount paid.
      */
     @Override
-    void pay(float payment) {
-        this.setDateLastPaid(LocalDate.now());
-        this.incrementAmtPaid(payment);
+    public void pay(float payment) throws IllegalValueException {
+        if (payment < 0 || payment > getRemainingOwed()) {
+            String paidTooMuchMessage = "Payment exceeds the remaining owed!";
+            throw new IllegalValueException(paidTooMuchMessage);
+        }
 
-        if (this.getAmtPaid() >= this.getLoanValue()) {
+        this.incrementAmtPaid(payment);
+        this.setDateLastPaid(LocalDate.now());
+
+        if (getRemainingOwed() == 0.0) {
             this.setIsPaid(true);
         }
     }
 
+    /**
+     * Calculates the difference between what should have been paid and what was actually paid.
+     * @return The payment difference amount.
+     */
     @Override
-    float getMoneyOwed() {
+    float getPaymentDifference() {
         int monthsSinceLoan = this.getMonthsSinceLoan();
         float monthlyRate = (this.getInterest() / 100) / 12;
-        float moneyOwed = (float) (this.amount * Math.pow(1 + monthlyRate, monthsSinceLoan)) - this.getAmtPaid();
+        float moneyOwed = (float) (this.principal * Math.pow(1 + monthlyRate, monthsSinceLoan)) - this.getAmtPaid();
         return Math.max(moneyOwed, 0);
     }
 
-    @Override
+    /**
+     * Calculates the total value of the loan including interest.
+     * @return The total loan value.
+     */
     float getLoanValue() {
         int loanLength = this.getLoanLengthMonths();
         float monthlyRate = (this.getInterest() / 100) / 12;
 
         // compound interest formula: A = P * (1 + r / n)^(n * t)
-        float totalLoanValue = (float) (this.amount * Math.pow(1 + monthlyRate, loanLength));
+        float totalLoanValue = (float) (this.principal * Math.pow(1 + monthlyRate, loanLength));
         int monthsSinceLoan = this.getMonthsSinceLoan();
         if (monthsSinceLoan > loanLength) { // loan past due date
             float overdueAmount = (float) (totalLoanValue * Math.pow(1 + monthlyRate, monthsSinceLoan - loanLength));
@@ -85,21 +103,48 @@ public class CompoundInterestLoan extends Loan {
         return totalLoanValue;
     }
 
+    /**
+     * Calculates the number of months the loan is overdue.
+     * @return The number of overdue months.
+     */
     @Override
     int getOverDueMonths() {
-        float moneyOwed = this.getMoneyOwed();
+        return (int) Math.ceil(this.getOverDueMonthsPrecise());
+    }
+
+    @Override
+    float getOverDueMonthsPrecise() {
+        float moneyOwed = this.getPaymentDifference();
         if (moneyOwed <= 0) { // loan is not overdue
             return 0;
         }
-        return (int) Math.ceil(moneyOwed / this.getTotalMonthlyCost());
+        return moneyOwed / this.getTotalMonthlyCost();
     }
 
+    /**
+     * Checks if the loan is overdue.
+     * @return true if the loan is overdue, false otherwise.
+     */
     @Override
     boolean isOverDue() {
-        return this.getOverDueMonths() == 0;
+        return this.getOverDueMonths() > 0;
     }
 
+    /**
+     * Gets the type of the loan.
+     * @return The loan type identifier.
+     */
     public String getName() {
         return LOAN_TYPE;
+    }
+
+    /**
+     * Calculates the monthly installment amount for the loan.
+     * @return The monthly installment amount.
+     */
+    @Override
+    public float getMonthlyInstalmentAmount() {
+        int months = this.getMonthsUntilDueDate();
+        return getRemainingOwed() / months;
     }
 }
