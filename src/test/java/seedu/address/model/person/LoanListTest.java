@@ -12,7 +12,7 @@ public class LoanListTest {
         + "3000.91/45.60/4.19/2050-12-27/2023-12-24/2004-12-24/C/1"; // 1 should be updated
 
     public static final String VALID_OUTPUT_LOAN_STRING = "1000.91/45.60/4.19/2050-12-27/2023-12-24/2004-12-24/S/0,"
-        + "3000.91/45.60/4.19/2050-12-27/2023-12-24/2004-12-24/C/0";
+        + "3000.91/45.60/4.19/2050-12-27/2023-12-24/2004-12-24/C/0"; // this is the correct string
 
     @Test
     public void isValidLoan() {
