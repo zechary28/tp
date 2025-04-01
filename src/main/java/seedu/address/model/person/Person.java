@@ -197,5 +197,4 @@ public class Person {
                 .add("loans", loanList)
                 .toString();
     }
-
 }

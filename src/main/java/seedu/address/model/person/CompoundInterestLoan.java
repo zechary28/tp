@@ -78,7 +78,7 @@ public class CompoundInterestLoan extends Loan {
      * @return The payment difference amount.
      */
     @Override
-    float getPaymentDifference() {
+    public float getPaymentDifference() {
         int monthsSinceLoan = this.getMonthsSinceLoan();
         float monthlyRate = (this.getInterest() / 100) / 12;
         float moneyOwed = (float) (this.principal * Math.pow(1 + monthlyRate, monthsSinceLoan)) - this.getAmtPaid();
@@ -89,7 +89,8 @@ public class CompoundInterestLoan extends Loan {
      * Calculates the total value of the loan including interest.
      * @return The total loan value.
      */
-    float getLoanValue() {
+    @Override
+    public float getLoanValue() {
         int loanLength = this.getLoanLengthMonths();
         float monthlyRate = (this.getInterest() / 100) / 12;
 
@@ -108,12 +109,12 @@ public class CompoundInterestLoan extends Loan {
      * @return The number of overdue months.
      */
     @Override
-    int getOverDueMonths() {
+    public int getOverDueMonths() {
         return (int) Math.ceil(this.getOverDueMonthsPrecise());
     }
 
     @Override
-    float getOverDueMonthsPrecise() {
+    public float getOverDueMonthsPrecise() {
         float moneyOwed = this.getPaymentDifference();
         if (moneyOwed <= 0) { // loan is not overdue
             return 0;
@@ -126,7 +127,7 @@ public class CompoundInterestLoan extends Loan {
      * @return true if the loan is overdue, false otherwise.
      */
     @Override
-    boolean isOverDue() {
+    public boolean isOverDue() {
         return this.getOverDueMonths() > 0;
     }
 

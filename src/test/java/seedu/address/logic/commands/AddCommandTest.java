@@ -89,6 +89,16 @@ public class AddCommandTest {
      */
     private class ModelStub implements Model {
         @Override
+        public void setIsChangeable(boolean change) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public boolean getIsChangeable() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
         public void setUserPrefs(ReadOnlyUserPrefs userPrefs) {
             throw new AssertionError("This method should not be called.");
         }
