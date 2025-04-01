@@ -25,10 +25,24 @@ import seedu.address.model.person.exceptions.PersonNotFoundException;
  * @see Person#isSamePerson(Person)
  */
 public class UniquePersonList implements Iterable<Person> {
-
+    public static final String UNMODIFIABLE_MESSAGE = "Person List cannot be modified in this window,"
+        + "please go back to Person Page.";
     private final ObservableList<Person> internalList = FXCollections.observableArrayList();
     private final ObservableList<Person> internalUnmodifiableList =
             FXCollections.unmodifiableObservableList(internalList);
+
+    private boolean isChangeable = true;
+
+    /**
+     * set if the list can be changed
+     */
+    public void setChangeable(boolean change) {
+        isChangeable = change;
+    }
+
+    public boolean getChangeable() {
+        return this.isChangeable;
+    }
 
     /**
      * Sorts the list
@@ -57,7 +71,6 @@ public class UniquePersonList implements Iterable<Person> {
         if (order.equals(SortCommand.DESC)) {
             comparator = comparator.reversed();
         }
-
 
         FXCollections.sort(internalList, comparator);
     }

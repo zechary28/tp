@@ -1,9 +1,11 @@
 package seedu.address.model.person;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.stream.Stream;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.Messages;
 
@@ -13,7 +15,11 @@ import seedu.address.logic.Messages;
 public class LoanList {
     public static final String EMPTY_STRING = "EMPTY";
 
-    private final ArrayList<Loan> loanList = new ArrayList<>();
+    //private final ArrayList<Loan> loanList = new ArrayList<>();
+
+    private final ObservableList<Loan> internalList = FXCollections.observableArrayList();
+    private final ObservableList<Loan> internalUnmodifiableList =
+            FXCollections.unmodifiableObservableList(internalList);
 
     /**
      * Initializes a LoanList.
@@ -24,29 +30,29 @@ public class LoanList {
      * Adds a loan to the loan list.
      */
     public void add(Loan loan) {
-        loanList.add(loan);
+        internalList.add(loan);
     }
 
     /**
      * Returns an immutable loan list, which throws {@code UnsupportedOperationException}
      * if modification is attempted.
      */
-    public List<Loan> getLoans() {
-        return Collections.unmodifiableList(loanList);
+    public ObservableList<Loan> getLoans() {
+        return internalUnmodifiableList;
     }
 
     /**
      * Removes a loan from loan list.
      */
     public void remove(Loan loan) {
-        loanList.remove(loan);
+        internalList.remove(loan);
     }
 
     /**
      * Pays a loan and removes it if it is fully paid.
      */
     public void payLoan(int index, float amount) throws IllegalValueException {
-        Loan loanToPay = loanList.get(index);
+        Loan loanToPay = internalList.get(index);
         loanToPay.pay(amount);
 
         if (loanToPay.isPaid()) {
@@ -60,7 +66,7 @@ public class LoanList {
     public float getMostOverdueMonths() {
         float overdue = Float.NEGATIVE_INFINITY;
 
-        for (Loan loan : loanList) {
+        for (Loan loan : internalList) {
             float loanOverdue = loan.getOverDueMonthsPrecise();
             if (loanOverdue > overdue) {
                 overdue = loanOverdue;
@@ -75,7 +81,7 @@ public class LoanList {
     public float getTotalLoanOwed() {
         float owed = 0;
 
-        for (Loan loan : loanList) {
+        for (Loan loan : internalList) {
             owed += loan.getAmountOwed();
         }
         return owed;
@@ -90,7 +96,7 @@ public class LoanList {
      */
     public List<Loan> filterLoansByPaidStatus(boolean isPaid) {
         List<Loan> filteredLoans = new ArrayList<>();
-        for (Loan loan : loanList) {
+        for (Loan loan : internalList) {
             if (loan.isPaid() == isPaid) {
                 filteredLoans.add(loan);
             }
@@ -102,12 +108,12 @@ public class LoanList {
      * creates a loan list string where each loan string is sepearated by ','
     */
     public String toSaveString() {
-        if (this.loanList.isEmpty()) {
+        if (this.internalList.isEmpty()) {
             return EMPTY_STRING;
         }
 
         StringBuilder loanList = new StringBuilder();
-        for (Loan loan : this.loanList) {
+        for (Loan loan : this.internalList) {
             loanList.append(loan.toSaveString()).append(',');
         }
 
@@ -152,14 +158,14 @@ public class LoanList {
     public String toString() {
         StringBuilder builder = new StringBuilder();
 
-        if (loanList.isEmpty()) {
+        if (internalList.isEmpty()) {
             builder.append("No loans found. \n");
         } else {
             builder.append("Loans: \n");
         }
 
-        for (int i = 0; i < loanList.size(); i++) {
-            Loan loan = loanList.get(i);
+        for (int i = 0; i < internalList.size(); i++) {
+            Loan loan = internalList.get(i);
             builder.append(String.format((i + 1) + ". "));
             builder.append(Messages.format(loan));
             builder.append("\n");
@@ -178,5 +184,9 @@ public class LoanList {
             return false;
         }
         return otherLoanList.getLoans().equals(getLoans());
+    }
+
+    public Stream<Loan> stream() {
+        return internalList.stream();
     }
 }

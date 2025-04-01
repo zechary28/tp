@@ -48,6 +48,7 @@ public class SimpleInterestLoan extends Loan {
     }
 
     // Currently unused method, removed abstract declaration fromm loan.
+    @Override
     public float getLoanValue() {
         int monthsSinceLoan = this.getMonthsSinceLoan();
         int loanLength = this.getLoanLengthMonths();
@@ -61,7 +62,7 @@ public class SimpleInterestLoan extends Loan {
     }
 
     @Override
-    float getPaymentDifference() {
+    public float getPaymentDifference() {
         int monthsSinceLoan = this.getMonthsSinceLoan();
         int loanLength = this.getLoanLengthMonths();
 
@@ -75,12 +76,12 @@ public class SimpleInterestLoan extends Loan {
     }
 
     @Override
-    int getOverDueMonths() {
+    public int getOverDueMonths() {
         return (int) Math.ceil(this.getOverDueMonthsPrecise());
     }
 
     @Override
-    float getOverDueMonthsPrecise() {
+    public float getOverDueMonthsPrecise() {
         float moneyOwed = this.getPaymentDifference();
 
         if (moneyOwed <= 0) { // loan is not overdue
@@ -91,7 +92,7 @@ public class SimpleInterestLoan extends Loan {
     }
 
     @Override
-    boolean isOverDue() {
+    public boolean isOverDue() {
         return this.getOverDueMonths() == 0;
     }
 
