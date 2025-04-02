@@ -26,7 +26,7 @@ public class PayCommand extends Command {
             + "Example: " + COMMAND_WORD + " 1 1 100.00";
 
     public static final String MESSAGE_PAYMENT_SUCCESS = "Payment successful: %1$s";
-    private static final String MESSAGE_INVALID_LOAN_INDEX = "The loan index provided is invalid.";
+    public static final String MESSAGE_INVALID_LOAN_INDEX = "The loan index provided is invalid.";
 
     private final Index targetIndex;
     private final int loanIndex;
