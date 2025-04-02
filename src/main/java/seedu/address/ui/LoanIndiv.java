@@ -48,18 +48,17 @@ public class LoanIndiv extends UiPart<VBox> {
 
     /**
      * Create a loanindiv controller
-     * @param loans
-     * @param loan
      */
     public LoanIndiv(ObservableList<Loan> loans, Loan loan) {
         super(FXML);
         this.loan = loan;
         this.loans = loans;
         Platform.runLater(() -> {
-            int index = loans.indexOf(loan) + 1;
+            int index = this.loans.indexOf(loan) + 1;
             loanType.setText(index + ". " + "Loan Type: " + loan.getName());
 
             boolean isOverdue = loan.isOverDue();
+
             if (isOverdue) {
                 overdue.setText("Overdue");
                 overdue.setStyle("-fx-text-fill: red;"); // Set text color to red
@@ -83,7 +82,7 @@ public class LoanIndiv extends UiPart<VBox> {
             amountOwed.setText("Total Loan Cost: $" + String.format("%.2f", loanCost));
 
             float monthlyInstalment = loan.getMonthlyInstalmentAmount();
-            monthlyInstallment.setText("Monthly Installment: $" + String.format("%.2f", monthlyInstalment));
+            monthlyInstallment.setText("Monthly Instalment: $" + String.format("%.2f", monthlyInstalment));
 
             float accruedInterest = loan.getAmountOwed() - loan.getPrincipal();
             interestAccrued.setText("Total Interest: $" + String.format("%.2f", accruedInterest));
@@ -93,11 +92,16 @@ public class LoanIndiv extends UiPart<VBox> {
                 + (loan.getDateLastPaid() != null ? loan.getDateLastPaid().toString() : "Not Paid Yet"));
             amtPaid.setText("Amount Paid: $" + String.format("%.2f", loan.getAmtPaid()));
 
-            float overdueMonths = loan.getOverDueMonthsPrecise();
-            monthsOverdue.setText("Months Overdue: " + (overdueMonths > 0 ? overdueMonths : "None"));
+            float paymentDifference = loan.getPaymentDifference();
+            monthsOverdue.setText("Past instalments: "
+                    + (paymentDifference > 0 ? "Missed $" + paymentDifference
+                    : paymentDifference == 0 ? "All paid"
+                    : "Overpaid $" + -paymentDifference));
 
             int monthsUntilDueDate = loan.getMonthsUntilDueDate();
-            monthsUntilDue.setText("Months Until Due: " + (monthsUntilDueDate > 0 ? monthsUntilDueDate : "None"));
+            monthsUntilDue.setText(monthsUntilDueDate >= 0
+                    ? "Months until due date: " + monthsUntilDueDate
+                    : "Months overdue: " + Math.abs(monthsUntilDueDate));
 
         });
     }

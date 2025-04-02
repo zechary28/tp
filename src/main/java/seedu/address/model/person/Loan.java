@@ -206,13 +206,39 @@ public abstract class Loan {
 
     public abstract float getLoanValue();
 
-    public abstract boolean isOverDue();
+    /**
+     * Returns whether loan is past due date.
+     */
+    public boolean isOverDue() {
+        return LocalDate.now().isAfter(this.dueDate);
+    }
 
-    // is an estimation (amount owed over monthly cost)
-    public abstract int getOverDueMonths();
+    /**
+     * Returns whether the client has missed instalments
+     */
+    public boolean missedInstalments() {
+        return this.getMissedInstalmentsMonths() > 0;
+    };
 
-    // is an estimation (amount owed over monthly cost)
-    public abstract float getOverDueMonthsPrecise();
+    /**
+     * Returns months' worth of instalments missed, rounded up.
+     */
+    public int getMissedInstalmentsMonths() {
+        return (int) Math.ceil(this.getMissedInstalmentsMonthsPrecise());
+    };
+
+    /**
+     * Returns precise number of months' worth of instalments missed.
+     */
+    public float getMissedInstalmentsMonthsPrecise() {
+        float moneyOwed = this.getPaymentDifference();
+
+        if (moneyOwed <= 0) { // loan is not overdue
+            return 0;
+        }
+
+        return moneyOwed / this.getMonthlyInstalmentAmount();
+    };
 
     public float getMonthlyAveragePrincipal() {
         return principal / this.getLoanLengthMonths();
@@ -270,14 +296,16 @@ public abstract class Loan {
     }
 
     /**
-     * Gets months until due date, unrounded.
+     * Gets months until due date, rounded to 1 if below a month.
+     * Assumes monthly due date is on the 1st.
      */
     public int getMonthsUntilDueDate() {
         LocalDate currentDate = LocalDate.now();
 
         LocalDate dueDayOfMonth = currentDate.withDayOfMonth(Loan.MONTHLY_DUE_DATE);
 
-        return (int) ChronoUnit.MONTHS.between(dueDayOfMonth, dueDate);
+        // We don't want a negative value for this
+        return (int) ChronoUnit.MONTHS.between(dueDayOfMonth, dueDate.withDayOfMonth(Loan.MONTHLY_DUE_DATE));
     }
 
     public int getLoanLengthMonths() {
@@ -452,6 +480,11 @@ public abstract class Loan {
     protected void setAmountOwed(float amountOwed) {
         this.amountOwed = amountOwed;
     }
+
+    // Test method
+    protected void setDueDate(String dueDate) {
+        this.dueDate = LocalDate.parse(dueDate);
+    };
 
     /**
      * Updates the isPaid status

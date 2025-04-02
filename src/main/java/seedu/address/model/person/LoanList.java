@@ -67,7 +67,7 @@ public class LoanList {
         float overdue = Float.NEGATIVE_INFINITY;
 
         for (Loan loan : internalList) {
-            float loanOverdue = loan.getOverDueMonthsPrecise();
+            float loanOverdue = loan.getMissedInstalmentsMonthsPrecise();
             if (loanOverdue > overdue) {
                 overdue = loanOverdue;
             }
