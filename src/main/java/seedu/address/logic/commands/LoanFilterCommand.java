@@ -2,6 +2,7 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import seedu.address.model.Model;
@@ -26,18 +27,31 @@ public class LoanFilterCommand extends Command {
             + "person parameters:   /pred person [personIndex] \n"
             + "amount parameters:   /pred amount [< or >] [amount] \n"
             + "loanType parameters: /pred loanType [s or c] \n"
+            + "isPaid parameters:   /pred isPaid [y or n] \n"
             + "dueDate parameters:  /pred dueDate [< or >] [date in yyyy-mm-dd] \n"
             + "Example: " + COMMAND_WORD + " /pred person 2 /pred amount > 100 /pred loanType s";
 
-    private final boolean isPaid;
+    private final String parameter;
+    private final int value;
+    private final LocalDate date;
+    private final char operator;
 
     /**
      * Constructs a LoanFilterCommand.
      *
-     * @param isPaid true to filter paid loans, false to filter unpaid loans.
+     * @param parameter String representation of the loan parameter to filter by
+     * @param value int input for person:personIndex or amount:amount
+     * @param operator char input for various parameters
+     *                 amount:operator [< or >], dueDate:operator [< or >]
+     *                 loanType:type [s or c]
+     *                 isPaid:status [y or n]
+     * @param date LocalDate input for dueDate parameter
      */
-    public LoanFilterCommand(boolean isPaid) {
-        this.isPaid = isPaid;
+    public LoanFilterCommand(String parameter, int value, LocalDate date, char operator) {
+        this.parameter = parameter;
+        this.value = value;
+        this.date = date;
+        this.operator = operator;
     }
 
     /**
@@ -52,11 +66,11 @@ public class LoanFilterCommand extends Command {
         requireNonNull(model);
         StringBuilder result = new StringBuilder();
 
-        List<Person> persons = model.getFilteredPersonList();
-        boolean foundAny = false;
-
-        for (Person person : persons) {
-            List<Loan> filteredLoans = person.getLoanList().filterLoansByPaidStatus(isPaid);
+        switch (parameter) {
+        case "person": {
+            Person person = model.getFilteredPersonList().get(value);
+            boolean foundAny = false;
+            List<Loan> filteredLoans = person.getLoanList().getLoans(); // todo demeter
             if (!filteredLoans.isEmpty()) {
                 foundAny = true;
                 result.append("Loans for ").append(person.getName()).append(":\n");
@@ -67,12 +81,36 @@ public class LoanFilterCommand extends Command {
 
                 result.append("\n"); // add spacing between people
             }
+            if (!foundAny) { // todo code duplication
+                return new CommandResult("No " + " loans found.");
+            }
         }
+        case "isPaid": {
+            List<Person> persons = model.getFilteredPersonList();
+            boolean foundAny = false;
+            boolean isPaid = operator == 'y';
 
-        if (!foundAny) {
-            return new CommandResult("No " + (isPaid ? "paid" : "unpaid") + " loans found.");
+            for (Person person : persons) {
+                List<Loan> filteredLoans = person.getLoanList().filterLoansByPaidStatus(isPaid);
+                if (!filteredLoans.isEmpty()) {
+                    foundAny = true;
+                    result.append("Loans for ").append(person.getName()).append(":\n");
+
+                    for (Loan loan : filteredLoans) {
+                        result.append("  ").append(loan.toString()).append("\n");
+                    }
+
+                    result.append("\n"); // add spacing between people
+                }
+            }
+
+            if (!foundAny) {
+                return new CommandResult("No " + " loans found.");
+            }
         }
-
+        default:
+            // TODO handle invalid command
+        }
         return new CommandResult(result.toString().trim());
     }
 }
