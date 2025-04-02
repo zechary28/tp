@@ -48,6 +48,10 @@ public class LoanList {
         internalList.remove(loan);
     }
 
+    public void remove(int zeroBasedIndex) {
+        internalList.remove(zeroBasedIndex);
+    }
+
     /**
      * Pays a loan and removes it if it is fully paid.
      */
