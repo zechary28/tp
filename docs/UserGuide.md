@@ -29,13 +29,19 @@ The Sharkives is a **desktop application for managing loan records**, optimized 
 5. Type the command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open the help window.<br>
    Some example commands you can try:
 
-   * `list` : Lists all recorded loans.
+    * `loan 1 s 1000 10 2027-10-10` : Creates a new simple interest loan for a selected borrower.
 
-   * `delete 3` : Deletes the 3rd loan record shown in the current list.
+    * `sort` : Sort borrowers by name and order asc (default).
+   
+    * `delete 3` : Deletes the 3rd borrower record shown in the current list.
 
-   * `clear` : Clears all loan records.
+    * `list` : Lists all recorded borrowers and their loans.
 
-   * `exit` : Exits the app.
+    * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01` : Adds a borrower named John Doe to Sharkvies.
+
+    * `clear` : Deletes all borrower records.
+
+    * `exit` : Exits the app.
 
 6. Refer to the [Features](#features) below for details of each command.
 
@@ -80,6 +86,18 @@ Format: `loan INDEX TYPE AMOUNT INTEREST_RATE DUE_DATE​`
 Examples:
 * `loan 1 s 100.00 5.5 2025-12-31`
 * `loam 2 c 500.00 7.0 2026-06-15`
+
+---
+
+### Sorting the borrowers: `sort`
+
+Sorts the borrowers by parameter and order.
+
+**Fromat:** `sort s/PARAMETER o/ORDER`
+- `PARAMETER` refers to which parameter to sort by `AMOUNT` (Total amount of loans owed for each borrower), `OVERDUE` (Borrower with the most overdue loan), `NAME` (Name of borrower).
+- `AMOUNT` refer to order which to sort by. (`ASC` or `DESC`).
+
+**Example:** `sort s/AMOUNT o/ASC`
 
 ---
 
