@@ -4,9 +4,9 @@
   pageNav: 3
 ---
 
-# 🦈 The Sharkives User Guide
+# 🦈 The Sharkster User Guide
 
-The Sharkives is a **desktop application for managing loan records**, optimized for use via a **Command Line Interface (CLI)** while still offering a **Graphical User Interface (GUI)**. If you can type fast, The Sharkives helps you manage loans, repayments, and outstanding debts **more efficiently** than traditional GUI apps.
+The Sharkster is a **desktop application for managing loan records**, optimized for use via a **Command Line Interface (CLI)** while still offering a **Graphical User Interface (GUI)**. If you can type fast, The Sharkster helps you manage loans, repayments, and outstanding debts **more efficiently** than traditional GUI apps.
 
 <!-- * Table of Contents -->
 <page-nav-print />
@@ -22,7 +22,7 @@ The Sharkives is a **desktop application for managing loan records**, optimized 
 
 3. Copy the file to the folder you want to use as the _home folder_ for your AddressBook.
 
-4. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar sharkives.jar` command to run the application.<br>
+4. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar sharkster.jar` command to run the application.<br>
    A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
    ![Ui](images/Ui.png)
 
@@ -32,8 +32,6 @@ The Sharkives is a **desktop application for managing loan records**, optimized 
     * `loan 1 s 1000 10 2027-10-10` : Creates a new simple interest loan for a selected borrower.
 
     * `sort` : Sort borrowers by name and order asc (default).
-   
-    * `delete 3` : Deletes the 3rd borrower record shown in the current list.
 
     * `list` : Lists all recorded borrowers and their loans.
 
@@ -118,21 +116,11 @@ Marks a payment made by the loanee.
 
 Deletes all loan details associated with a loanee.
 
-**Format:** `delete INDEX`
-- `INDEX` refers to the index number of the loanee in the contact list.
+**Format:** `delete INDEX_B INDEX_L`
+- `INDEX_B` refers to the index number of the loanee in the contact list.
+- `INDEX_L` refers to the index number of the loanee's loan.
 
 **Example:** `delete 2`
-
----
-
-### Sending a Reminder: `remind`
-
-Sends a reminder to the loanee about their loan repayment.
-
-**Format:** `remind INDEX`
-- `INDEX` refers to the index number of the loanee in the contact list.
-
-**Example:** `remind 3`
 
 ---
 
@@ -154,17 +142,6 @@ Edits the details of a loanee.
 - `NEW_VALUE` is the updated information.
 
 **Example:** `edit 1 phone 91234567`
-
----
-
-### Viewing payment history: `history`
-
-Displays the payment history of a loanee.
-
-**Format:** `history INDEX`
-- `INDEX` refers to the index number of the loanee in the contact list.
-
-**Example:** `history 1`
 
 ---
 
@@ -215,7 +192,10 @@ Action     | Format, Examples
 -----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 **Add**    | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague`
 **Clear**  | `clear`
-**Delete** | `delete INDEX`<br> e.g., `delete 3`
+**Delete** | `delete INDEX_B INDEX_L`<br> e.g., `delete 3 1`
+**Sort**   | `sort [s/PARAMETER] [o/ORDER]`<br> e.g., `sort s/AMOUNT o/ASC`
+**Pay**    | `pay INDEX AMOUNT`<br> e.g., `pay 1 1000`
+**Filter** | `filter to be done`<br> e.g., `delete 3`
 **Edit**   | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
 **Find**   | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
 **List**   | `list`
