@@ -33,7 +33,7 @@
 
 ## 🎯 How These Features Help You
 The Sharkives makes **loan management easy and efficient** for ethical, non-violent loansharks.
-With **automated calculations, reminders, and tracking**, you can focus on **running your business smoothly** 
+With **automated calculations, reminders, and tracking**, you can focus on **running your business smoothly**
 while staying **organized and professional**.
 
 ---
