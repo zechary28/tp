@@ -20,5 +20,8 @@ public class LoanListTest {
     public void isValidLoan() {
         LoanList loanList = LoanList.stringToLoanList(VALID_LOAN_STRING);
         assertTrue(loanList.toSaveString().equals(VALID_OUTPUT_LOAN_STRING));
+
+        loanList = LoanList.stringToLoanList("");
+        assertTrue(loanList.toSaveString().equals(LoanList.EMPTY_STRING));
     }
 }
