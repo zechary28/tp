@@ -23,20 +23,25 @@ public class PayCommandParser implements Parser<PayCommand> {
     public PayCommand parse(String args) throws ParseException {
         requireNonNull(args);
         args = args.trim();
+        String[] splitArgs = args.split("\\s+");
 
-        if (!args.matches(VALIDATION_REGEX)) {
+        if (splitArgs.length != 3) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, PayCommand.MESSAGE_USAGE));
         }
 
-        String[] splitArgs = args.split("\\s+");
-
         try {
             Index index = ParserUtil.parseIndex(splitArgs[0]);
-            int loanAmount = Integer.parseInt(splitArgs[1]);
-            float loanRate = Float.parseFloat(splitArgs[2]);
-            return new PayCommand(index, loanAmount, loanRate);
-        } catch (ParseException pe) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, PayCommand.MESSAGE_USAGE), pe);
+            int loanIndex = Integer.parseInt(splitArgs[1]);
+
+            if (splitArgs[2].matches("\\d+")) { //if its a whole number, treat as months
+                int months = Integer.parseInt(splitArgs[2]);
+                return new PayCommand(index, loanIndex, 0, months);
+            } else {
+                float amount = Float.parseFloat(splitArgs[2]);
+                return new PayCommand(index, loanIndex, amount, 0);
+            }
+        } catch (NumberFormatException | ParseException e) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, PayCommand.MESSAGE_USAGE), e);
         }
     }
 }

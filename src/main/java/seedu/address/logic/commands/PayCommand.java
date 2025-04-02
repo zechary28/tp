@@ -22,24 +22,31 @@ public class PayCommand extends Command {
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Pays the loan of the person identified by the index number used in the displayed person list.\n"
             + "Parameters: INDEX (must be a positive integer) LOAN_INDEX (must be a positive integer)"
-            + "AMOUNT (up to 2 d.p)\n"
-            + "Example: " + COMMAND_WORD + " 1 1 100.00";
+            + "AMOUNT (up to 2 d.p) or MONTHS (positive number)\n"
+            + "Example (Pay by amount): " + COMMAND_WORD + " 1 1 100.00\n"
+            + "Example (Pay by months): " + COMMAND_WORD + " 1 1 3";
 
     public static final String MESSAGE_PAYMENT_SUCCESS = "Payment successful: %1$s";
     private static final String MESSAGE_INVALID_LOAN_INDEX = "The loan index provided is invalid.";
+    private static final String MESSAGE_INVALID_AMOUNT = "The amount must be a positive number.";
+    private static final String MESSAGE_INVALID_MONTHS = "The number of months must be a positive integer.";
 
     private final Index targetIndex;
     private final int loanIndex;
     private final float amount;
+    private final int months;
+    private final boolean isPayByMonth;
 
     /**
      * Pays a loan identified using person's and loan's displayed indices from the address book.
      */
-    public PayCommand(Index targetIndex, int loanIndex, float amount) {
+    public PayCommand(Index targetIndex, int loanIndex, float amount, int months) {
         requireNonNull(targetIndex);
         this.targetIndex = targetIndex;
         this.loanIndex = loanIndex;
         this.amount = amount;
+        this.months = months;
+        this.isPayByMonth = (months > 0);
     }
 
     @Override
@@ -58,6 +65,17 @@ public class PayCommand extends Command {
         }
 
         try {
+            float totalPayment = amount; //default: paying by amount
+
+            if (isPayByMonth) {
+                float monthlyInstallment = personWhoPaid.getLoans().get(loanIndex - 1).getMonthlyInstalmentAmount();
+                totalPayment = monthlyInstallment * months;
+            }
+
+            if (totalPayment <= 0) {
+                throw new CommandException(isPayByMonth ? MESSAGE_INVALID_MONTHS : MESSAGE_INVALID_AMOUNT);
+            }
+
             personWhoPaid.payLoan(loanIndex - 1, amount);
         } catch (IllegalValueException e) {
             throw new CommandException(e.getMessage());
@@ -76,7 +94,10 @@ public class PayCommand extends Command {
             return false;
         }
 
-        return targetIndex.equals(e.targetIndex) && loanIndex == e.loanIndex && amount == e.amount;
+        return targetIndex.equals(e.targetIndex)
+                && loanIndex == e.loanIndex
+                && amount == e.amount
+                && months == e.months;
     }
 
     @Override
@@ -85,7 +106,8 @@ public class PayCommand extends Command {
                 .add("targetIndex", targetIndex)
                 .add("loanIndex", loanIndex)
                 .add("amount", amount)
+                .add("months", months)
+                .add("isPayByMonth", isPayByMonth)
                 .toString();
     }
-
 }
