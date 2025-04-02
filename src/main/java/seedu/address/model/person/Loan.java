@@ -214,7 +214,7 @@ public abstract class Loan {
         this.incrementAmtPaid(totalAmount);
         this.setDateLastPaid(LocalDate.now());
 
-        if(getRemainingOwed() == 0.0) {
+        if (getRemainingOwed() == 0.0) {
             this.setIsPaid(true);
         }
     }

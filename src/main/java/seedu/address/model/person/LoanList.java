@@ -154,12 +154,6 @@ public class LoanList {
         return loanList;
     }
 
-    public void payLoansByMonths(int months) throws IllegalValueException {
-        for (Loan loan : internalList) {
-            loan.payByMonths(months);
-        }
-    }
-
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
