@@ -25,7 +25,7 @@ import seedu.address.model.person.exceptions.PersonNotFoundException;
  * @see Person#isSamePerson(Person)
  */
 public class UniquePersonList implements Iterable<Person> {
-    public static final String UNMODIFIABLE_MESSAGE = "Person List cannot be modified in this window,"
+    public static final String UNMODIFIABLE_MESSAGE = "Person List cannot be modified in this window, "
         + "please go back to Person Page.";
     private final ObservableList<Person> internalList = FXCollections.observableArrayList();
     private final ObservableList<Person> internalUnmodifiableList =

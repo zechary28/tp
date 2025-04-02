@@ -54,7 +54,7 @@ public class LoanIndiv extends UiPart<VBox> {
         this.loan = loan;
         this.loans = loans;
         Platform.runLater(() -> {
-            int index = loans.indexOf(loan) + 1;
+            int index = this.loans.indexOf(loan) + 1;
             loanType.setText(index + ". " + "Loan Type: " + loan.getName());
 
             boolean isOverdue = loan.isOverDue();
