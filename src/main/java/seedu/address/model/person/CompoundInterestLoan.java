@@ -79,10 +79,26 @@ public class CompoundInterestLoan extends Loan {
      */
     @Override
     float getPaymentDifference() {
-        int monthsSinceLoan = this.getMonthsSinceLoan();
-        float monthlyRate = (this.getInterest() / 100) / 12;
-        float moneyOwed = (float) (this.principal * Math.pow(1 + monthlyRate, monthsSinceLoan)) - this.getAmtPaid();
-        return Math.max(moneyOwed, 0);
+        float balance = this.getPrincipal();
+        float monthlyRate = this.getMonthlyInterest();
+        int months = this.getMonthsSinceLoan();
+
+        // Calculate what balance should be with perfect payments
+        for (int i = 0; i < months; i++) {
+            balance = balance * (1 + monthlyRate) - this.getMonthlyInstalmentAmount();
+        }
+
+        // If loan term exceeded, continue compounding with just interest
+        if (months > this.getLoanLengthMonths()) {
+            int extraMonths = months - this.getLoanLengthMonths();
+            for (int i = 0; i < extraMonths; i++) {
+                balance = balance * (1 + monthlyRate);
+            }
+        }
+
+        // Compare with actual payments
+        float expectedPaid = this.getPrincipal() - Math.max(0, balance);
+        return expectedPaid - this.getAmtPaid();
     }
 
     /**
