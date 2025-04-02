@@ -39,16 +39,16 @@ public class ModelManager implements Model {
         this.loanList = new LoanList();
     }
 
-    @Override
-    public LoanList getLoanList() {
-        return loanList;
-    }
-
     public ModelManager() {
         this(new AddressBook(), new UserPrefs());
     }
 
     //=========== UserPrefs ==================================================================================
+
+    @Override
+    public LoanList getLoanList() {
+        return loanList;
+    }
 
     @Override
     public void setUserPrefs(ReadOnlyUserPrefs userPrefs) {

@@ -3,6 +3,7 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 
 import java.util.List;
+import java.util.Objects;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.exceptions.IllegalValueException;
@@ -21,10 +22,13 @@ public class PayCommand extends Command {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Pays the loan of the person identified by the index number used in the displayed person list.\n"
-            + "Parameters: INDEX (must be a positive integer) LOAN_INDEX (must be a positive integer)"
-            + "AMOUNT (up to 2 d.p) or MONTHS (positive number)\n"
-            + "Example (Pay by amount): " + COMMAND_WORD + " 1 1 100.00\n"
-            + "Example (Pay by months): " + COMMAND_WORD + " 1 1 3";
+            + "Parameters:\n"
+            + "1. Pay by amount: INDEX LOAN_INDEX AMOUNT (up to 2 d.p)\n"
+            + "   Example: " + COMMAND_WORD + " 1 1 100.00\n"
+            + "2. Pay by months: INDEX LOAN_INDEX MONTHS'M'\n"
+            + "   Example: " + COMMAND_WORD + " 1 1 3M\n"
+            + "3. Pay all: INDEX LOAN_INDEX all\n"
+            + "   Example: " + COMMAND_WORD + " 1 1 all";
 
     public static final String MESSAGE_PAYMENT_SUCCESS = "Payment successful: %1$s";
     private static final String MESSAGE_INVALID_LOAN_INDEX = "The loan index provided is invalid.";
@@ -33,20 +37,57 @@ public class PayCommand extends Command {
 
     private final Index targetIndex;
     private final int loanIndex;
-    private final float amount;
-    private final int months;
-    private final boolean isPayByMonth;
+    private final PaymentType paymentType;
+    private final Float amount; //nullable if paying by months
+    private final Integer months; //nullable if paying by amount
 
     /**
-     * Pays a loan identified using person's and loan's displayed indices from the address book.
+     * Enum for payment type
      */
-    public PayCommand(Index targetIndex, int loanIndex, float amount, int months) {
+    public enum PaymentType {
+        AMOUNT, MONTHS, ALL
+    }
+
+    /**
+     * Constructor for paying by amount.
+     */
+    public PayCommand(Index targetIndex, int loanIndex, float amount) {
         requireNonNull(targetIndex);
+        if (amount <= 0) {
+            throw new IllegalArgumentException(MESSAGE_INVALID_AMOUNT);
+        }
         this.targetIndex = targetIndex;
         this.loanIndex = loanIndex;
         this.amount = amount;
+        this.months = null;
+        this.paymentType = PaymentType.AMOUNT;
+    }
+
+    /**
+     * Constructor for paying by months
+     */
+    public PayCommand(Index targetIndex, int loanIndex, int months) {
+        requireNonNull(targetIndex);
+        if (months <= 0) {
+            throw new IllegalArgumentException(MESSAGE_INVALID_MONTHS);
+        }
+        this.targetIndex = targetIndex;
+        this.loanIndex = loanIndex;
+        this.amount = null;
         this.months = months;
-        this.isPayByMonth = (months > 0);
+        this.paymentType = PaymentType.MONTHS;
+    }
+
+    /**
+     * Constructor for paying all remaining loan balance.
+     */
+    public PayCommand(Index targetIndex, int loanIndex) {
+        requireNonNull(targetIndex);
+        this.targetIndex = targetIndex;
+        this.loanIndex = loanIndex;
+        this.amount = null;
+        this.months = null;
+        this.paymentType = PaymentType.ALL;
     }
 
     @Override
@@ -59,24 +100,34 @@ public class PayCommand extends Command {
         }
 
         Person personWhoPaid = lastShownList.get(targetIndex.getZeroBased());
+        int adjustedLoanIndex = loanIndex - 1; //adjust for zero-based index
 
-        if (loanIndex > personWhoPaid.getLoanCount() || loanIndex <= 0) {
+        if (adjustedLoanIndex >= personWhoPaid.getLoanCount() || adjustedLoanIndex < 0) {
             throw new CommandException(MESSAGE_INVALID_LOAN_INDEX);
         }
 
         try {
-            float totalPayment = amount; //default: paying by amount
+            float totalPayment = 0;
 
-            if (isPayByMonth) {
-                float monthlyInstallment = personWhoPaid.getLoans().get(loanIndex - 1).getMonthlyInstalmentAmount();
-                totalPayment = monthlyInstallment * months;
+            switch (paymentType) {
+            case AMOUNT:
+                totalPayment = amount;
+                break;
+            case MONTHS:
+                float monthlyInstalment = personWhoPaid.getLoans()
+                        .get(adjustedLoanIndex)
+                        .getMonthlyInstalmentAmount();
+                totalPayment = monthlyInstalment * months;
+                break;
+            case ALL:
+                totalPayment = personWhoPaid.getLoans().get(adjustedLoanIndex).getRemainingOwed();
+                break;
+            default:
+                throw new IllegalValueException("Unexpected value: " + paymentType);
             }
 
-            if (totalPayment <= 0) {
-                throw new CommandException(isPayByMonth ? MESSAGE_INVALID_MONTHS : MESSAGE_INVALID_AMOUNT);
-            }
+            personWhoPaid.payLoan(adjustedLoanIndex, totalPayment);
 
-            personWhoPaid.payLoan(loanIndex - 1, amount);
         } catch (IllegalValueException e) {
             throw new CommandException(e.getMessage());
         }
@@ -90,14 +141,15 @@ public class PayCommand extends Command {
             return true;
         }
 
-        if (!(other instanceof PayCommand e)) {
+        if (!(other instanceof PayCommand)) {
             return false;
         }
-
-        return targetIndex.equals(e.targetIndex)
-                && loanIndex == e.loanIndex
-                && amount == e.amount
-                && months == e.months;
+        PayCommand otherPayCommand = (PayCommand) other;
+        return targetIndex.equals(otherPayCommand.targetIndex)
+                && loanIndex == otherPayCommand.loanIndex
+                && paymentType == otherPayCommand.paymentType
+                && Objects.equals(amount, otherPayCommand.amount)
+                && Objects.equals(months, otherPayCommand.months);
     }
 
     @Override
@@ -105,9 +157,9 @@ public class PayCommand extends Command {
         return new ToStringBuilder(this)
                 .add("targetIndex", targetIndex)
                 .add("loanIndex", loanIndex)
+                .add("paymentType", paymentType)
                 .add("amount", amount)
                 .add("months", months)
-                .add("isPayByMonth", isPayByMonth)
                 .toString();
     }
 }
