@@ -48,6 +48,10 @@ public class LoanList {
         internalList.remove(loan);
     }
 
+    public void remove(int zeroBasedIndex) {
+        internalList.remove(zeroBasedIndex);
+    }
+
     /**
      * Pays a loan and removes it if it is fully paid.
      */
@@ -67,7 +71,7 @@ public class LoanList {
         float overdue = Float.NEGATIVE_INFINITY;
 
         for (Loan loan : internalList) {
-            float loanOverdue = loan.getOverDueMonthsPrecise();
+            float loanOverdue = loan.getMissedInstalmentsMonthsPrecise();
             if (loanOverdue > overdue) {
                 overdue = loanOverdue;
             }

@@ -132,10 +132,12 @@
     -fx-text-fill: white;
 }
 
+/* Changes search bar background color */
 .stack-pane {
      -fx-background-color: derive(#1d1d1d, 20%);
 }
 
+/* Main background colour */
 .pane-with-border {
      -fx-background-color: derive(#1d1d1d, 20%);
      -fx-border-color: derive(#1d1d1d, 10%);
@@ -192,6 +194,7 @@
     -fx-text-fill: white;
 }
 
+/* Menu bar (top) background color */
 .menu-bar {
     -fx-background-color: derive(#1d1d1d, 20%);
 }
@@ -281,10 +284,12 @@
     -fx-text-fill: white;
 }
 
+/* Scroll bar background color */
 .scroll-bar {
     -fx-background-color: derive(#1d1d1d, 20%);
 }
 
+/* Scroll bar color */
 .scroll-bar .thumb {
     -fx-background-color: derive(#1d1d1d, 50%);
     -fx-background-insets: 3;
@@ -308,8 +313,8 @@
 }
 
 #cardPane {
-    -fx-background-color: #383838; /* Dark grey for a modern look */
-    -fx-border-color: white; /* Orange border for contrast */
+    -fx-background-color: transparent; /* Dark grey for a modern look */
+    -fx-border-color: white; /* White border for contrast */
     -fx-border-width: 1.5px;
     -fx-border-radius: 10px;
     -fx-padding: 10px;

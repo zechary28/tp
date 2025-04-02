@@ -6,7 +6,7 @@
 
 *The Sharkives* is a **desktop application for ethical, non-violent loansharks**.
 
-Managing clients, tracking debts, and sending payment reminders has never been easier. With automatic interest calculations and well-organized client details, you can stay on top of your business while maintaining professionalism. Whether it's grouping related contacts, scheduling follow-ups, or ensuring accurate repayment tracking, *The Sharkives* streamlines the entire process—so you can focus on what matters.  
+Managing clients, tracking debts, and sending payment reminders has never been easier. With automatic interest calculations and well-organized client details, you can stay on top of your business while maintaining professionalism. Whether it's grouping related contacts, scheduling follow-ups, or ensuring accurate repayment tracking, *The Sharkives* streamlines the entire process—so you can focus on what matters.
 
 ## Features
 
