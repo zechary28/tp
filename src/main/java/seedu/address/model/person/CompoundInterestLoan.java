@@ -49,13 +49,6 @@ public class CompoundInterestLoan extends Loan {
     }
 
     /**
-     * Calculates the total monthly cost (principal + interest).
-     */
-    public float getTotalMonthlyCost() {
-        return this.getMonthlyAveragePrincipal() + this.getMonthlyInterest();
-    }
-
-    /**
      * Pays a certain amount towards the loan.
      */
     @Override
@@ -120,33 +113,6 @@ public class CompoundInterestLoan extends Loan {
     }
 
     /**
-     * Calculates the number of months the loan is overdue.
-     * @return The number of overdue months.
-     */
-    @Override
-    public int getOverDueMonths() {
-        return (int) Math.ceil(this.getOverDueMonthsPrecise());
-    }
-
-    @Override
-    public float getOverDueMonthsPrecise() {
-        float moneyOwed = this.getPaymentDifference();
-        if (moneyOwed <= 0) { // loan is not overdue
-            return 0;
-        }
-        return moneyOwed / this.getTotalMonthlyCost();
-    }
-
-    /**
-     * Checks if the loan is overdue.
-     * @return true if the loan is overdue, false otherwise.
-     */
-    @Override
-    public boolean isOverDue() {
-        return this.getOverDueMonths() > 0;
-    }
-
-    /**
      * Gets the type of the loan.
      * @return The loan type identifier.
      */
@@ -160,7 +126,7 @@ public class CompoundInterestLoan extends Loan {
      */
     @Override
     public float getMonthlyInstalmentAmount() {
-        int months = this.getMonthsUntilDueDate();
+        int months = Math.max(Math.abs(this.getMonthsUntilDueDate()), 1); // Prevent division by 0
         return getRemainingOwed() / months;
     }
 }
