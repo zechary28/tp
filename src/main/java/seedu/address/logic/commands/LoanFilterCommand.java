@@ -10,14 +10,24 @@ import seedu.address.model.person.Person;
 
 /**
  * Filters and displays all loans across all persons in the address book
- * based on their paid status (paid or unpaid).
+ * based on their given predicates based on loan parameters:
+ * person (shows loans for this person)
+ * amount (less than | greater than or equals)
+ * loanType (simple | compound)
+ * dueDate (earlier than | later than or equals)
+ * paidStatus (paid | unpaid).
  */
 public class LoanFilterCommand extends Command {
     public static final String COMMAND_WORD = "filterLoan";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Filters loans by paid status.\n"
-            + "Parameters: paid | unpaid\n"
-            + "Example: " + COMMAND_WORD + " paid";
+            + "Parameters: /pred [predicate type] [predicate parameters]\n"
+            + "Available Predicate Types: person, amount, loanType, dueDate, paidStatus \n"
+            + "person parameters:   /pred person [personIndex] \n"
+            + "amount parameters:   /pred amount [< or >] [amount] \n"
+            + "loanType parameters: /pred loanType [s or c] \n"
+            + "dueDate parameters:  /pred dueDate [< or >] [date in yyyy-mm-dd] \n"
+            + "Example: " + COMMAND_WORD + " /pred person 2 /pred amount > 100 /pred loanType s";
 
     private final boolean isPaid;
 
