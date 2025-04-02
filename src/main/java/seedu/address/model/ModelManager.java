@@ -123,6 +123,17 @@ public class ModelManager implements Model {
      * Returns an unmodifiable view of the list of {@code Person} backed by the internal list of
      * {@code versionedAddressBook}
      */
+
+    @Override
+    public void setIsChangeable(boolean change) {
+        this.addressBook.setPersonListChangeable(change);
+    }
+
+    @Override
+    public boolean getIsChangeable() {
+        return this.addressBook.getPersonListChangeable();
+    }
+
     @Override
     public ObservableList<Person> getFilteredPersonList() {
         return filteredPersons;

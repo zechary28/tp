@@ -202,15 +202,17 @@ public abstract class Loan {
      * Compares amount paid with amount owed in preceding months.
      * @return a positive number if client paid less than owed in previous months, negative if client paid more.
      */
-    abstract float getPaymentDifference();
+    public abstract float getPaymentDifference();
 
-    abstract boolean isOverDue();
+    public abstract float getLoanValue();
+
+    public abstract boolean isOverDue();
 
     // is an estimation (amount owed over monthly cost)
-    abstract int getOverDueMonths();
+    public abstract int getOverDueMonths();
 
     // is an estimation (amount owed over monthly cost)
-    abstract float getOverDueMonthsPrecise();
+    public abstract float getOverDueMonthsPrecise();
 
     public float getMonthlyAveragePrincipal() {
         return principal / this.getLoanLengthMonths();
@@ -385,7 +387,6 @@ public abstract class Loan {
                 && amtPaid == otherLoan.getAmtPaid()
                 && interest == otherLoan.getInterest()
                 && dueDate.equals(otherLoan.getDueDate())
-                && dateLastPaid.equals(otherLoan.getDateLastPaid())
                 && dateCreated.equals(otherLoan.getDateCreated())
                 && isPaid == otherLoan.isPaid()
                 && this.getName().equals(otherLoan.getName());
