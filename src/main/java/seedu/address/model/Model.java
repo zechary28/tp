@@ -15,6 +15,16 @@ public interface Model {
     Predicate<Person> PREDICATE_SHOW_ALL_PERSONS = unused -> true;
 
     /**
+     * set if user list is changeable
+     */
+    void setIsChangeable(boolean change);
+
+    /**
+     * get changeable
+     */
+    boolean getIsChangeable();
+
+    /**
      * Replaces user prefs data with the data in {@code userPrefs}.
      */
     void setUserPrefs(ReadOnlyUserPrefs userPrefs);

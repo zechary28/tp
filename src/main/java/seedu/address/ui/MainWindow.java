@@ -1,9 +1,12 @@
 package seedu.address.ui;
 
+import java.io.IOException;
 import java.util.logging.Logger;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.input.KeyCombination;
@@ -16,6 +19,7 @@ import seedu.address.logic.Logic;
 import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.person.Person;
 
 /**
  * The Main Window. Provides the basic application layout containing
@@ -68,6 +72,40 @@ public class MainWindow extends UiPart<Stage> {
         helpWindow = new HelpWindow();
     }
 
+    /**
+     * this will change the page to an individual person page
+     * @param person
+     * @param displayedIndex
+     */
+    public void switchToIndividualPersonPage(Person person, int displayedIndex) {
+        try {
+            // disallow list modification
+            logic.setPersonListChangeable(false);
+
+            // Load the new page (NewPage.fxml)
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/IndividualPersonCard.fxml"));
+            loader.setController(new IndividualPerson(person, this, displayedIndex));
+            Parent newPage = loader.load();
+
+            // Clear the existing content in the placeholder and add the new page
+            personListPanelPlaceholder.getChildren().clear();
+            personListPanelPlaceholder.getChildren().add(newPage);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * switches back to the person page
+     */
+    public void switchToPersonPage() {
+        // allow list modifcation
+        logic.setPersonListChangeable(true);
+
+        this.fillInnerParts();
+    }
+
+
     public Stage getPrimaryStage() {
         return primaryStage;
     }
@@ -110,7 +148,7 @@ public class MainWindow extends UiPart<Stage> {
      * Fills up all the placeholders of this window.
      */
     void fillInnerParts() {
-        personListPanel = new PersonListPanel(logic.getFilteredPersonList());
+        personListPanel = new PersonListPanel(logic.getFilteredPersonList(), this);
         personListPanelPlaceholder.getChildren().add(personListPanel.getRoot());
 
         resultDisplay = new ResultDisplay();
