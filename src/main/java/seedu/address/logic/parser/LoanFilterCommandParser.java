@@ -1,17 +1,13 @@
 package seedu.address.logic.parser;
 
-import seedu.address.logic.commands.AddCommand;
+import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_FILTER_PREDICATE;
+
+import java.util.Set;
+
 import seedu.address.logic.commands.LoanFilterCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.person.*;
-import seedu.address.model.tag.Tag;
-
-import java.time.LocalDate;
-import java.util.Set;
-import java.util.stream.Stream;
-
-import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.address.logic.parser.CliSyntax.*;
+import seedu.address.model.person.LoanPredicate;
 
 /**
  * Parses input arguments and creates a new {@code LoanFilterCommand} object.
@@ -35,7 +31,7 @@ public class LoanFilterCommandParser implements Parser<LoanFilterCommand> {
 
         int personIndex = Integer.parseInt(argMultimap.getPreamble());
 
-        Set<LoanPredicate> predicateList = ParserUtil.parseLoanPredicates(argMultimap.getAllValues(PREFIX_FILTER_PREDICATE));
-        return new LoanFilterCommand(personIndex, predicateList);
+        Set<LoanPredicate> preds = ParserUtil.parseLoanPredicates(argMultimap.getAllValues(PREFIX_FILTER_PREDICATE));
+        return new LoanFilterCommand(personIndex, preds);
     }
 }

@@ -11,7 +11,11 @@ import java.util.Set;
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.person.*;
+import seedu.address.model.person.Address;
+import seedu.address.model.person.Email;
+import seedu.address.model.person.LoanPredicate;
+import seedu.address.model.person.Name;
+import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -121,25 +125,6 @@ public class ParserUtil {
         return tagSet;
     }
 
-    public enum LoanParameter {
-        AMOUNT, DUE_DATE, LOAN_TYPE, IS_PAID, INVALID;
-
-        public static LoanParameter fromString(String paramType) {
-            switch (paramType.toLowerCase()) {
-            case "amount":
-                return AMOUNT;
-            case "duedate":
-                return DUE_DATE;
-            case "loantype":
-                return LOAN_TYPE;
-            case "ispaid":
-                return IS_PAID;
-            default:
-                return INVALID;
-            }
-        }
-    }
-
     /**
      * Parses a {@code String loanPredicate} into a {@code LoanPredicate}.
      * Leading and trailing whitespaces will be trimmed.
@@ -148,15 +133,15 @@ public class ParserUtil {
      */
     public static LoanPredicate parseLoanPredicate(String args) throws ParseException {
         String[] tokens = requireNonNull(args).trim().split("\\s+");
-        LoanParameter parameter;
+        LoanPredicate.LoanParameter parameter;
         Optional<Float> value;
         Optional<LocalDate> date;
         Optional<Character> operator;
         if (tokens.length == 0) {
             throw new ParseException("No tokens found");
         } else {
-            parameter = LoanParameter.fromString(tokens[0]);
-            if (parameter == LoanParameter.AMOUNT) {
+            parameter = LoanPredicate.LoanParameter.fromString(tokens[0]);
+            if (parameter == LoanPredicate.LoanParameter.AMOUNT) {
                 if (tokens.length < 3) {
                     throw new ParseException("Insufficient Arguments");
                 }
@@ -167,7 +152,7 @@ public class ParserUtil {
                 operator = Optional.of(op);
                 value = Optional.of(Float.parseFloat(tokens[2]));
                 date = Optional.empty();
-            } else if (parameter == LoanParameter.DUE_DATE) {
+            } else if (parameter == LoanPredicate.LoanParameter.DUE_DATE) {
                 if (tokens.length < 3) {
                     throw new ParseException("Insufficient Arguments");
                 }
@@ -178,7 +163,7 @@ public class ParserUtil {
                 operator = Optional.of(op);
                 value = Optional.empty();
                 date = Optional.of(LocalDate.parse(tokens[2]));
-            } else if (parameter == LoanParameter.LOAN_TYPE) {
+            } else if (parameter == LoanPredicate.LoanParameter.LOAN_TYPE) {
                 if (tokens.length < 2) {
                     throw new ParseException("Insufficient Arguments");
                 }
@@ -189,7 +174,7 @@ public class ParserUtil {
                 operator = Optional.of(op);
                 value = Optional.empty();
                 date = Optional.empty();
-            } else if (parameter == LoanParameter.IS_PAID) {
+            } else if (parameter == LoanPredicate.LoanParameter.IS_PAID) {
                 if (tokens.length < 2) {
                     throw new ParseException("Insufficient Arguments");
                 }
