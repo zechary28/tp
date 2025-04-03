@@ -4,9 +4,11 @@ import static java.util.Objects.requireNonNull;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 import seedu.address.model.Model;
 import seedu.address.model.person.Loan;
+import seedu.address.model.person.LoanPredicate;
 import seedu.address.model.person.Person;
 
 /**
@@ -31,29 +33,15 @@ public class LoanFilterCommand extends Command {
             + "dueDate parameters:  pred/ dueDate [< or >] [date in yyyy-mm-dd] \n"
             + "Example: " + COMMAND_WORD + " pred/ person 2 pred/ amount > 100.00 pred/ loanType s";
 
-    private final String parameter;
-    private final int index;
-    private final float value;
-    private final LocalDate date;
-    private final char operator;
+    private final Set<LoanPredicate> predicateSet;
 
     /**
      * Constructs a LoanFilterCommand.
      *
-     * @param parameter String representation of the loan parameter to filter by
-     * @param value int input for person:personIndex or amount:amount
-     * @param operator char input for various parameters
-     *                 amount:operator [< or >], dueDate:operator [< or >]
-     *                 loanType:type [s or c]
-     *                 isPaid:status [y or n]
-     * @param date LocalDate input for dueDate parameter
+     * @param predicateSet Set of LoanPredicate which will be used for filtering
      */
-    public LoanFilterCommand(String parameter, int index, float value, LocalDate date, char operator) {
-        this.parameter = parameter;
-        this.index = index;
-        this.value = value;
-        this.date = date;
-        this.operator = operator;
+    public LoanFilterCommand(Set<LoanPredicate> predicateSet) {
+        this.predicateSet = predicateSet;
     }
 
     /**

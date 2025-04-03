@@ -34,8 +34,8 @@ public class LoanFilterCommandParser implements Parser<LoanFilterCommand> {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
         }
 
-        Set<LoanPredicate> PredicateList = ParserUtil.parseLoanPredicates(argMultimap.getAllValues(PREFIX_FILTERPREDICATE));
-
+        Set<LoanPredicate> predicateList = ParserUtil.parseLoanPredicates(argMultimap.getAllValues(PREFIX_FILTERPREDICATE));
+        return new LoanFilterCommand(predicateList);
     }
 
 

@@ -153,38 +153,51 @@ public class ParserUtil {
         Optional<LocalDate> date;
         Optional<Character> operator;
         if (tokens.length == 0) {
-            parameter = LoanParameter.INVALID;
-            value = Optional.empty();
-            date = Optional.empty();
-            operator = Optional.empty();
+            throw new ParseException("No tokens found");
         } else {
             parameter = LoanParameter.fromString(tokens[0]);
             if (parameter == LoanParameter.AMOUNT) {
-                String op = tokens[1];
-                operator = (op.equals("<") || op.equals(">"))
-                        ? Optional.of(op.charAt(0))
-                        : Optional.empty();
+                if (tokens.length < 3) {
+                    throw new ParseException("Insufficient Arguments");
+                }
+                char op = tokens[1].charAt(0);
+                if (!(op == '<' || op == '>')) {
+                    throw new ParseException("Amount operator must be < or >");
+                }
+                operator = Optional.of(op);
                 value = Optional.of(Float.parseFloat(tokens[2]));
                 date = Optional.empty();
             } else if (parameter == LoanParameter.DUE_DATE) {
-                String op = tokens[1];
-                operator = (op.equals("<") || op.equals(">"))
-                        ? Optional.of(op.charAt(0))
-                        : Optional.empty();
+                if (tokens.length < 3) {
+                    throw new ParseException("Insufficient Arguments");
+                }
+                char op = tokens[1].charAt(0);
+                if (!(op == '<' || op == '>')) {
+                    throw new ParseException("DueDate operator must be < or >");
+                }
+                operator = Optional.of(op);
                 value = Optional.empty();
                 date = Optional.of(LocalDate.parse(tokens[2]));
             } else if (parameter == LoanParameter.LOAN_TYPE) {
-                String op = tokens[1];
-                operator = (op.equals("s") || op.equals("c"))
-                        ? Optional.of(op.charAt(0))
-                        : Optional.empty();
+                if (tokens.length < 2) {
+                    throw new ParseException("Insufficient Arguments");
+                }
+                char op = tokens[1].charAt(0);
+                if (!(op == 's' || op == 'c')) {
+                    throw new ParseException("LoanType operator must be s or c");
+                }
+                operator = Optional.of(op);
                 value = Optional.empty();
                 date = Optional.empty();
             } else if (parameter == LoanParameter.IS_PAID) {
-                String op = tokens[1];
-                operator = (op.equals("y") || op.equals("n"))
-                        ? Optional.of(op.charAt(0))
-                        : Optional.empty();
+                if (tokens.length < 2) {
+                    throw new ParseException("Insufficient Arguments");
+                }
+                char op = tokens[1].charAt(0);
+                if (!(op == 'y' || op == 'n')) {
+                    throw new ParseException("Amount operator must be y or n");
+                }
+                operator = Optional.of(op);
                 value = Optional.empty();
                 date = Optional.empty();
             } else {
