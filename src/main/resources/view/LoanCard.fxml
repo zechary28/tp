@@ -5,10 +5,10 @@
 <?import javafx.scene.layout.HBox?>
 
 <VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" spacing="5">
-    <VBox spacing="5" styleClass="loan_card">
+    <VBox spacing="5" styleClass="loan_card" maxHeight = "200">
         <HBox spacing="10">
-            <Label fx:id="loanType" styleClass="loan_label"/>
-            <Label fx:id="overdue" styleClass="loan_label"/>
+            <Label fx:id="loanType" styleClass="big_label"/>
+            <Label fx:id="overdue" styleClass="big_label"/>
         </HBox>
         <HBox spacing="10">
             <Label fx:id="principal" styleClass="loan_label"/>

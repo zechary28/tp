@@ -98,17 +98,18 @@
 
 .list-view {
     -fx-background-insets: 0;
-    -fx-padding: 5px 0;
+    -fx-padding: 5 0;
     -fx-background-color: transparent;
 }
 
 /* Adjust cell settings */
 .list-cell {
-    -fx-label-padding: 0 0 0 0;
+    -fx-label-padding: 0 0;
     -fx-graphic-text-gap : 0;
-    -fx-padding: 0 0;
+    -fx-padding: 5 0;
     -fx-background-color: rgba(255, 255, 255, 0.8); /* White background with transparency */
     -fx-background-radius: 10px;
+    -fx-background-insets: 5 0;
 }
 
 .list-cell:empty {
@@ -137,19 +138,19 @@
 /*}*/
 
 .list-cell .label {
-    -fx-text-fill: rgb(41, 85, 116, 0.75);
+    -fx-text-fill: rgb(36, 80, 111);
 }
 
 .cell_big_label {
     -fx-font-family: "Segoe UI Semibold";
     -fx-font-size: 16px;
-    -fx-text-fill: white;
+    -fx-text-fill: rgb(36, 80, 111);
 }
 
 .cell_small_label {
     -fx-font-family: "Segoe UI";
     -fx-font-size: 13px;
-    -fx-text-fill: white;
+    -fx-text-fill: rgb(36, 80, 111);
 }
 
 /* Changes command bar background color */
@@ -165,7 +166,7 @@
 }
 
 .status-bar {
-    -fx-background-color: derive(#1d1d1d, 30%);
+    -fx-background-color: rgba(80, 108, 131);
 }
 
 .result-display {
@@ -181,7 +182,7 @@
 
 .status-bar .label {
     -fx-font-family: "Segoe UI Light";
-    -fx-text-fill: white;
+    -fx-text-fill: rgba(250, 250, 250);
     -fx-padding: 4px;
     -fx-pref-height: 30px;
 }
@@ -223,8 +224,7 @@
 .menu-bar .label {
     -fx-font-size: 12pt;
     -fx-font-family: "Segoe UI Light";
-    -fx-text-fill: rgba(230, 230, 230);
-    -fx-opacity: 0.9;
+    -fx-text-fill: rgba(250, 250, 250);
 }
 
 .menu .left-container {
@@ -307,7 +307,7 @@
 
 /* Scroll bar background color */
 .scroll-bar {
-    -fx-background-color: rgba(116, 148, 167, 0.35);
+    -fx-background-color: rgba(116, 148, 167, 0.2);
     -fx-background-radius: 5;
 }
 
@@ -335,7 +335,7 @@
 }
 
 #cardPane {
-    -fx-background-color: transparent; /* Dark grey for a modern look */
+    -fx-background-color: transparent;
     -fx-border-color: white; /* White border for contrast */
     -fx-border-width: 1.5px;
     -fx-border-radius: 10px;
@@ -364,7 +364,7 @@
     -fx-font-family: "Segoe UI Light";
     -fx-font-size: 13pt;
     -fx-text-fill: white;
-    -fx-prompt-text-fill: rgba(230, 230, 230);
+    -fx-prompt-text-fill: rgba(240, 240, 240);
 }
 
 #filterField, #personListPanel, #personWebpage {
@@ -373,6 +373,7 @@
 
 #resultDisplay {
     -fx-text-fill: rgb(41, 85, 116, 0.75);
+    -fx-font-size: 13;
 }
 
 #resultDisplay .content {
@@ -419,8 +420,9 @@
 }
 
 .loan_label {
-    -fx-text-fill: rgb(41, 85, 116, 0.75);
+    -fx-text-fill: rgb(36, 80, 111);
     -fx-font-size: 13;
+    fx-font-family: "Segoe UI";
 }
 
 
@@ -443,16 +445,26 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0, 0, 3);
 }
 
+.loan-card .big_label {
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-font-size: 14px;
+    -fx-text-fill: rgb(36, 80, 111);
+}
+
 .vbox-container {
-    -fx-spacing: 10px;          /* Space between elements */
-    -fx-alignment: center-left; /* Aligns content to the left */
+    -fx-spacing: 0px;
     -fx-padding: 10px;          /* Adds some padding */
     -fx-background-color: rgba(255, 255, 255, 0.8); /* Light gray background */
     -fx-background-radius: 10px;
 }
 
-.vbox-container .cell_big_label {
-    -fx-font-size: 13px;
-    -fx-text-fill: rgb(41, 85, 116, 0.75);
-    -fx-font-family: "Segoe UI Semibold";
+.back_button {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 14px;
+    -fx-text-fill: rgb(250, 250, 250);
+    -fx-background-color: rgba(80, 108, 131);
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+    -fx-padding: 10px;
+    -fx-border-width: 0px;
 }
