@@ -127,6 +127,7 @@ public class PayCommand extends Command {
             }
 
             personWhoPaid.payLoan(adjustedLoanIndex, totalPayment);
+            model.setPerson(personWhoPaid, personWhoPaid); // Force UI to refresh
 
         } catch (IllegalValueException e) {
             throw new CommandException(e.getMessage());

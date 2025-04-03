@@ -90,7 +90,8 @@ public class LoanCommand extends Command {
             throw new CommandException(e.getMessage());
         }
 
-        model.updateFilteredPersonList(Model.PREDICATE_SHOW_ALL_PERSONS);
+        model.setPerson(personToAddLoan, personToAddLoan); // Force UI refresh
+
         return new CommandResult(String.format(MESSAGE_ADD_LOAN_SUCCESS, personToAddLoan.getName(), type.equals("s")
                 ? "Simple" : "Compound", amount, dueDate, interest)
         );
