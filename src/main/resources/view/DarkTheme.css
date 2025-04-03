@@ -1,14 +1,95 @@
+/* Main background with image */
 .root {
     -fx-background-image: url("images/bg.png");
-    -fx-background-size: cover; /* or contain, or specific dimensions */
+    -fx-background-size: cover;
     -fx-background-position: center center;
     -fx-background-repeat: repeat;
 }
 
+/* Semi-transparent overlay for content areas */
 .background {
-    -fx-background-color: transparent;
-    background-color: transparent; /* Used in the default.html file */
+    -fx-background-color: rgba(29, 29, 29, 0.85); /* Translucent dark overlay */
 }
+
+/* Card styles with translucency */
+#cardPane {
+    -fx-background-color: rgba(56, 56, 56, 0.7);
+    -fx-border-color: rgba(255, 255, 255, 0.8);
+    -fx-border-width: 1.5px;
+    -fx-border-radius: 10px;
+    -fx-padding: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 5, 0, 0, 3);
+}
+
+#cardPane:hover {
+    -fx-background-color: rgba(56, 56, 56, 0.85);
+    -fx-border-color: rgba(247, 13, 26, 0.8);
+}
+
+/* Loan card with translucency */
+.loan_card {
+    -fx-background-color: rgba(56, 56, 56, 0.7);
+    -fx-border-color: rgba(255, 255, 255, 0.8);
+    -fx-border-width: 1.5px;
+    -fx-border-radius: 10px;
+    -fx-padding: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 5, 0, 0, 3);
+}
+
+/* List cells with translucency */
+.list-cell:filled:even {
+    -fx-background-color: rgba(56, 56, 56, 0.7);
+}
+
+.list-cell:filled:odd {
+    -fx-background-color: rgba(56, 56, 56, 0.7);
+}
+
+.list-cell:filled:selected {
+    -fx-background-color: rgba(66, 77, 95, 0.8);
+}
+
+/* Table view with translucency */
+.table-view {
+    -fx-base: rgba(29, 29, 29, 0.8);
+    -fx-control-inner-background: rgba(29, 29, 29, 0.8);
+    -fx-background-color: rgba(29, 29, 29, 0.8);
+    -fx-table-cell-border-color: transparent;
+    -fx-table-header-border-color: transparent;
+    -fx-padding: 5;
+}
+
+/* Panes with translucency */
+.pane-with-border {
+    -fx-background-color: rgba(29, 29, 29, 0.8);
+    -fx-border-color: rgba(29, 29, 29, 0.5);
+    -fx-border-top-width: 1px;
+}
+
+.stack-pane {
+    -fx-background-color: rgba(29, 29, 29, 0.8);
+}
+
+.grid-pane {
+    -fx-background-color: rgba(29, 29, 29, 0.8);
+    -fx-border-color: rgba(29, 29, 29, 0.8);
+    -fx-border-width: 1px;
+}
+
+/* Dialog and menu translucency */
+.dialog-pane {
+    -fx-background-color: rgba(29, 29, 29, 0.9);
+}
+
+.menu-bar {
+    -fx-background-color: rgba(29, 29, 29, 0.8);
+}
+
+.context-menu {
+    -fx-background-color: rgba(29, 29, 29, 0.9);
+}
+
+/* ====== Original Styling Preserved Below ====== */
 
 .label {
     -fx-font-size: 11pt;
@@ -46,15 +127,6 @@
     -fx-max-height: 0;
 }
 
-.table-view {
-    -fx-base: transparent;
-    -fx-control-inner-background: transparent;
-    -fx-background-color: transparent;
-    -fx-table-cell-border-color: transparent;
-    -fx-table-header-border-color: transparent;
-    -fx-padding: 5;
-}
-
 .table-view .column-header-background {
     -fx-background-color: transparent;
 }
@@ -63,11 +135,7 @@
     -fx-size: 35;
     -fx-border-width: 0 0 1 0;
     -fx-background-color: transparent;
-    -fx-border-color:
-        transparent
-        transparent
-        derive(-fx-base, 80%)
-        transparent;
+    -fx-border-color: transparent transparent derive(-fx-base, 80%) transparent;
     -fx-border-insets: 0 10 1 0;
 }
 
@@ -102,20 +170,8 @@
 
 .list-cell {
     -fx-label-padding: 0 0 0 0;
-    -fx-graphic-text-gap : 0;
+    -fx-graphic-text-gap: 0;
     -fx-padding: 4px 0px;
-}
-
-.list-cell:filled:even {
-    -fx-background-color:  #383838;
-}
-
-.list-cell:filled:odd {
- -fx-background-color: #383838;
-}
-
-.list-cell:filled:selected {
-    -fx-background-color: #424d5f;
 }
 
 .list-cell:filled:selected #cardPane {
@@ -137,18 +193,6 @@
     -fx-font-family: "Segoe UI";
     -fx-font-size: 13px;
     -fx-text-fill: white;
-}
-
-/* Changes search bar background color */
-.stack-pane {
-     -fx-background-color: derive(#1d1d1d, 20%);
-}
-
-/* Main background colour */
-.pane-with-border {
-     -fx-background-color: derive(#1d1d1d, 20%);
-     -fx-border-color: derive(#1d1d1d, 10%);
-     -fx-border-top-width: 1px;
 }
 
 .status-bar {
@@ -183,27 +227,12 @@
     -fx-text-fill: white;
 }
 
-.grid-pane {
-    -fx-background-color: derive(#1d1d1d, 30%);
-    -fx-border-color: derive(#1d1d1d, 30%);
-    -fx-border-width: 1px;
-}
-
 .grid-pane .stack-pane {
     -fx-background-color: derive(#1d1d1d, 30%);
 }
 
-.context-menu {
-    -fx-background-color: derive(#1d1d1d, 50%);
-}
-
 .context-menu .label {
     -fx-text-fill: white;
-}
-
-/* Menu bar (top) background color */
-.menu-bar {
-    -fx-background-color: derive(#1d1d1d, 20%);
 }
 
 .menu-bar .label {
@@ -217,11 +246,6 @@
     -fx-background-color: black;
 }
 
-/*
- * Metro style Push Button
- * Author: Pedro Duque Vieira
- * http://pixelduke.wordpress.com/2012/10/23/jmetro-windows-8-controls-on-java/
- */
 .button {
     -fx-padding: 5 22 5 22;
     -fx-border-color: #e2e2e2;
@@ -239,14 +263,14 @@
 }
 
 .button:pressed, .button:default:hover:pressed {
-  -fx-background-color: white;
-  -fx-text-fill: #1d1d1d;
+    -fx-background-color: white;
+    -fx-text-fill: #1d1d1d;
 }
 
 .button:focused {
     -fx-border-color: white, white;
     -fx-border-width: 1, 1;
-    -fx-border-style: solid, segments(1, 1);
+    -fx-border-style: solid;
     -fx-border-radius: 0, 0;
     -fx-border-insets: 1 1 1 1, 0;
 }
@@ -266,10 +290,6 @@
     -fx-background-color: derive(-fx-focus-color, 30%);
 }
 
-.dialog-pane {
-    -fx-background-color: #1d1d1d;
-}
-
 .dialog-pane > *.button-bar > *.container {
     -fx-background-color: #1d1d1d;
 }
@@ -280,23 +300,21 @@
     -fx-text-fill: white;
 }
 
-.dialog-pane:header *.header-panel {
+.dialog-pane:header .header-panel {
     -fx-background-color: derive(#1d1d1d, 25%);
 }
 
-.dialog-pane:header *.header-panel *.label {
+.dialog-pane:header .header-panel *.label {
     -fx-font-size: 18px;
     -fx-font-style: italic;
     -fx-fill: white;
     -fx-text-fill: white;
 }
 
-/* Scroll bar background color */
 .scroll-bar {
     -fx-background-color: derive(#1d1d1d, 20%);
 }
 
-/* Scroll bar color */
 .scroll-bar .thumb {
     -fx-background-color: derive(#1d1d1d, 50%);
     -fx-background-insets: 3;
@@ -317,20 +335,6 @@
 
 .scroll-bar:horizontal .increment-arrow, .scroll-bar:horizontal .decrement-arrow {
     -fx-padding: 8 1 8 1;
-}
-
-#cardPane {
-    -fx-background-color: transparent; /* Dark grey for a modern look */
-    -fx-border-color: white; /* White border for contrast */
-    -fx-border-width: 1.5px;
-    -fx-border-radius: 10px;
-    -fx-padding: 10px;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0, 0, 3);
-}
-
-/* Apply hover effect to the entire card pane */
-#cardPane:hover {
-    -fx-border-color: red;
 }
 
 #commandTypeLabel {
@@ -372,20 +376,20 @@
     -fx-font-size: 11;
 }
 
-
 .transparent-button {
     -fx-background-color: transparent;
     -fx-border-color: transparent;
 }
 
 .transparent-button:hover {
-    -fx-background-color: rgba(0, 0, 0, 0); /* Light Gray */
+    -fx-background-color: rgba(0, 0, 0, 0);
 }
 
 .transparent-button:pressed {
-    -fx-background-color: inherit;  /* Keeps the same background color */
-    -fx-effect: none;               /* Removes any shadow or glow effects */
+    -fx-background-color: inherit;
+    -fx-effect: none;
 }
+
 .transparent-button:focused {
     -fx-focus-color: transparent;
     -fx-faint-focus-color: transparent;
@@ -398,24 +402,10 @@
     -fx-font-size: 14px;
 }
 
-
-/* Removes the white background */
 .scroll-pane {
     -fx-background-color: transparent;
 }
 
-/* Ensures the viewport inside is also transparent */
 .scroll-pane .viewport {
     -fx-background-color: transparent;
-}
-
-.loan_card {
-    -fx-background-color: #383838; /* Dark grey background for contrast */
-    -fx-border-color: white; /* Orange border for visibility */
-    -fx-border-width: 1.5px;
-    -fx-border-radius: 10px;
-    -fx-padding: 10px;
-    -fx-margin: 5px 0px;
-    -fx-spacing: 8px; /* Space between labels inside the card */
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0, 0, 3);
 }
