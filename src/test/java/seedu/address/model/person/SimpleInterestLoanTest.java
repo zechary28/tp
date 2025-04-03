@@ -30,6 +30,10 @@ public class SimpleInterestLoanTest {
         // invalid date
         assertThrows(IllegalArgumentException.class, () ->
             new SimpleInterestLoan(VALID_AMT, VALID_INTEREST, INVALID_DATE));
+
+        // invalid everything
+        assertThrows(IllegalArgumentException.class, () ->
+        new SimpleInterestLoan(INVALID_AMT, INVALID_INTEREST, INVALID_DATE));
     }
 
     @Test

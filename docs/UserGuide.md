@@ -4,9 +4,9 @@
   pageNav: 3
 ---
 
-# 🦈 The Sharkives User Guide
+# 🦈 The Sharkster User Guide
 
-The Sharkives is a **desktop application for managing loan records**, optimized for use via a **Command Line Interface (CLI)** while still offering a **Graphical User Interface (GUI)**. If you can type fast, The Sharkives helps you manage loans, repayments, and outstanding debts **more efficiently** than traditional GUI apps.
+The Sharkster is a **desktop application for managing loan records**, optimized for use via a **Command Line Interface (CLI)** while still offering a **Graphical User Interface (GUI)**. If you can type fast, The Sharkster helps you manage loans, repayments, and outstanding debts **more efficiently** than traditional GUI apps.
 
 <!-- * Table of Contents -->
 <page-nav-print />
@@ -22,20 +22,24 @@ The Sharkives is a **desktop application for managing loan records**, optimized 
 
 3. Copy the file to the folder you want to use as the _home folder_ for your AddressBook.
 
-4. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar sharkives.jar` command to run the application.<br>
+4. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar sharkster.jar` command to run the application.<br>
    A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
    ![Ui](images/Ui.png)
 
 5. Type the command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open the help window.<br>
    Some example commands you can try:
 
-   * `list` : Lists all recorded loans.
+    * `loan 1 s 1000 10 2027-10-10` : Creates a new simple interest loan for a selected borrower.
 
-   * `delete 3` : Deletes the 3rd loan record shown in the current list.
+    * `sort` : Sort borrowers by name and order asc (default).
 
-   * `clear` : Clears all loan records.
+    * `list` : Lists all recorded borrowers and their loans.
 
-   * `exit` : Exits the app.
+    * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01` : Adds a borrower named John Doe to Sharkvies.
+
+    * `clear` : Deletes all borrower records.
+
+    * `exit` : Exits the app.
 
 6. Refer to the [Features](#features) below for details of each command.
 
@@ -65,100 +69,117 @@ The Sharkives is a **desktop application for managing loan records**, optimized 
 * If you are using a PDF version of this document, be careful when copying and pasting commands that span multiple lines as space characters surrounding line-breaks may be omitted when copied over to the application.
 </box>
 
-### Adding a Loan : `loan`
-
-Adds a loan to a contact in the address book. Loans can be either **Simple Interest Loans** or **Compound Interest Loans**.
-
-Format: `loan INDEX TYPE AMOUNT INTEREST_RATE DUE_DATE​`
-
-Examples:
-* `loan 1 s 100.00 5.5 2025-12-31`
-* `loam 2 c 500.00 7.0 2026-06-15`
-
-### Viewing help : `help`
-
-Shows a message explaning how to access the help page.
-
-![help message](images/helpMessage.png)
-
-Format: `help`
-
-
 ### Adding a person: `add`
 
 Adds a person to the address book.
 
 Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​`
 
-<box type="tip" seamless>
-
-**Tip:** A person can have any number of tags (including 0)
-</box>
+<div markdown="span" class="alert alert-primary">💡 Tip:
+A person can have any number of tags (including 0)
+</div>
 
 Examples:
 * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01`
 * `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 t/criminal`
 
-### Listing all persons : `list`
+### Adding a Loan : `loan`
 
-Shows a list of all persons in the address book.
+Adds a loan to a contact in the address book. Loans can be either **Simple Interest Loans** or **Compound Interest Loans**.
 
-Format: `list`
+Format: `loan INDEX TYPE AMOUNT INTEREST_RATE DUE_DATE​`
+- `INDEX` refers to the index number of the contact as displayed in the contact list.
+- `TYPE` is either `s` (Simple Interest Loan) or `c` (Compound Interest Loan).
+- `AMOUNT` is the principal loan amount (e.g., `100.00`).
+- `INTEREST_RATE` is the percentage interest rate (e.g., `5.5` for `5.5%`).
+- `DUE_DATE` is the loan's due date in `YYYY-MM-DD` format.
 
-### Editing a person : `edit`
-
-Edits an existing person in the address book.
-
-Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`
-
-* Edits the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
-* At least one of the optional fields must be provided.
-* Existing values will be updated to the input values.
-* When editing tags, the existing tags of the person will be removed i.e adding of tags is not cumulative.
-* You can remove all the person’s tags by typing `t/` without
-    specifying any tags after it.
 
 Examples:
-*  `edit 1 p/91234567 e/johndoe@example.com` Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
-*  `edit 2 n/Betsy Crower t/` Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.
+* `loan 1 s 100.00 5.5 2025-12-31`
+* `loam 2 c 500.00 7.0 2026-06-15`
 
-### Locating persons by name: `find`
+---
 
-Finds persons whose names contain any of the given keywords.
+### Sorting the borrowers: `sort`
 
-Format: `find KEYWORD [MORE_KEYWORDS]`
+Sorts the borrowers by parameter and order.
 
-* The search is case-insensitive. e.g `hans` will match `Hans`
-* The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`
-* Only the name is searched.
-* Only full words will be matched e.g. `Han` will not match `Hans`
-* Persons matching at least one keyword will be returned (i.e. `OR` search).
-  e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`
+**Format:** `sort s/PARAMETER o/ORDER`
+- `PARAMETER` refers to which parameter to sort by `AMOUNT` (Total amount of loans owed for each borrower), `OVERDUE` (Borrower with the most overdue loan), `NAME` (Name of borrower).
+- `AMOUNT` refer to order which to sort by. (`ASC` or `DESC`).
 
-Examples:
-* `find John` returns `john` and `John Doe`
-* `find alex david` returns `Alex Yeoh`, `David Li`<br>
-  ![result for 'find alex david'](images/findAlexDavidResult.png)
+**Example:** `sort s/AMOUNT o/ASC`
 
-### Deleting a person : `delete`
+---
 
-Deletes the specified person from the address book.
+### Filtering the borrowers: `filter`
 
-Format: `delete INDEX`
+Sorts the borrowers by parameter and order.
 
-* Deletes the person at the specified `INDEX`.
-* The index refers to the index number shown in the displayed person list.
-* The index **must be a positive integer** 1, 2, 3, …​
+**Fromat:** `sort s/PARAMETER o/ORDER`
+- `PARAMETER` refers to which parameter to sort by `AMOUNT` (Total amount of loans owed for each borrower), `OVERDUE` (Borrower with the most overdue loan), `NAME` (Name of borrower).
+- `AMOUNT` refer to order which to sort by. (`ASC` or `DESC`).
 
-Examples:
-* `list` followed by `delete 2` deletes the 2nd person in the address book.
-* `find Betsy` followed by `delete 1` deletes the 1st person in the results of the `find` command.
+**Example:** `sort s/AMOUNT o/ASC`
 
-### Clearing all entries : `clear`
+---
 
-Clears all entries from the address book.
+### Recording a Payment: `pay`
 
-Format: `clear`
+Marks a payment made by the loanee.
+
+**Fromat:** `pay INDEX AMOUNT DUE`
+- `INDEX` refers to the index number of the loanee in the contact list.
+- `AMOUNT` is the amount paid.
+
+**Example:** `pay 1 50.00 2025-06-01`
+
+---
+
+### Deleting a Loan: `delete`
+
+Deletes all loan details associated with a loanee.
+
+**Format:** `delete INDEX_B INDEX_L`
+- `INDEX_B` refers to the index number of the loanee in the contact list.
+- `INDEX_L` refers to the index number of the loanee's loan.
+
+**Example:** `delete 2 3`
+
+---
+
+### Deleting a Loanee: `delete`
+
+Deletes all details associated with a loanee.
+
+**Format:** `delete INDEX`
+- `INDEX` refers to the index number of the loanee in the contact list.
+
+**Example:** `delete 2`
+
+---
+
+### Listing all Loanees: `list`
+
+Displays a list of all loanees in the address book.
+
+**Format:** `list`
+
+---
+
+### Editing Loanee Details: `edit`
+
+Edits the details of a loanee.
+
+**Format:** `edit INDEX FIELD NEW_VALUE`
+- `INDEX` refers to the index number of the loanee in the contact list.
+- `FIELD` specifies which detail to edit (`name`, `phone`, `email`, `address`).
+- `NEW_VALUE` is the updated information.
+
+**Example:** `edit 1 phone 91234567`
+
+---
 
 ### Exiting the program : `exit`
 
@@ -207,7 +228,11 @@ Action     | Format, Examples
 -----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 **Add**    | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague`
 **Clear**  | `clear`
-**Delete** | `delete INDEX`<br> e.g., `delete 3`
+**Delete** | `delete INDEX_B INDEX_L`<br> e.g., `delete 3 1`
+**Delete** | `delete INDEX_B`<br> e.g., `delete 3`
+**Sort**   | `sort [s/PARAMETER] [o/ORDER]`<br> e.g., `sort s/AMOUNT o/ASC`
+**Pay**    | `pay INDEX AMOUNT`<br> e.g., `pay 1 1000`
+**Filter** | `filter to be done`<br> e.g., `delete 3`
 **Edit**   | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
 **Find**   | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
 **List**   | `list`

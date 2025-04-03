@@ -1,8 +1,13 @@
 package seedu.address.model.person;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.stream.Stream;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.logic.Messages;
 
 /**
  * Represents a loan list containing the loans a person has.
@@ -10,7 +15,11 @@ import java.util.List;
 public class LoanList {
     public static final String EMPTY_STRING = "EMPTY";
 
-    private final ArrayList<Loan> loanList = new ArrayList<>();
+    //private final ArrayList<Loan> loanList = new ArrayList<>();
+
+    private final ObservableList<Loan> internalList = FXCollections.observableArrayList();
+    private final ObservableList<Loan> internalUnmodifiableList =
+            FXCollections.unmodifiableObservableList(internalList);
 
     /**
      * Initializes a LoanList.
@@ -21,39 +30,101 @@ public class LoanList {
      * Adds a loan to the loan list.
      */
     public void add(Loan loan) {
-        loanList.add(loan);
+        internalList.add(loan);
     }
 
     /**
      * Returns an immutable loan list, which throws {@code UnsupportedOperationException}
      * if modification is attempted.
      */
-    public List<Loan> getLoanList() {
-        return Collections.unmodifiableList(loanList);
+    public ObservableList<Loan> getLoans() {
+        return internalUnmodifiableList;
     }
 
     /**
      * Removes a loan from loan list.
      */
     public void remove(Loan loan) {
-        loanList.remove(loan);
+        internalList.remove(loan);
+    }
+
+    public void remove(int zeroBasedIndex) {
+        internalList.remove(zeroBasedIndex);
+    }
+
+    /**
+     * Pays a loan and removes it if it is fully paid.
+     */
+    public void payLoan(int index, float amount) throws IllegalValueException {
+        Loan loanToPay = internalList.get(index);
+        loanToPay.pay(amount);
+
+        if (loanToPay.isPaid()) {
+            internalList.remove(index); // Automatically notifies ListView
+        } else {
+            internalList.set(index, loanToPay); // Replaces with same object (but triggers update)
+        }
+    }
+
+    /**
+     * Returns most overdue loan amount in float(months)
+    */
+    public float getMostOverdueMonths() {
+        float overdue = Float.NEGATIVE_INFINITY;
+
+        for (Loan loan : internalList) {
+            float loanOverdue = loan.getMissedInstalmentsMonthsPrecise();
+            if (loanOverdue > overdue) {
+                overdue = loanOverdue;
+            }
+        }
+        return overdue;
+    }
+
+    /**
+     * Returns total value of all loans
+    */
+    public float getTotalLoanOwed() {
+        float owed = 0;
+
+        for (Loan loan : internalList) {
+            owed += loan.getAmountOwed();
+        }
+        return owed;
+    }
+
+    /**
+     * Returns a list of loans filtered by their paid status.
+     *
+     * @param isPaid If true, returns loans that are marked as paid;
+     *               if false, returns loans that are not fully paid.
+     * @return A list of loans matching the specified paid status.
+     */
+    public List<Loan> filterLoansByPaidStatus(boolean isPaid) {
+        List<Loan> filteredLoans = new ArrayList<>();
+        for (Loan loan : internalList) {
+            if (loan.isPaid() == isPaid) {
+                filteredLoans.add(loan);
+            }
+        }
+        return filteredLoans;
     }
 
     /**
      * creates a loan list string where each loan string is sepearated by ','
     */
     public String toSaveString() {
-        if (this.loanList.isEmpty()) {
+        if (this.internalList.isEmpty()) {
             return EMPTY_STRING;
         }
 
         StringBuilder loanList = new StringBuilder();
-        for (Loan loan : this.loanList) {
+        for (Loan loan : this.internalList) {
             loanList.append(loan.toSaveString()).append(',');
         }
 
         // remove the trailing comma
-        if (loanList.length() > 0) {
+        if (!loanList.isEmpty()) {
             loanList.deleteCharAt(loanList.length() - 1);
         }
 
@@ -93,23 +164,17 @@ public class LoanList {
     public String toString() {
         StringBuilder builder = new StringBuilder();
 
-        if (loanList.isEmpty()) {
+        if (internalList.isEmpty()) {
             builder.append("No loans found. \n");
         } else {
             builder.append("Loans: \n");
         }
 
-        for (int i = 0; i < loanList.size(); i++) {
-            Loan loan = loanList.get(i);
+        for (int i = 0; i < internalList.size(); i++) {
+            Loan loan = internalList.get(i);
             builder.append(String.format((i + 1) + ". "));
-            builder.append(loan.getName());
-            builder.append(": [Amount: $");
-            builder.append(loan.getAmount());
-            builder.append(", Interest Rate: ");
-            builder.append(loan.getInterest());
-            builder.append("%, Due Date: ");
-            builder.append(loan.getDueDate());
-            builder.append("]\n");
+            builder.append(Messages.format(loan));
+            builder.append("\n");
         }
 
         return builder.toString();
@@ -124,6 +189,10 @@ public class LoanList {
         if (!(other instanceof LoanList otherLoanList)) {
             return false;
         }
-        return otherLoanList.getLoanList().equals(getLoanList());
+        return otherLoanList.getLoans().equals(getLoans());
+    }
+
+    public Stream<Loan> stream() {
+        return internalList.stream();
     }
 }

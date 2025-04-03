@@ -3,11 +3,13 @@ package seedu.address.model.person;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import seedu.address.logic.commands.SortCommand;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
 
@@ -23,10 +25,55 @@ import seedu.address.model.person.exceptions.PersonNotFoundException;
  * @see Person#isSamePerson(Person)
  */
 public class UniquePersonList implements Iterable<Person> {
-
+    public static final String UNMODIFIABLE_MESSAGE = "Person List cannot be modified in this window, "
+        + "please go back to Person Page.";
     private final ObservableList<Person> internalList = FXCollections.observableArrayList();
     private final ObservableList<Person> internalUnmodifiableList =
             FXCollections.unmodifiableObservableList(internalList);
+
+    private boolean isChangeable = true;
+
+    /**
+     * set if the list can be changed
+     */
+    public void setChangeable(boolean change) {
+        isChangeable = change;
+    }
+
+    public boolean getChangeable() {
+        return this.isChangeable;
+    }
+
+    /**
+     * Sorts the list
+     */
+    public void sort(String sort, String order) {
+        Comparator<Person> comparator;
+
+        if (sort.equals(SortCommand.NAME)) {
+            comparator = Comparator.comparing(
+                person -> person.getName().toString()
+            );
+        } else if (sort.equals(SortCommand.OVERDUE)) {
+            comparator = Comparator.comparing(
+                person -> person.getLoanList().getMostOverdueMonths()
+            );
+        } else if (sort.equals(SortCommand.AMOUNT)) {
+            comparator = Comparator.comparing(
+                person -> person.getLoanList().getTotalLoanOwed()
+            );
+        } else { // default case, should never arrive here, parser will handle
+            comparator = Comparator.comparing(
+                person -> person.getName().toString()
+            );
+        }
+
+        if (order.equals(SortCommand.DESC)) {
+            comparator = comparator.reversed();
+        }
+
+        FXCollections.sort(internalList, comparator);
+    }
 
     /**
      * Returns true if the list contains an equivalent person as the given argument.

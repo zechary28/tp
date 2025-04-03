@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.tag.Tag;
 
@@ -88,7 +89,7 @@ public class Person {
      * if modification is attempted.
      */
     public List<Loan> getLoans() {
-        return loanList.getLoanList();
+        return loanList.getLoans();
     }
 
     /**
@@ -97,6 +98,7 @@ public class Person {
     public LoanList getLoanList() {
         return loanList;
     }
+
     /**
      * Adds a loan to the loan list.
      */
@@ -105,10 +107,37 @@ public class Person {
     }
 
     /**
+     * Adds the loans in a {@link LoanList} to this person's loan list.
+     */
+    public void addLoanList(LoanList loanList) {
+        List<Loan> loansToAdd = loanList.getLoans();
+        for (Loan loan : loansToAdd) {
+            addLoan(loan);
+        }
+    }
+
+    /**
      * Removes a loan from the loan list.
      */
     public void removeLoan(Loan loan) {
         loanList.remove(loan);
+    }
+
+    public void removeLoan(int zeroBasedIndex) {
+        loanList.remove(zeroBasedIndex);
+    }
+
+    /**
+     * Pays a specified amount to a loan.
+     */
+    public void payLoan(int index, float amount) throws IllegalValueException {
+        loanList.payLoan(index, amount);
+    }
+    /**
+     * Returns the number of loans the loan list contains.
+     */
+    public int getLoanCount() {
+        return getLoans().size();
     }
 
     /**
@@ -172,5 +201,4 @@ public class Person {
                 .add("loans", loanList)
                 .toString();
     }
-
 }
