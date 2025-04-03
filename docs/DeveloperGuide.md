@@ -401,7 +401,7 @@ The following diagram summarizes what happens when a user executes a `pay` comma
 **Target user profile**:
 
 * licenced moneylender with a significant number of clients
-* needs to keep track of client contacts 
+* needs to keep track of client contacts
 * needs to keep track of clients' loans
 * prefers desktop apps over other types
 * prefers typing input on CLI to mouse interactions
@@ -497,7 +497,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 * 3a. The given index is invalid.
     * 3a1. AddressBook shows an error message.
-      
+    
       Use case resumes at step 2.
 
 
@@ -542,7 +542,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 * 3a. The given index or loan details are invalid.
     * 3a1. AddressBook shows an error message.
-      
+    
       Use case resumes at step 2.
 
 
@@ -565,7 +565,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 * 3a. The given index of client or loan are invalid.
     * 3a1. AddressBook shows an error message.
-      
+    
       Use case resumes at step 2.
 
 
