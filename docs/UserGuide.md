@@ -1,9 +1,3 @@
----
-  layout: default.md
-  title: "User Guide"
-  pageNav: 3
----
-
 # 🦈 The Sharkives User Guide
 
 The Sharkives is a **desktop application for managing loan records**, optimized for use via a **Command Line Interface (CLI)** while still offering a **Graphical User Interface (GUI)**. If you can type fast, The Sharkster helps you manage loans, repayments, and outstanding debts **more efficiently** than traditional GUI apps.
