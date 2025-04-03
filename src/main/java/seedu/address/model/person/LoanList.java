@@ -57,12 +57,11 @@ public class LoanList {
      */
     public void payLoan(int index, float amount) throws IllegalValueException {
         Loan loanToPay = internalList.get(index);
-        loanToPay.pay(amount); // Modifies the existing Loan object
+        loanToPay.pay(amount);
 
         if (loanToPay.isPaid()) {
             internalList.remove(index); // Automatically notifies ListView
         } else {
-            // Trigger update notification for this specific item
             internalList.set(index, loanToPay); // Replaces with same object (but triggers update)
         }
     }
