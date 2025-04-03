@@ -85,7 +85,7 @@ public class LoanCommand extends Command {
 
         try {
             personToAddLoan.addLoan(loan);
-        } catch (Exception e) {
+        } catch (IllegalArgumentException e) {
             throw new CommandException(e.getMessage());
         }
 
