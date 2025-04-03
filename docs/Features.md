@@ -2,7 +2,7 @@
   title: Features
 </frontmatter>
 
-# 🚀 Features of The Sharkives
+# 🚀 Features of Sharkster
 
 ## 💰 Loan Tracking
 - Keep track of all clients and their outstanding loans.
