@@ -24,15 +24,15 @@ public class LoanFilterCommand extends Command {
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Filters loans by paid status.\n"
             + "Parameters: /pred [predicate type] [predicate parameters]\n"
             + "Available Predicate Types: person, amount, loanType, dueDate, paidStatus \n"
-            + "person parameters:   /pred person [personIndex] \n"
-            + "amount parameters:   /pred amount [< or >] [amount] \n"
-            + "loanType parameters: /pred loanType [s or c] \n"
-            + "isPaid parameters:   /pred isPaid [y or n] \n"
-            + "dueDate parameters:  /pred dueDate [< or >] [date in yyyy-mm-dd] \n"
-            + "Example: " + COMMAND_WORD + " /pred person 2 /pred amount > 100 /pred loanType s";
+            + "person parameters:   pred/ person [personIndex] \n"
+            + "amount parameters:   pred/ amount [< or >] [amount] \n"
+            + "loanType parameters: pred/ loanType [s or c] \n"
+            + "isPaid parameters:   pred/ isPaid [y or n] \n"
+            + "dueDate parameters:  pred/ dueDate [< or >] [date in yyyy-mm-dd] \n"
+            + "Example: " + COMMAND_WORD + " pred/ person 2 pred/ amount > 100 pred/ loanType s";
 
     private final String parameter;
-    private final int value;
+    private final float value;
     private final LocalDate date;
     private final char operator;
 
