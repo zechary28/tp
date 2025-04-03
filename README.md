@@ -2,9 +2,9 @@
 
 ![Ui](docs/images/Ui.png)
 
-# The Sharkives
+# Sharkster
 
-*The Sharkives* is a **desktop application for ethical, non-violent loansharks**.
+*Sharkster* is a **desktop application for ethical, non-violent loansharks**.
 
 Managing clients, tracking debts, and sending payment reminders has never been easier. With automatic interest calculations and well-organized client details, you can stay on top of your business while maintaining professionalism. Whether it's grouping related contacts, scheduling follow-ups, or ensuring accurate repayment tracking, *The Sharkives* streamlines the entire process—so you can focus on what matters.
 
@@ -17,10 +17,10 @@ Managing clients, tracking debts, and sending payment reminders has never been e
 
 ## About
 
-*The Sharkives* is written in **Object-Oriented Programming (OOP) fashion** and provides a **structured, well-documented** codebase.
+*Sharkster* is written in **Object-Oriented Programming (OOP) fashion** and provides a **structured, well-documented** codebase.
 It serves as a **realistic software project** for SE students, offering a codebase of moderate size (~6 KLoC) that balances complexity and maintainability.
 This project was originally based on 'AddressBook Level 3' ('AB3') but has been modified and extended for loan tracking.
 
 
-* For the detailed documentation of this project, see the **[Address Book Product Website](https://se-education.org/addressbook-level3)**.
+* For the detailed documentation of this project, see the **[Sharkster Website](https://ay2425s2-cs2103t-t14-2.github.io/tp/index.html)**.
 * This project is a **part of the se-education.org** initiative. If you would like to contribute code to this project, see [se-education.org](https://se-education.org/#contributing-to-se-edu) for more info.

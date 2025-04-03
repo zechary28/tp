@@ -69,6 +69,20 @@ The Sharkster is a **desktop application for managing loan records**, optimized 
 * If you are using a PDF version of this document, be careful when copying and pasting commands that span multiple lines as space characters surrounding line-breaks may be omitted when copied over to the application.
 </box>
 
+### Adding a person: `add`
+
+Adds a person to the address book.
+
+Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​`
+
+<div markdown="span" class="alert alert-primary">💡 Tip:
+A person can have any number of tags (including 0)
+</div>
+
+Examples:
+* `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01`
+* `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 t/criminal`
+
 ### Adding a Loan : `loan`
 
 Adds a loan to a contact in the address book. Loans can be either **Simple Interest Loans** or **Compound Interest Loans**.
@@ -91,6 +105,18 @@ Examples:
 
 Sorts the borrowers by parameter and order.
 
+**Format:** `sort s/PARAMETER o/ORDER`
+- `PARAMETER` refers to which parameter to sort by `AMOUNT` (Total amount of loans owed for each borrower), `OVERDUE` (Borrower with the most overdue loan), `NAME` (Name of borrower).
+- `AMOUNT` refer to order which to sort by. (`ASC` or `DESC`).
+
+**Example:** `sort s/AMOUNT o/ASC`
+
+---
+
+### Filtering the borrowers: `filter`
+
+Sorts the borrowers by parameter and order.
+
 **Fromat:** `sort s/PARAMETER o/ORDER`
 - `PARAMETER` refers to which parameter to sort by `AMOUNT` (Total amount of loans owed for each borrower), `OVERDUE` (Borrower with the most overdue loan), `NAME` (Name of borrower).
 - `AMOUNT` refer to order which to sort by. (`ASC` or `DESC`).
@@ -106,19 +132,29 @@ Marks a payment made by the loanee.
 **Fromat:** `pay INDEX AMOUNT DUE`
 - `INDEX` refers to the index number of the loanee in the contact list.
 - `AMOUNT` is the amount paid.
-- `DATE` is the payment date in `YYYY-MM-DD` format.
 
 **Example:** `pay 1 50.00 2025-06-01`
 
 ---
 
-### Deleting a Loanee: `delete`
+### Deleting a Loan: `delete`
 
 Deletes all loan details associated with a loanee.
 
 **Format:** `delete INDEX_B INDEX_L`
 - `INDEX_B` refers to the index number of the loanee in the contact list.
 - `INDEX_L` refers to the index number of the loanee's loan.
+
+**Example:** `delete 2 3`
+
+---
+
+### Deleting a Loanee: `delete`
+
+Deletes all details associated with a loanee.
+
+**Format:** `delete INDEX`
+- `INDEX` refers to the index number of the loanee in the contact list.
 
 **Example:** `delete 2`
 
@@ -193,6 +229,7 @@ Action     | Format, Examples
 **Add**    | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague`
 **Clear**  | `clear`
 **Delete** | `delete INDEX_B INDEX_L`<br> e.g., `delete 3 1`
+**Delete** | `delete INDEX_B`<br> e.g., `delete 3`
 **Sort**   | `sort [s/PARAMETER] [o/ORDER]`<br> e.g., `sort s/AMOUNT o/ASC`
 **Pay**    | `pay INDEX AMOUNT`<br> e.g., `pay 1 1000`
 **Filter** | `filter to be done`<br> e.g., `delete 3`
