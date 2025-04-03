@@ -1,5 +1,7 @@
 package seedu.address.model.person;
 
+import seedu.address.logic.parser.ParserUtil;
+
 import java.time.LocalDate;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -8,73 +10,22 @@ import java.util.function.Predicate;
  * Tests that a {@code Loan}'s parameter matches any of the conditions given.
  */
 public class LoanPredicate implements Predicate<Loan> {
-    private final LoanParameter parameter;
+    private final ParserUtil.LoanParameter parameter;
+    private final Optional<Integer> index;
     private final Optional<Float> value;
     private final Optional<LocalDate> date;
     private final Optional<Character> operator;
 
-    public enum LoanParameter {
-        AMOUNT, DUE_DATE, LOAN_TYPE, IS_PAID, INVALID;
-
-        public static LoanParameter fromString(String paramType) {
-            switch (paramType.toLowerCase()) {
-            case "amount":
-                return AMOUNT;
-            case "duedate":
-                return DUE_DATE;
-            case "loantype":
-                return LOAN_TYPE;
-            case "ispaid":
-                return IS_PAID;
-            default:
-                return INVALID;
-            }
-        }
-    }
-
-    public LoanPredicate(String args) {
-        String[] tokens = args.split("\\s+");
-        if (tokens.length == 0) {
-            this.parameter = LoanParameter.INVALID;
-            this.value = Optional.empty();
-            this.date = Optional.empty();
-            this.operator = Optional.empty();
-        } else {
-            this.parameter = LoanParameter.fromString(tokens[0]);
-            if (this.parameter == LoanParameter.AMOUNT) {
-                String op = tokens[1];
-                this.operator = (op.equals("<") || op.equals(">"))
-                        ? Optional.of(op.charAt(0))
-                        : Optional.empty();
-                this.value = Optional.of(Float.parseFloat(tokens[2]));
-                this.date = Optional.empty();
-            } else if (this.parameter == LoanParameter.DUE_DATE) {
-                String op = tokens[1];
-                this.operator = (op.equals("<") || op.equals(">"))
-                        ? Optional.of(op.charAt(0))
-                        : Optional.empty();
-                this.value = Optional.empty();
-                this.date = Optional.of(LocalDate.parse(tokens[2]));
-            } else if (this.parameter == LoanParameter.LOAN_TYPE) {
-                String op = tokens[1];
-                this.operator = (op.equals("s") || op.equals("c"))
-                        ? Optional.of(op.charAt(0))
-                        : Optional.empty();
-                this.value = Optional.empty();
-                this.date = Optional.empty();
-            } else if (this.parameter == LoanParameter.IS_PAID) {
-                String op = tokens[1];
-                this.operator = (op.equals("y") || op.equals("n"))
-                        ? Optional.of(op.charAt(0))
-                        : Optional.empty();
-                this.value = Optional.empty();
-                this.date = Optional.empty();
-            } else {
-                this.operator = Optional.empty();
-                this.value = Optional.empty();
-                this.date = Optional.empty();
-            }
-        }
+    public LoanPredicate(ParserUtil.LoanParameter parameter,
+                         Optional<Integer> index,
+                         Optional<Float> value,
+                         Optional<LocalDate> date,
+                         Optional<Character> operator) {
+        this.parameter = parameter;
+        this.index = index;
+        this.value = value;
+        this.date = date;
+        this.operator = operator;
     }
 
     @Override

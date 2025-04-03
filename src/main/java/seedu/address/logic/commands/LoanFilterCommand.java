@@ -29,9 +29,10 @@ public class LoanFilterCommand extends Command {
             + "loanType parameters: pred/ loanType [s or c] \n"
             + "isPaid parameters:   pred/ isPaid [y or n] \n"
             + "dueDate parameters:  pred/ dueDate [< or >] [date in yyyy-mm-dd] \n"
-            + "Example: " + COMMAND_WORD + " pred/ person 2 pred/ amount > 100 pred/ loanType s";
+            + "Example: " + COMMAND_WORD + " pred/ person 2 pred/ amount > 100.00 pred/ loanType s";
 
     private final String parameter;
+    private final int index;
     private final float value;
     private final LocalDate date;
     private final char operator;
@@ -47,8 +48,9 @@ public class LoanFilterCommand extends Command {
      *                 isPaid:status [y or n]
      * @param date LocalDate input for dueDate parameter
      */
-    public LoanFilterCommand(String parameter, int value, LocalDate date, char operator) {
+    public LoanFilterCommand(String parameter, int index, float value, LocalDate date, char operator) {
         this.parameter = parameter;
+        this.index = index;
         this.value = value;
         this.date = date;
         this.operator = operator;
@@ -68,7 +70,7 @@ public class LoanFilterCommand extends Command {
 
         switch (parameter) {
         case "person": {
-            Person person = model.getFilteredPersonList().get(value);
+            Person person = model.getFilteredPersonList().get(this.index);
             boolean foundAny = false;
             List<Loan> filteredLoans = person.getLoanList().getLoans(); // todo demeter
             if (!filteredLoans.isEmpty()) {

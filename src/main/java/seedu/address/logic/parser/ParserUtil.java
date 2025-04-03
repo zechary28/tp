@@ -2,17 +2,16 @@ package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.person.Address;
-import seedu.address.model.person.Email;
-import seedu.address.model.person.Name;
-import seedu.address.model.person.Phone;
+import seedu.address.model.person.*;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -120,5 +119,93 @@ public class ParserUtil {
             tagSet.add(parseTag(tagName));
         }
         return tagSet;
+    }
+
+    public enum LoanParameter {
+        AMOUNT, DUE_DATE, LOAN_TYPE, IS_PAID, INVALID;
+
+        public static LoanParameter fromString(String paramType) {
+            switch (paramType.toLowerCase()) {
+            case "amount":
+                return AMOUNT;
+            case "duedate":
+                return DUE_DATE;
+            case "loantype":
+                return LOAN_TYPE;
+            case "ispaid":
+                return IS_PAID;
+            default:
+                return INVALID;
+            }
+        }
+    }
+
+    /**
+     * Parses a {@code String loanPredicate} into a {@code LoanPredicate}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code loanPredicate} is invalid.
+     */
+    public static LoanPredicate parseLoanPredicate(String args) throws ParseException {
+        String[] tokens = requireNonNull(args).trim().split("\\s+");
+        LoanParameter parameter;
+        Optional<Float> value;
+        Optional<LocalDate> date;
+        Optional<Character> operator;
+        if (tokens.length == 0) {
+            parameter = LoanParameter.INVALID;
+            value = Optional.empty();
+            date = Optional.empty();
+            operator = Optional.empty();
+        } else {
+            parameter = LoanParameter.fromString(tokens[0]);
+            if (parameter == LoanParameter.AMOUNT) {
+                String op = tokens[1];
+                operator = (op.equals("<") || op.equals(">"))
+                        ? Optional.of(op.charAt(0))
+                        : Optional.empty();
+                value = Optional.of(Float.parseFloat(tokens[2]));
+                date = Optional.empty();
+            } else if (parameter == LoanParameter.DUE_DATE) {
+                String op = tokens[1];
+                operator = (op.equals("<") || op.equals(">"))
+                        ? Optional.of(op.charAt(0))
+                        : Optional.empty();
+                value = Optional.empty();
+                date = Optional.of(LocalDate.parse(tokens[2]));
+            } else if (parameter == LoanParameter.LOAN_TYPE) {
+                String op = tokens[1];
+                operator = (op.equals("s") || op.equals("c"))
+                        ? Optional.of(op.charAt(0))
+                        : Optional.empty();
+                value = Optional.empty();
+                date = Optional.empty();
+            } else if (parameter == LoanParameter.IS_PAID) {
+                String op = tokens[1];
+                operator = (op.equals("y") || op.equals("n"))
+                        ? Optional.of(op.charAt(0))
+                        : Optional.empty();
+                value = Optional.empty();
+                date = Optional.empty();
+            } else {
+                operator = Optional.empty();
+                value = Optional.empty();
+                date = Optional.empty();
+            }
+        }
+        Optional<Integer> index = Optional.empty();
+        return new LoanPredicate(parameter, index, value, date, operator);
+    }
+
+    /**
+     * Parses {@code Collection<String> loanPredicates} into a {@code Set<LoanPredicates>}.
+     */
+    public static Set<LoanPredicate> parseLoanPredicates(Collection<String> preds) throws ParseException {
+        requireNonNull(preds);
+        final Set<LoanPredicate> predSet = new HashSet<>();
+        for (String predName : preds) {
+            predSet.add(parseLoanPredicate(predName));
+        }
+        return predSet;
     }
 }

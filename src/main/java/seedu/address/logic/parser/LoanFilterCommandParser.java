@@ -3,10 +3,7 @@ package seedu.address.logic.parser;
 import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.commands.LoanFilterCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.person.Address;
-import seedu.address.model.person.Email;
-import seedu.address.model.person.Name;
-import seedu.address.model.person.Phone;
+import seedu.address.model.person.*;
 import seedu.address.model.tag.Tag;
 
 import java.time.LocalDate;
@@ -37,21 +34,8 @@ public class LoanFilterCommandParser implements Parser<LoanFilterCommand> {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
         }
 
-        String parameter = "hello";
-        int value = 2;
-        LocalDate date = new LocalDate();
-        char operator = 'e';
+        Set<LoanPredicate> PredicateList = ParserUtil.parseLoanPredicates(argMultimap.getAllValues(PREFIX_FILTERPREDICATE));
 
-        // todo make predicate class
-        Set<Integer> PredicateList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_FILTERPREDICATE));
-
-        if (trimmedArgs.equals("paid")) {
-            return new LoanFilterCommand(true);
-        } else if (trimmedArgs.equals("unpaid")) {
-            return new LoanFilterCommand(false);
-        } else {
-            throw new ParseException("Invalid filter keyword.");
-        }
     }
 
 
