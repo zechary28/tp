@@ -31,9 +31,9 @@ public class LoanFilterCommand extends Command {
             + "Parameters: [personIndex] /pred [predicate type] [predicate parameters]\n"
             + "Available Predicate Types: amount, loanType, dueDate, paidStatus \n"
             + "amount parameters:   pred/ amount [< or >] [amount] \n"
+            + "dueDate parameters:  pred/ dueDate [< or >] [date in yyyy-mm-dd] \n"
             + "loanType parameters: pred/ loanType [s or c] \n"
             + "isPaid parameters:   pred/ isPaid [y or n] \n"
-            + "dueDate parameters:  pred/ dueDate [< or >] [date in yyyy-mm-dd] \n"
             + "Example: " + COMMAND_WORD + "3 pred/ amount > 100.00 pred/ loanType s";
 
     private final Set<LoanPredicate> predicateSet;
@@ -70,16 +70,10 @@ public class LoanFilterCommand extends Command {
         Person person = model.getFilteredPersonList().get(this.personIndex - 1);
         List<Loan> filteredLoans = person.getLoanList().getLoans(); // todo demeter
 
-        System.out.println("Before:");
-        printList(filteredLoans);
-
         // for all predicates, list -> filteredlist
         for (LoanPredicate pred : predicateSet) {
             filteredLoans = filterLoanList(filteredLoans, pred);
         }
-
-        System.out.println("After:");
-        printList(filteredLoans);
 
         // handle empty result list
         if (filteredLoans.isEmpty()) {
