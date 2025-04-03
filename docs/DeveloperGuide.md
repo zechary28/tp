@@ -115,6 +115,14 @@ How the parsing works:
 * When called upon to parse a user command, the `AddressBookParser` class creates an `XYZCommandParser` (`XYZ` is a placeholder for the specific command name e.g., `AddCommandParser`) which uses the other classes shown above to parse the user command and create a `XYZCommand` object (e.g., `AddCommand`) which the `AddressBookParser` returns back as a `Command` object.
 * All `XYZCommandParser` classes (e.g., `AddCommandParser`, `DeleteCommandParser`, ...) inherit from the `Parser` interface so that they can be treated similarly where possible e.g, during testing.
 
+The following classes were added to support new commands:
+
+- `PayCommand` and `PayCommandParser`
+- `SortCommand` and `SortCommandParser`
+- `FilterLoanCommand` and `FilterLoanCommandParser`
+
+Each new command follows the Command design pattern and extends the abstract `Command` class.
+
 ### Model component
 **API** : [`Model.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/model/Model.java)
 
@@ -342,55 +350,96 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 --------------------------------------------------------------------------------------------------------------------
 
-## **Appendix: Instructions for manual testing**
+### **Appendix: Instructions for Manual Testing**
 
 Given below are instructions to test the app manually.
 
-<box type="info" seamless>
+> **Note:** These instructions only provide a starting point for testers to work on.  
+> Testers are expected to do more *exploratory* testing.
 
-**Note:** These instructions only provide a starting point for testers to work on;
-testers are expected to do more *exploratory* testing.
+---
 
-</box>
+### Launch and Shutdown
 
-### Launch and shutdown
+#### Initial Launch
 
-1. Initial launch
+1. Download the `.jar` file and place it in an empty folder.
+2. Double-click the `.jar` file.  
+   **Expected:** The app launches with a sample list of persons. The window may not be optimally sized.
 
-   1. Download the jar file and copy into an empty folder
+#### Saving Window Preferences
 
-   1. Double-click the jar file Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
+1. Resize and reposition the window to a new location.
+2. Close the window and re-launch the `.jar` file.  
+   **Expected:** The most recent window size and location are retained.
 
-1. Saving window preferences
+---
 
-   1. Resize the window to an optimum size. Move the window to a different location. Close the window.
+### Deleting a Person
 
-   1. Re-launch the app by double-clicking the jar file.<br>
-       Expected: The most recent window size and location is retained.
+#### While all persons are shown
 
-1. _{ more test cases …​ }_
+1. **Prerequisite:** Run the `list` command to display all persons. Ensure there are at least 2 persons in the list.
+2. **Test case:** `delete 1`  
+   **Expected:** First person in the list is deleted. Status message displays deleted contact details. Timestamp updates.
+3. **Test case:** `delete 0`  
+   **Expected:** No person is deleted. Error message is shown. Status bar remains unchanged.
+4. **Test case:** `delete`  
+   **Expected:** Error message for missing index.
+5. **Test case:** `delete x` (where `x` is larger than the list size)  
+   **Expected:** Error message for invalid index.
 
-### Deleting a person
+---
 
-1. Deleting a person while all persons are being shown
+### Saving Data
 
-   1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
+#### Missing or Corrupted Data File
 
-   1. Test case: `delete 1`<br>
-      Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
+1. Locate the `data/addressbook.json` file and rename/delete it while the app is closed.
+2. Re-launch the app.  
+   **Expected:** A new data file is generated with sample data, or an appropriate error message is shown.
+3. Alternatively, open `addressbook.json` and modify it to an invalid JSON format (e.g., remove a closing brace).
+4. Re-launch the app.  
+   **Expected:** App shows error message about corrupted data and starts with an empty dataset.
 
-   1. Test case: `delete 0`<br>
-      Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
+---
 
-   1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
-      Expected: Similar to previous.
+### Sort Command
 
-1. _{ more test cases …​ }_
+1. **Test case:** `sort`  
+   **Expected:** List is sorted with overdue loans at the top, followed by others in descending order of loan amount.
+2. **Test case:** `sort extraArg`  
+   **Expected:** Error message for invalid command format.
 
-### Saving data
+---
 
-1. Dealing with missing/corrupted data files
+### FilterLoan Command
 
-   1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
+1. **Test case:** `filterLoan unpaid`  
+   **Expected:** Only persons with unpaid loans are displayed.
+2. **Test case:** `filterLoan paid`  
+   **Expected:** Only persons with fully paid loans are displayed.
+3. **Test case:** `filterLoan abc`  
+   **Expected:** Error message indicating invalid filter option.
 
-1. _{ more test cases …​ }_
+---
+
+## **Appendix: Effort**
+
+Our team of 5 spent significant effort extending the base AB3 functionality into a **financial loan tracking application**.
+
+### Challenges:
+
+- Implementing accurate logic for **compound vs. simple interest**, especially across multiple repayments
+- Designing a flexible `Loan` model to support **filtering, sorting, payment tracking**
+- Maintaining UI consistency while adding new fields (e.g., status, amounts)
+- Managing state updates in `ModelManager` to ensure correct `ObservableList` behavior
+
+### Achievements:
+
+- Built fully functional `pay`, `filterLoan`, and `sort` commands
+- Enhanced UI responsiveness and modularity
+- 0 reused code: All logic and data structures were built from scratch
+
+---
+
