@@ -11,14 +11,15 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.control.ScrollPane?>
 <HBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:id="cardPane" alignment="CENTER_LEFT">
     <!-- Button now fills the whole space -->
-    <Button fx:id="personButton" onAction="#handleCardClick" styleClass="transparent-button" HBox.hgrow="ALWAYS" maxWidth="Infinity" maxHeight="Infinity">
+    <Button fx:id="personButton" onAction="#handleCardClick" styleClass="transparent-button" HBox.hgrow="ALWAYS" maxWidth="Infinity" maxHeight="200">
         <graphic>
             <StackPane>
-                <VBox fx:id="contentBox" alignment="CENTER_LEFT" minHeight="105" HBox.hgrow="ALWAYS">
+                <VBox fx:id="contentBox" alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
                     <padding>
-                        <Insets top="5" right="5" bottom="5" left="15"/>
+                        <Insets top="5" right="5" bottom="5" left="5"/>
                     </padding>
                     <HBox spacing="5" alignment="CENTER_LEFT">
                         <Label fx:id="id" styleClass="cell_big_label"/>
@@ -28,7 +29,10 @@
                     <Label fx:id="phone" styleClass="cell_small_label"/>
                     <Label fx:id="address" styleClass="cell_small_label"/>
                     <Label fx:id="email" styleClass="cell_small_label"/>
-                    <Label fx:id="loans" styleClass="cell_small_label"/>
+                    <Label text="Loans: " styleClass="cell_small_label"/>
+                    <ScrollPane onMouseClicked="#handleCardClick">
+                        <Label fx:id="loans" styleClass="cell_small_label"/>
+                    </ScrollPane>
                 </VBox>
             </StackPane>
         </graphic>

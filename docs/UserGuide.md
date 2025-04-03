@@ -4,9 +4,9 @@
   pageNav: 3
 ---
 
-# 🦈 The Sharkster User Guide
+# 🦈 The Sharkives User Guide
 
-The Sharkster is a **desktop application for managing loan records**, optimized for use via a **Command Line Interface (CLI)** while still offering a **Graphical User Interface (GUI)**. If you can type fast, The Sharkster helps you manage loans, repayments, and outstanding debts **more efficiently** than traditional GUI apps.
+The Sharkives is a **desktop application for managing loan records**, optimized for use via a **Command Line Interface (CLI)** while still offering a **Graphical User Interface (GUI)**. If you can type fast, The Sharkster helps you manage loans, repayments, and outstanding debts **more efficiently** than traditional GUI apps.
 
 <!-- * Table of Contents -->
 <page-nav-print />
@@ -29,19 +29,21 @@ The Sharkster is a **desktop application for managing loan records**, optimized 
 5. Type the command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open the help window.<br>
    Some example commands you can try:
 
-    * `loan 1 s 1000 10 2027-10-10` : Creates a new simple interest loan for a selected borrower.
+    * `loan 1 s 1000 10 2027-10-10` : Creates a new simple interest loan with 10% interest for a selected borrower.
 
     * `sort` : Sort borrowers by name and order asc (default).
 
     * `list` : Lists all recorded borrowers and their loans.
 
-    * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01` : Adds a borrower named John Doe to Sharkvies.
+    * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01` : Adds a borrower named John Doe to Sharkives.
 
     * `clear` : Deletes all borrower records.
 
     * `exit` : Exits the app.
 
 6. Refer to the [Features](#features) below for details of each command.
+
+7. Alternatively, skip straight to our [Command Summary](#command-summary) to get started immediately!
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -90,8 +92,8 @@ Adds a loan to a contact in the address book. Loans can be either **Simple Inter
 Format: `loan INDEX TYPE AMOUNT INTEREST_RATE DUE_DATE​`
 - `INDEX` refers to the index number of the contact as displayed in the contact list.
 - `TYPE` is either `s` (Simple Interest Loan) or `c` (Compound Interest Loan).
-- `AMOUNT` is the principal loan amount (e.g., `100.00`).
-- `INTEREST_RATE` is the percentage interest rate (e.g., `5.5` for `5.5%`).
+- `AMOUNT` is the principal loan amount (accepts up to 2 d.p.).
+- `INTEREST_RATE` is the percentage interest rate (accepts up to 2 d.p.).
 - `DUE_DATE` is the loan's due date in `YYYY-MM-DD` format.
 
 
@@ -116,13 +118,24 @@ Sorts the borrowers by parameter and order.
 
 ### Recording a Payment: `pay`
 
-Marks a payment made by the loanee.
+Records a payment made by the loanee.
 
-**Format:** `pay INDEX AMOUNT DUE`
-- `INDEX` refers to the index number of the loanee in the contact list.
-- `AMOUNT` is the amount paid.
+**Format:** `pay PERSON_INDEX LOAN_INDEX AMOUNT`
+- `PERSON_INDEX` refers to the index number of the loanee in the contact list.
+- `LOAN_INDEX` refers to the index number of the loan of the loanee to pay.
+- `AMOUNT` is the amount paid (accepts up to 2 d.p.).
 
-**Example:** `pay 1 50.00 2025-06-01`
+**Example:** `pay 1 2 50.00`
+
+**Alternative Format 1:** `pay PERSON_INDEX LOAN_INDEX MONTHS'M'`
+- `MONTHS` is the number of months' worth of instalments to pay.
+
+**Example:** `pay 1 2 5M`
+
+**Alternative Format 2:** `pay PERSON_INDEX LOAN_INDEX all`
+- Pays all the remaining owed by the loanee for a particular loan.
+
+**Example:** `pay 1 2 all`
 
 ---
 
@@ -136,26 +149,14 @@ You can chain multiple predicates of different parameters.
 - `PARAMETER` refers to which parameter to sort by `AMOUNT` (Total amount of loans owed for each borrower), `OVERDUE` (Borrower with the most overdue loan), `NAME` (Name of borrower).
 - `TOKENS` refer to the further arguments to specify a predicate, respective tokens for each parameter are listed below.
 
-Parameter    | Required Tokens
--------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-**amount**   | `operator(< or >), amount(float)` <br> e.g., `pred/ amount > 500` <br> shows client's loans greater than $500.00 remaining owed
-**dueDate**  | `operator(< or >), dueDate(yyyy-mm-dd)` <br> e.g., `pred/ dueDate < 2025-05-10` <br> shows client's loans due before 10 May 2025
-**loanType** | `loanType(s or c)` <br> e.g., `pred/ loanType s` <br> shows client's simple interest loans
-**isPaid**   | `paidStatus(y or n)` <br> e.g., `pred/ isPaid n` <br> shows client's loans that are unpaid
+| Parameter    | Required Tokens                                                                                                                  |
+|--------------|----------------------------------------------------------------------------------------------------------------------------------|
+| **amount**   | `operator(< or >), amount(float)` <br> e.g., `pred/ amount > 500` <br> shows client's loans greater than $500.00 remaining owed  |
+| **dueDate**  | `operator(< or >), dueDate(yyyy-mm-dd)` <br> e.g., `pred/ dueDate < 2025-05-10` <br> shows client's loans due before 10 May 2025 |
+| **loanType** | `loanType(s or c)` <br> e.g., `pred/ loanType s` <br> shows client's simple interest loans                                       |
+| **isPaid**   | `paidStatus(y or n)` <br> e.g., `pred/ isPaid n` <br> shows client's loans that are unpaid                                       |
 
 **Example:** `filterLoan 3 pred/ amount > 500 pred/ loanType c pred/ isPaid n`
-
----
-
-### Deleting a Loan: `delete`
-
-Deletes all loan details associated with a loanee.
-
-**Format:** `delete INDEX_B INDEX_L`
-- `INDEX_B` refers to the index number of the loanee in the contact list.
-- `INDEX_L` refers to the index number of the loanee's loan.
-
-**Example:** `delete 2 3`
 
 ---
 
@@ -167,6 +168,18 @@ Deletes all details associated with a loanee.
 - `INDEX` refers to the index number of the loanee in the contact list.
 
 **Example:** `delete 2`
+
+---
+
+### Deleting a Loanee's Loan: `delete loan`
+
+Deletes a specified loan from a loanee.
+
+**Format:** `delete PERSON_INDEX LOAN_INDEX`
+- `PERSON_INDEX` refers to the index number of the loanee in the contact list.
+- `LOAN_INDEX` refers to the index number of the loan in the loanee's loan list.
+
+**Example:** `delete 2 1`
 
 ---
 
@@ -234,16 +247,15 @@ _Details coming soon ..._
 
 ## Command summary
 
-Action     | Format, Examples
------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-**Add**    | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague`
-**Clear**  | `clear`
-**Delete** | `delete INDEX_B INDEX_L`<br> e.g., `delete 3 1`
-**Delete** | `delete INDEX_B`<br> e.g., `delete 3`
-**Sort**   | `sort [s/PARAMETER] [o/ORDER]`<br> e.g., `sort s/AMOUNT o/ASC`
-**Pay**    | `pay INDEX AMOUNT`<br> e.g., `pay 1 1000`
-**Filter** | `filterLoan INDEX [pred/PREDICATE] ...`<br> e.g., `filterLoan 3 pred/ amount > 500 pred/ loanType c`
-**Edit**   | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
-**Find**   | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
-**List**   | `list`
-**Help**   | `help`
+| Action     | Format, Examples                                                                                                                                                                                           |
+|------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Add**    | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague`                                      |
+| **Clear**  | `clear`                                                                                                                                                                                                    |
+| **Delete** | `delete PERSON_INDEX`<br> e.g., `delete 3`<br> <br>`delete loan PERSON_INDEX LOAN_INDEX` <br> e.g., `delete loan 3 1`                                                                                      ||
+| **Sort**   | `sort [s/PARAMETER] [o/ORDER]`<br> e.g., `sort s/AMOUNT o/ASC`                                                                                                                                             |
+| **Pay**    | `pay PERSON_INDEX LOAN_INDEX AMOUNT`<br> e.g., `pay 1 1 1000`<br> <br> `pay PERSON_INDEX LOAN_INDEX MONTHS'M'`<br> e.g., `pay 1 1 5M` <br> <br> `pay PERSON_INDEX LOAN_INDEX all` <br> e.g., `pay 1 1 all` |
+| **Filter** | `filterLoan INDEX [pred/PREDICATE] ...`<br> e.g., `filterLoan 3 pred/ amount > 500 pred/ loanType c`                                                                                                       |
+| **Edit**   | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`                                                                                |
+| **Find**   | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`                                                                                                                                                 |
+| **List**   | `list`                                                                                                                                                                                                     |
+| **Help**   | `help`                                                                                                                                                                                                     |
