@@ -27,15 +27,17 @@ public class LoanFilterCommandParser implements Parser<LoanFilterCommand> {
      */
     public LoanFilterCommand parse(String args) throws ParseException {
         ArgumentMultimap argMultimap =
-                ArgumentTokenizer.tokenize(args, PREFIX_FILTERPREDICATE);
+                ArgumentTokenizer.tokenize(args, PREFIX_FILTER_PREDICATE);
 
-        if (!arePrefixesPresent(argMultimap, PREFIX_FILTERPREDICATE)
+        if (!arePrefixesPresent(argMultimap, PREFIX_FILTER_PREDICATE)
                 || !argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
         }
 
-        Set<LoanPredicate> predicateList = ParserUtil.parseLoanPredicates(argMultimap.getAllValues(PREFIX_FILTERPREDICATE));
-        return new LoanFilterCommand(predicateList);
+        int personIndex = Integer.parseInt(argMultimap.getPreamble());
+
+        Set<LoanPredicate> predicateList = ParserUtil.parseLoanPredicates(argMultimap.getAllValues(PREFIX_FILTER_PREDICATE));
+        return new LoanFilterCommand(personIndex, predicateList);
     }
 
 
