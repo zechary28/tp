@@ -39,6 +39,7 @@
     -fx-max-height: 0;
 }
 
+/* Table View */
 .table-view {
     -fx-base: #1d1d1d;
     -fx-control-inner-background: #1d1d1d;
@@ -96,15 +97,15 @@
 .list-cell {
     -fx-label-padding: 0 0 0 0;
     -fx-graphic-text-gap : 0;
-    -fx-padding: 0 0 0 0;
+    -fx-padding: 4px 0px;
 }
 
 .list-cell:filled:even {
-    -fx-background-color: #3c3e3f;
+    -fx-background-color:  #383838;
 }
 
 .list-cell:filled:odd {
-    -fx-background-color: #515658;
+ -fx-background-color: #383838;
 }
 
 .list-cell:filled:selected {
@@ -123,19 +124,21 @@
 .cell_big_label {
     -fx-font-family: "Segoe UI Semibold";
     -fx-font-size: 16px;
-    -fx-text-fill: #010504;
+    -fx-text-fill: white;
 }
 
 .cell_small_label {
     -fx-font-family: "Segoe UI";
     -fx-font-size: 13px;
-    -fx-text-fill: #010504;
+    -fx-text-fill: white;
 }
 
+/* Changes search bar background color */
 .stack-pane {
      -fx-background-color: derive(#1d1d1d, 20%);
 }
 
+/* Main background colour */
 .pane-with-border {
      -fx-background-color: derive(#1d1d1d, 20%);
      -fx-border-color: derive(#1d1d1d, 10%);
@@ -192,6 +195,7 @@
     -fx-text-fill: white;
 }
 
+/* Menu bar (top) background color */
 .menu-bar {
     -fx-background-color: derive(#1d1d1d, 20%);
 }
@@ -281,10 +285,12 @@
     -fx-text-fill: white;
 }
 
+/* Scroll bar background color */
 .scroll-bar {
     -fx-background-color: derive(#1d1d1d, 20%);
 }
 
+/* Scroll bar color */
 .scroll-bar .thumb {
     -fx-background-color: derive(#1d1d1d, 50%);
     -fx-background-insets: 3;
@@ -308,8 +314,17 @@
 }
 
 #cardPane {
-    -fx-background-color: transparent;
-    -fx-border-width: 0;
+    -fx-background-color: transparent; /* Dark grey for a modern look */
+    -fx-border-color: white; /* White border for contrast */
+    -fx-border-width: 1.5px;
+    -fx-border-radius: 10px;
+    -fx-padding: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0, 0, 3);
+}
+
+/* Apply hover effect to the entire card pane */
+#cardPane:hover {
+    -fx-border-color: red;
 }
 
 #commandTypeLabel {
@@ -349,4 +364,52 @@
     -fx-border-radius: 2;
     -fx-background-radius: 2;
     -fx-font-size: 11;
+}
+
+
+.transparent-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.transparent-button:hover {
+    -fx-background-color: rgba(0, 0, 0, 0); /* Light Gray */
+}
+
+.transparent-button:pressed {
+    -fx-background-color: inherit;  /* Keeps the same background color */
+    -fx-effect: none;               /* Removes any shadow or glow effects */
+}
+.transparent-button:focused {
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-insets: 0;
+}
+
+.loan_label {
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+}
+
+
+/* Removes the white background */
+.scroll-pane {
+    -fx-background-color: transparent;
+}
+
+/* Ensures the viewport inside is also transparent */
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+.loan_card {
+    -fx-background-color: #383838; /* Dark grey background for contrast */
+    -fx-border-color: white; /* Orange border for visibility */
+    -fx-border-width: 1.5px;
+    -fx-border-radius: 10px;
+    -fx-padding: 10px;
+    -fx-margin: 5px 0px;
+    -fx-spacing: 8px; /* Space between labels inside the card */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0, 0, 3);
 }

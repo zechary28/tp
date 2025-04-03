@@ -123,6 +123,10 @@ public class Person {
         loanList.remove(loan);
     }
 
+    public void removeLoan(int zeroBasedIndex) {
+        loanList.remove(zeroBasedIndex);
+    }
+
     /**
      * Pays a specified amount to a loan.
      */
@@ -197,5 +201,4 @@ public class Person {
                 .add("loans", loanList)
                 .toString();
     }
-
 }

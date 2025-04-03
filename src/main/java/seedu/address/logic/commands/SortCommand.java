@@ -4,7 +4,9 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ORDER;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_SORT;
 
+import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
+import seedu.address.model.person.UniquePersonList;
 
 /**
  * Sorts the person list
@@ -60,7 +62,11 @@ public class SortCommand extends Command {
     }
 
     @Override
-    public CommandResult execute(Model model) {
+    public CommandResult execute(Model model) throws CommandException {
+        if (!model.getIsChangeable()) {
+            throw new CommandException(UniquePersonList.UNMODIFIABLE_MESSAGE);
+        }
+
         model.sortPeople(sort, order);
         return new CommandResult("Sorted by " + sort + " and ordered by " + order);
     }

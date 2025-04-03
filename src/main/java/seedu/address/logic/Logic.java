@@ -33,6 +33,9 @@ public interface Logic {
     /** Returns an unmodifiable view of the filtered list of persons */
     ObservableList<Person> getFilteredPersonList();
 
+    /** Sets if the person list can be changed */
+    void setPersonListChangeable(boolean change);
+
     /**
      * Returns the user prefs' address book file path.
      */
