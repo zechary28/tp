@@ -3,6 +3,7 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -34,13 +35,15 @@ public class LoanFilterCommand extends Command {
             + "Example: " + COMMAND_WORD + " pred/ person 2 pred/ amount > 100.00 pred/ loanType s";
 
     private final Set<LoanPredicate> predicateSet;
+    private final int personIndex;
 
     /**
      * Constructs a LoanFilterCommand.
      *
      * @param predicateSet Set of LoanPredicate which will be used for filtering
      */
-    public LoanFilterCommand(Set<LoanPredicate> predicateSet) {
+    public LoanFilterCommand(int personIndex, Set<LoanPredicate> predicateSet) {
+        this.personIndex = personIndex;
         this.predicateSet = predicateSet;
     }
 
@@ -54,53 +57,36 @@ public class LoanFilterCommand extends Command {
     @Override
     public CommandResult execute(Model model) {
         requireNonNull(model);
+        Person person = model.getFilteredPersonList().get(this.personIndex);
+        List<Loan> filteredLoans = person.getLoanList().getLoans(); // todo demeter
+
+        // for all predicates, list -> filteredlist
+        for (LoanPredicate pred : predicateSet) {
+            filteredLoans = filterLoanList(filteredLoans, pred);
+        }
+
+        // handle empty result list
+        if (filteredLoans.isEmpty()) {
+            return new CommandResult("No loans found.");
+        }
+
+        // build string for result
         StringBuilder result = new StringBuilder();
-
-        switch (parameter) {
-        case "person": {
-            Person person = model.getFilteredPersonList().get(this.index);
-            boolean foundAny = false;
-            List<Loan> filteredLoans = person.getLoanList().getLoans(); // todo demeter
-            if (!filteredLoans.isEmpty()) {
-                foundAny = true;
-                result.append("Loans for ").append(person.getName()).append(":\n");
-
-                for (Loan loan : filteredLoans) {
-                    result.append("  ").append(loan.toString()).append("\n");
-                }
-
-                result.append("\n"); // add spacing between people
-            }
-            if (!foundAny) { // todo code duplication
-                return new CommandResult("No " + " loans found.");
-            }
+        for (Loan loan : filteredLoans) {
+            result.append(loan + "\n");
         }
-        case "isPaid": {
-            List<Person> persons = model.getFilteredPersonList();
-            boolean foundAny = false;
-            boolean isPaid = operator == 'y';
 
-            for (Person person : persons) {
-                List<Loan> filteredLoans = person.getLoanList().filterLoansByPaidStatus(isPaid);
-                if (!filteredLoans.isEmpty()) {
-                    foundAny = true;
-                    result.append("Loans for ").append(person.getName()).append(":\n");
-
-                    for (Loan loan : filteredLoans) {
-                        result.append("  ").append(loan.toString()).append("\n");
-                    }
-
-                    result.append("\n"); // add spacing between people
-                }
-            }
-
-            if (!foundAny) {
-                return new CommandResult("No " + " loans found.");
-            }
-        }
-        default:
-            // TODO handle invalid command
-        }
         return new CommandResult(result.toString().trim());
     }
+
+    private List<Loan> filterLoanList(List<Loan> loans, LoanPredicate pred) {
+        List<Loan> result = new ArrayList<>();
+        for (Loan loan : loans) {
+            if (pred.test(loan)) {
+                result.add(loan);
+            }
+        }
+        return result;
+    }
+
 }
