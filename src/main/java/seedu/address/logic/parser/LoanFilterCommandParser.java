@@ -30,7 +30,7 @@ public class LoanFilterCommandParser implements Parser<LoanFilterCommand> {
                 ArgumentTokenizer.tokenize(args, PREFIX_FILTER_PREDICATE);
 
         if (argMultimap.getPreamble().isEmpty()) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, LoanFilterCommand.MESSAGE_USAGE));
         }
 
         int personIndex = Integer.parseInt(argMultimap.getPreamble());

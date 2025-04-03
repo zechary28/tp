@@ -2,11 +2,11 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.person.Loan;
@@ -26,7 +26,7 @@ import seedu.address.model.person.UniquePersonList;
 public class LoanFilterCommand extends Command {
     public static final String COMMAND_WORD = "filterLoan";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Filters loans by paid status.\n"
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Filters loans of specified person by given parameters.\n"
             + "Parameters: [personIndex] /pred [predicate type] [predicate parameters]\n"
             + "Available Predicate Types: amount, loanType, dueDate, paidStatus \n"
             + "amount parameters:   pred/ amount [< or >] [amount] \n"
@@ -61,13 +61,24 @@ public class LoanFilterCommand extends Command {
         if (!model.getIsChangeable()) {
             throw new CommandException(UniquePersonList.UNMODIFIABLE_MESSAGE);
         }
-        Person person = model.getFilteredPersonList().get(this.personIndex);
+        List<Person> lastShownList = model.getFilteredPersonList();
+
+        if (this.personIndex > lastShownList.size()) {
+            throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+        }
+        Person person = model.getFilteredPersonList().get(this.personIndex - 1);
         List<Loan> filteredLoans = person.getLoanList().getLoans(); // todo demeter
+
+        System.out.println("Before:");
+        printList(filteredLoans);
 
         // for all predicates, list -> filteredlist
         for (LoanPredicate pred : predicateSet) {
             filteredLoans = filterLoanList(filteredLoans, pred);
         }
+
+        System.out.println("After:");
+        printList(filteredLoans);
 
         // handle empty result list
         if (filteredLoans.isEmpty()) {
@@ -91,6 +102,12 @@ public class LoanFilterCommand extends Command {
             }
         }
         return result;
+    }
+
+    private void printList(List<Loan> loans) {
+        for (Loan loan: loans) {
+            System.out.println(loan.toString() + "\n");
+        }
     }
 
 }
