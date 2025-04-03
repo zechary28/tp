@@ -71,12 +71,16 @@ public class LoanCommand extends Command {
         Person personToAddLoan = lastShownList.get(index.getZeroBased());
         Loan loan;
 
-        if (type.equals("s")) {
-            loan = new SimpleInterestLoan(amount, interest, dueDate);
-        } else if (type.equals("c")) {
-            loan = new CompoundInterestLoan(amount, interest, dueDate);
-        } else {
-            throw new CommandException(MESSAGE_INVALID_INTEREST_TYPE);
+        try {
+            if (type.equals("s")) {
+                loan = new SimpleInterestLoan(amount, interest, dueDate);
+            } else if (type.equals("c")) {
+                loan = new CompoundInterestLoan(amount, interest, dueDate);
+            } else {
+                throw new CommandException(MESSAGE_INVALID_INTEREST_TYPE);
+            }
+        } catch (IllegalArgumentException e) {
+            throw new CommandException(e.getMessage());
         }
 
         try {
