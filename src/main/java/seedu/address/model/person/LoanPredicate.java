@@ -64,6 +64,26 @@ public class LoanPredicate implements Predicate<Loan> {
         }
     }
 
+    /**
+     * Creates a new loan predicate
+     * @param other
+     * @return
+     */
+    public LoanPredicate and(LoanPredicate other) {
+        return new LoanPredicate(
+            this.parameter,
+            this.index,
+            this.value,
+            this.date,
+            this.operator
+        ) {
+            @Override
+            public boolean test(Loan loan) {
+                return LoanPredicate.this.test(loan) && other.test(loan);
+            }
+        };
+    }
+
     @Override
     public boolean test(Loan loan) {
         switch (this.parameter) {

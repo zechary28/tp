@@ -6,6 +6,7 @@ import java.util.function.Predicate;
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.model.person.LoanList;
+import seedu.address.model.person.LoanPredicate;
 import seedu.address.model.person.Person;
 
 /**
@@ -14,6 +15,11 @@ import seedu.address.model.person.Person;
 public interface Model {
     /** {@code Predicate} that always evaluate to true */
     Predicate<Person> PREDICATE_SHOW_ALL_PERSONS = unused -> true;
+
+    /**
+     * filters
+     */
+    void filter(Integer index, LoanPredicate pred);
 
     /**
      * Returns the loan list containing all loans.
