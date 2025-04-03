@@ -2,6 +2,7 @@ package seedu.address.ui;
 
 import java.util.Comparator;
 
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -17,6 +18,8 @@ public class PersonCard extends UiPart<Region> {
     private static final String FXML = "PersonListCard.fxml";
 
     public final Person person;
+
+    private final ObservableList<Person> personList;
 
     private final MainWindow mainWindow;
 
@@ -45,11 +48,12 @@ public class PersonCard extends UiPart<Region> {
      * @param displayedIndex
      * @param mainWindow
      */
-    public PersonCard(Person person, int displayedIndex, MainWindow mainWindow) {
+    public PersonCard(Person person, int displayedIndex, MainWindow mainWindow, ObservableList<Person> personList) {
         super(FXML);
         this.person = person;
         this.mainWindow = mainWindow;
         this.displayedIndex = displayedIndex;
+        this.personList = personList;
         initializePersonDetails(displayedIndex);
     }
 
@@ -70,6 +74,6 @@ public class PersonCard extends UiPart<Region> {
     @FXML
     private void handleCardClick() {
         // Get the MainWindow and trigger the content switch
-        this.mainWindow.switchToIndividualPersonPage(person, displayedIndex);
+        this.mainWindow.switchToIndividualPersonPage(personList, displayedIndex);
     }
 }

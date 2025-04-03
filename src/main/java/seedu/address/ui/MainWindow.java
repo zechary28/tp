@@ -3,6 +3,7 @@ package seedu.address.ui;
 import java.io.IOException;
 import java.util.logging.Logger;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -74,17 +75,17 @@ public class MainWindow extends UiPart<Stage> {
 
     /**
      * this will change the page to an individual person page
-     * @param person
+     * @param personList
      * @param displayedIndex
      */
-    public void switchToIndividualPersonPage(Person person, int displayedIndex) {
+    public void switchToIndividualPersonPage(ObservableList<Person> personList, int displayedIndex) {
         try {
             // disallow list modification
             logic.setPersonListChangeable(false);
 
             // Load the new page (NewPage.fxml)
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/IndividualPersonCard.fxml"));
-            loader.setController(new IndividualPerson(person, this, displayedIndex));
+            loader.setController(new IndividualPerson(personList, this, displayedIndex));
             Parent newPage = loader.load();
 
             // Clear the existing content in the placeholder and add the new page

@@ -7,6 +7,7 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.ListView?>
 
 <VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" spacing="10">
     <VBox fx:id="contentBox" alignment="TOP_LEFT" spacing="5">
@@ -23,9 +24,8 @@
         <Label fx:id="email" styleClass="cell_small_label"/>
     </VBox>
 
-    <ScrollPane fx:id="scrollPane" fitToWidth="true" fitToHeight="true" styleClass="scroll-pane">
-        <VBox fx:id="loanContainer" spacing="5"/>
-    </ScrollPane>
+    <!-- Replace the VBox with ListView -->
+    <ListView fx:id="loanListView" VBox.vgrow="ALWAYS"/>
 
     <Button text="Back to Person Page" onAction="#handleBackButtonClick"/>
 </VBox>

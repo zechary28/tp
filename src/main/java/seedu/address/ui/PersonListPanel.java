@@ -16,6 +16,7 @@ import seedu.address.model.person.Person;
 public class PersonListPanel extends UiPart<Region> {
     private static final String FXML = "PersonListPanel.fxml";
     private final Logger logger = LogsCenter.getLogger(PersonListPanel.class);
+    private final ObservableList<Person> personList;
 
     @FXML
     private ListView<Person> personListView;
@@ -25,6 +26,7 @@ public class PersonListPanel extends UiPart<Region> {
      */
     public PersonListPanel(ObservableList<Person> personList, MainWindow mainWindow) {
         super(FXML);
+        this.personList = personList;
         personListView.setItems(personList);
         personListView.setCellFactory(listView -> new PersonListViewCell(mainWindow));
     }
@@ -47,7 +49,7 @@ public class PersonListPanel extends UiPart<Region> {
                 setGraphic(null);
                 setText(null);
             } else {
-                setGraphic(new PersonCard(person, getIndex() + 1, mainWindow).getRoot());
+                setGraphic(new PersonCard(person, getIndex() + 1, mainWindow, personList).getRoot());
             }
         }
     }
