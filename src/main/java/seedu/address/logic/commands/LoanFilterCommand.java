@@ -53,9 +53,9 @@ public class LoanFilterCommand extends Command {
      *
      * @param predicateSet Set of LoanPredicate which will be used for filtering
      */
-    public LoanFilterCommand(boolean clear) {
+    public LoanFilterCommand(Integer personIndex, boolean clear) {
         this.clear = clear;
-        this.personIndex = null;
+        this.personIndex = personIndex;
         this.predicateSet = null;
     }
 
@@ -69,33 +69,30 @@ public class LoanFilterCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
+        String result = "";
 
         // case for clearing
         if (clear) {
+            model.filter(personIndex - 1, null);
+        } else {
+            // default predicate will always resolve to true
+            LoanPredicate combinedPred = new LoanPredicate(
+                LoanParameter.AMOUNT,
+                Optional.empty(),
+                Optional.of(-10f),
+                Optional.empty(),
+                Optional.of('>')
+            );
 
+            // combine predicates
+            for (LoanPredicate pred : predicateSet) {
+                combinedPred = combinedPred.and(pred);
+                result += pred.toString();
+            }
+
+            // filter
+            model.filter(personIndex - 1, combinedPred);
         }
-
-        // default predicate will always resolve to true
-        LoanPredicate combinedPred = new LoanPredicate(
-            LoanParameter.AMOUNT,
-            Optional.empty(),
-            Optional.of(-10f),
-            Optional.empty(),
-            Optional.of('>')
-        );
-
-        String result = "";
-
-        // combine predicates
-        for (LoanPredicate pred : predicateSet) {
-            combinedPred = combinedPred.and(pred);
-            result += pred.toString();
-        }
-
-        // filter
-        model.filter(personIndex - 1, combinedPred);
-
-
 
         /*
         if (!model.getIsChangeable()) {

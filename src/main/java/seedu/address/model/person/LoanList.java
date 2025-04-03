@@ -39,7 +39,11 @@ public class LoanList {
      * filters loanlist
      */
     public void filter(LoanPredicate pred) {
-        filteredList.setPredicate(loan -> pred.test(loan));
+        if (pred == null) {
+            filteredList.setPredicate(null);
+        } else {
+            filteredList.setPredicate(loan -> pred.test(loan));
+        }
     }
 
     /**
