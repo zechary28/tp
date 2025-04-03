@@ -354,7 +354,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 Given below are instructions to test the app manually.
 
-> **Note:** These instructions only provide a starting point for testers to work on.  
+> **Note:** These instructions only provide a starting point for testers to work on.
 > Testers are expected to do more *exploratory* testing.
 
 ---
@@ -364,13 +364,13 @@ Given below are instructions to test the app manually.
 #### Initial Launch
 
 1. Download the `.jar` file and place it in an empty folder.
-2. Double-click the `.jar` file.  
+2. Double-click the `.jar` file.
    **Expected:** The app launches with a sample list of persons. The window may not be optimally sized.
 
 #### Saving Window Preferences
 
 1. Resize and reposition the window to a new location.
-2. Close the window and re-launch the `.jar` file.  
+2. Close the window and re-launch the `.jar` file.
    **Expected:** The most recent window size and location are retained.
 
 ---
@@ -380,13 +380,13 @@ Given below are instructions to test the app manually.
 #### While all persons are shown
 
 1. **Prerequisite:** Run the `list` command to display all persons. Ensure there are at least 2 persons in the list.
-2. **Test case:** `delete 1`  
+2. **Test case:** `delete 1`
    **Expected:** First person in the list is deleted. Status message displays deleted contact details. Timestamp updates.
-3. **Test case:** `delete 0`  
+3. **Test case:** `delete 0`
    **Expected:** No person is deleted. Error message is shown. Status bar remains unchanged.
-4. **Test case:** `delete`  
+4. **Test case:** `delete`
    **Expected:** Error message for missing index.
-5. **Test case:** `delete x` (where `x` is larger than the list size)  
+5. **Test case:** `delete x` (where `x` is larger than the list size)
    **Expected:** Error message for invalid index.
 
 ---
@@ -396,30 +396,30 @@ Given below are instructions to test the app manually.
 #### Missing or Corrupted Data File
 
 1. Locate the `data/addressbook.json` file and rename/delete it while the app is closed.
-2. Re-launch the app.  
+2. Re-launch the app.
    **Expected:** A new data file is generated with sample data, or an appropriate error message is shown.
 3. Alternatively, open `addressbook.json` and modify it to an invalid JSON format (e.g., remove a closing brace).
-4. Re-launch the app.  
+4. Re-launch the app.
    **Expected:** App shows error message about corrupted data and starts with an empty dataset.
 
 ---
 
 ### Sort Command
 
-1. **Test case:** `sort`  
+1. **Test case:** `sort`
    **Expected:** List is sorted with overdue loans at the top, followed by others in descending order of loan amount.
-2. **Test case:** `sort extraArg`  
+2. **Test case:** `sort extraArg`
    **Expected:** Error message for invalid command format.
 
 ---
 
 ### FilterLoan Command
 
-1. **Test case:** `filterLoan unpaid`  
+1. **Test case:** `filterLoan unpaid`
    **Expected:** Only persons with unpaid loans are displayed.
-2. **Test case:** `filterLoan paid`  
+2. **Test case:** `filterLoan paid`
    **Expected:** Only persons with fully paid loans are displayed.
-3. **Test case:** `filterLoan abc`  
+3. **Test case:** `filterLoan abc`
    **Expected:** Error message indicating invalid filter option.
 
 ---
