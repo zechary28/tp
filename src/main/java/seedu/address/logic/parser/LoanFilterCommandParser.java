@@ -1,7 +1,13 @@
 package seedu.address.logic.parser;
 
+import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_FILTER_PREDICATE;
+
+import java.util.Set;
+
 import seedu.address.logic.commands.LoanFilterCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.person.LoanPredicate;
 
 /**
  * Parses input arguments and creates a new {@code LoanFilterCommand} object.
@@ -16,14 +22,16 @@ public class LoanFilterCommandParser implements Parser<LoanFilterCommand> {
      * @throws ParseException If the input does not match "paid" or "unpaid".
      */
     public LoanFilterCommand parse(String args) throws ParseException {
-        String trimmedArgs = args.trim().toLowerCase();
+        ArgumentMultimap argMultimap =
+                ArgumentTokenizer.tokenize(args, PREFIX_FILTER_PREDICATE);
 
-        if (trimmedArgs.equals("paid")) {
-            return new LoanFilterCommand(true);
-        } else if (trimmedArgs.equals("unpaid")) {
-            return new LoanFilterCommand(false);
-        } else {
-            throw new ParseException("Invalid filter keyword. Use 'paid' or 'unpaid'.");
+        if (argMultimap.getPreamble().isEmpty()) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, LoanFilterCommand.MESSAGE_USAGE));
         }
+
+        int personIndex = Integer.parseInt(argMultimap.getPreamble());
+
+        Set<LoanPredicate> preds = ParserUtil.parseLoanPredicates(argMultimap.getAllValues(PREFIX_FILTER_PREDICATE));
+        return new LoanFilterCommand(personIndex, preds);
     }
 }

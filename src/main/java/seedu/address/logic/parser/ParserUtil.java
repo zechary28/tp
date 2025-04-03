@@ -2,8 +2,10 @@ package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import seedu.address.commons.core.index.Index;
@@ -11,6 +13,7 @@ import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
+import seedu.address.model.person.LoanPredicate;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Tag;
@@ -120,5 +123,87 @@ public class ParserUtil {
             tagSet.add(parseTag(tagName));
         }
         return tagSet;
+    }
+
+    /**
+     * Parses a {@code String loanPredicate} into a {@code LoanPredicate}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code loanPredicate} is invalid.
+     */
+    public static LoanPredicate parseLoanPredicate(String args) throws ParseException {
+        String[] tokens = requireNonNull(args).trim().split("\\s+");
+        LoanPredicate.LoanParameter parameter;
+        Optional<Float> value;
+        Optional<LocalDate> date;
+        Optional<Character> operator;
+        if (tokens.length == 0) {
+            throw new ParseException("No tokens found");
+        } else {
+            parameter = LoanPredicate.LoanParameter.fromString(tokens[0]);
+            if (parameter == LoanPredicate.LoanParameter.AMOUNT) {
+                if (tokens.length < 3) {
+                    throw new ParseException("Insufficient Arguments");
+                }
+                char op = tokens[1].charAt(0);
+                if (!(op == '<' || op == '>')) {
+                    throw new ParseException("Amount operator must be < or >");
+                }
+                operator = Optional.of(op);
+                value = Optional.of(Float.parseFloat(tokens[2]));
+                date = Optional.empty();
+            } else if (parameter == LoanPredicate.LoanParameter.DUE_DATE) {
+                if (tokens.length < 3) {
+                    throw new ParseException("Insufficient Arguments");
+                }
+                char op = tokens[1].charAt(0);
+                if (!(op == '<' || op == '>')) {
+                    throw new ParseException("DueDate operator must be < or >");
+                }
+                operator = Optional.of(op);
+                value = Optional.empty();
+                date = Optional.of(LocalDate.parse(tokens[2]));
+            } else if (parameter == LoanPredicate.LoanParameter.LOAN_TYPE) {
+                if (tokens.length < 2) {
+                    throw new ParseException("Insufficient Arguments");
+                }
+                char op = tokens[1].charAt(0);
+                if (!(op == 's' || op == 'c')) {
+                    throw new ParseException("LoanType operator must be s or c");
+                }
+                operator = Optional.of(op);
+                value = Optional.empty();
+                date = Optional.empty();
+            } else if (parameter == LoanPredicate.LoanParameter.IS_PAID) {
+                if (tokens.length < 2) {
+                    throw new ParseException("Insufficient Arguments");
+                }
+                char op = tokens[1].charAt(0);
+                if (!(op == 'y' || op == 'n')) {
+                    throw new ParseException("Amount operator must be y or n");
+                }
+                operator = Optional.of(op);
+                value = Optional.empty();
+                date = Optional.empty();
+            } else {
+                operator = Optional.empty();
+                value = Optional.empty();
+                date = Optional.empty();
+            }
+        }
+        Optional<Integer> index = Optional.empty();
+        return new LoanPredicate(parameter, index, value, date, operator);
+    }
+
+    /**
+     * Parses {@code Collection<String> loanPredicates} into a {@code Set<LoanPredicates>}.
+     */
+    public static Set<LoanPredicate> parseLoanPredicates(Collection<String> preds) throws ParseException {
+        requireNonNull(preds);
+        final Set<LoanPredicate> predSet = new HashSet<>();
+        for (String predName : preds) {
+            predSet.add(parseLoanPredicate(predName));
+        }
+        return predSet;
     }
 }
