@@ -177,9 +177,9 @@ The `loan` feature is facilitated by `Loanlist`, which contains an `ArrayList<Lo
 - `LoanCommandParser`, which implements `Parser`. It is passed the arguments from a `loan` command by the Ui, and in turn generates a `LoanCommand` object.
 - `LoanCommand`  — , which inherits from `Commadn`. When executed, it creates a new loan based on the arguments (if they are all valid), and adds it to the `LoanList` of a specified `Person`.
 
-The following UML diagram shows the loan class diagram:
+Below is the class diagram showing `Loan` and its child classes:
 
-<puml src="../diagrams/LoanClassDiagram.puml" alt="LoanCLassDiagram"></puml>
+![image](images/LoanClassDiagram.png)
 
 Given below is an example usage scenario and how the `loan` feature behaves at each step.
 
@@ -196,8 +196,6 @@ Step 4. When `parse()` is called, it matches the args to a **validation regex**,
 Step 5. Then, these args are split and passed to `LoanCommand`, which processes and stores these args.
 
 Step 6. `execute()` in `LoanCommand` is called, which in turn creates a `Loan` object based on the provided args and then adds it to the specified person's `LoanList`.
-
-The following diagram summarizes what happens when the user uses a `pay` command:
 
 **Design considerations:**
 - Although the `add` command uses predicates (e.g. `n/`, `e/`), we elected not to use those as having too many predicates would be confusing to the user, and unnecessarily wordy for a relatively shorter command. In addition, none of these arguments are optional.
