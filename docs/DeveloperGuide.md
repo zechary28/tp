@@ -4,7 +4,7 @@
   pageNav: 3
 ---
 
-# AB-3 Developer Guide
+# The Sharkives Developer Guide
 
 <!-- * Table of Contents -->
 <page-nav-print />
@@ -13,7 +13,7 @@
 
 ## **Acknowledgements**
 
-_{ list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the original source as well }_
+- [SE-Education's AddressBook Level-3](https://se-education.org/addressbook-level3/), upon which this is built on.
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -120,6 +120,7 @@ The following classes were added to support new commands:
 - `PayCommand` and `PayCommandParser`
 - `SortCommand` and `SortCommandParser`
 - `FilterLoanCommand` and `FilterLoanCommandParser`
+- `DeleteLoanCommand`, with `DeleteCommandParser` updated to return either a `DeleteCommand` or `DeleteLoanCommand`
 
 Each new command follows the Command design pattern and extends the abstract `Command` class.
 
@@ -166,102 +167,219 @@ Classes used by multiple components are in the `seedu.address.commons` package.
 
 This section describes some noteworthy details on how certain features are implemented.
 
-### \[Proposed\] Undo/redo feature
+### Add loan feature
 
-#### Proposed Implementation
+#### Implementation
 
-The proposed undo/redo mechanism is facilitated by `VersionedAddressBook`. It extends `AddressBook` with an undo/redo history, stored internally as an `addressBookStateList` and `currentStatePointer`. Additionally, it implements the following operations:
+The `loan` feature is facilitated by `Loanlist`, which contains an `ArrayList<Loan>` that stores the loan list, along with several related methods. Each `Person` has a `LoanList`, which contains the loans that have been made to them. Thus, the following classes were created:
+- `Loan`  —  an abstract class that dictates what a `Loan` class should do and contain.
+- `SimpleInterestLoan` and `CompoundInterestLoan`, each representing their respective loan type, with different calculations for interest and amount owed.
+- `LoanCommandParser`, which implements `Parser`. It is passed the arguments from a `loan` command by the Ui, and in turn generates a `LoanCommand` object.
+- `LoanCommand`  — , which inherits from `Commadn`. When executed, it creates a new loan based on the arguments (if they are all valid), and adds it to the `LoanList` of a specified `Person`.
 
-* `VersionedAddressBook#commit()` — Saves the current address book state in its history.
-* `VersionedAddressBook#undo()` — Restores the previous address book state from its history.
-* `VersionedAddressBook#redo()` — Restores a previously undone address book state from its history.
+Given below is an example usage scenario and how the `loan` feature behaves at each step.
 
-These operations are exposed in the `Model` interface as `Model#commitAddressBook()`, `Model#undoAddressBook()` and `Model#redoAddressBook()` respectively.
+Step 1. The user adds a `Person` to The Sharkives using an `add` command.
 
-Given below is an example usage scenario and how the undo/redo mechanism behaves at each step.
+Step 2. The user uses the `loan` command to add a loan to that `Person` (e.g., `loan 1 s 1000.00 5.5 2025-12-31`).
 
-Step 1. The user launches the application for the first time. The `VersionedAddressBook` will be initialized with the initial address book state, and the `currentStatePointer` pointing to that single address book state.
+Step 3. This input is read as a `loan` command, and the Ui creates a `LoanCommandParser` object with the args from the command.
 
-<puml src="diagrams/UndoRedoState0.puml" alt="UndoRedoState0" />
+Step 4. When `parse()` is called, it matches the args to a **validation regex**, which makes sure that the number of arguments and their format is as specified.
 
-Step 2. The user executes `delete 5` command to delete the 5th person in the address book. The `delete` command calls `Model#commitAddressBook()`, causing the modified state of the address book after the `delete 5` command executes to be saved in the `addressBookStateList`, and the `currentStatePointer` is shifted to the newly inserted address book state.
+**Note:** Any malformed command causes a `ParserException` to be thrown, which informs the user that their format is wrong, and the correct usage of the command.
 
-<puml src="diagrams/UndoRedoState1.puml" alt="UndoRedoState1" />
+Step 5. Then, these args are split and passed to `LoanCommand`, which processes and stores these args.
 
-Step 3. The user executes `add n/David …​` to add a new person. The `add` command also calls `Model#commitAddressBook()`, causing another modified address book state to be saved into the `addressBookStateList`.
+Step 6. `execute()` in `LoanCommand` is called, which in turn creates a `Loan` object based on the provided args and then adds it to the specified person's `LoanList`.
 
-<puml src="diagrams/UndoRedoState2.puml" alt="UndoRedoState2" />
+The following diagram summarizes what happens when the user uses a `pay` command:
 
-<box type="info" seamless>
+**Design considerations:**
+- Although the `add` command uses predicates (e.g. `n/`, `e/`), we elected not to use those as having too many predicates would be confusing to the user, and unnecessarily wordy for a relatively shorter command. In addition, none of these arguments are optional.
+- As each person has a `has-a` relationship with loans, we modeled this by making `LoanList` a new field in each `Person`, which is initiated empty.
 
-**Note:** If a command fails its execution, it will not call `Model#commitAddressBook()`, so the address book state will not be saved into the `addressBookStateList`.
+### Payment feature
 
-</box>
+#### Implementation
 
-Step 4. The user now decides that adding the person was a mistake, and decides to undo that action by executing the `undo` command. The `undo` command will call `Model#undoAddressBook()`, which will shift the `currentStatePointer` once to the left, pointing it to the previous address book state, and restores the address book to that state.
+The Payment feature is facilitated by `LoanList`, as described previously. Additionally, it adds the following classes:
+- `PayCommand`  —  a `Command` class that inherits from `Command` and implements all of its methods
+- `PayCommandParser`  —  a `Parser` class that implements `Parser` and returns a `PayCommand`
 
-<puml src="diagrams/UndoRedoState3.puml" alt="UndoRedoState3" />
+The `PayCommand` class features an overloaded constructor which supports 3 different ways to pay for a loan - amount, months' worth of instalments, and all at once. A `pay` command (e.g., `pay 1 2 100.00`) is parsed by `PayCommandParser`, which chooses the appropriate constructor and returns a `PayCommand` object.
 
+Given below is an example usage scenario and how the Pay feature behaves at each step.
 
-<box type="info" seamless>
+Step 1. The user creates a `loan` (e.g., `loan 1 s 1000 5.5 2025-12-31`) for an existing `Person`, adding it to their `LoanList`.
 
-**Note:** If the `currentStatePointer` is at index 0, pointing to the initial AddressBook state, then there are no previous AddressBook states to restore. The `undo` command uses `Model#canUndoAddressBook()` to check if this is the case. If so, it will return an error to the user rather
-than attempting to perform the undo.
+Step 2. The loanee makes a payment, which is recorded by the user using the `pay` command (e.g., `pay 1 1 50.00`).
 
-</box>
+Step 3. The command is read and sent to `PayCommandParser`, which splits the arguments up. It then looks at the 3rd argument (i.e., `50.00`) and sees that it is a `float` that contains neither `M` or is `all`.
 
-The following sequence diagram shows how an undo operation goes through the `Logic` component:
+Step 4. `PayCommandParser` chooses the constructor of `PayCommand` that takes a `float` as the third argument, and returns the `PayCommand`.
 
-<puml src="diagrams/UndoSequenceDiagram-Logic.puml" alt="UndoSequenceDiagram-Logic" />
+Step 5. The `PayCommand` is executed, which looks at the first argument, the index of the loanee who paid, and calls the `pay()` method in their `Person` object. This in turn calls the `pay()` method in their `LoanList`, which gets the appropriate `Loan` (from the second argument) and pays the specified amount to it.
 
-<box type="info" seamless>
+Step 6. Assuming no errors occur (such as the amount being more than the remainder owed), the amount is added to `amtPaid` field in the loan (instead of being deducted directly, which helps with flexible loan repayment calculations) and the remaining owed is updated based on the principal, interest rate, time passed, and amount already paid.
 
-**Note:** The lifeline for `UndoCommand` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+**Note:** If either index is out-of-bounds, `PayCommandParser` throws the corresponding `ParserException`. If the amount exceeds the amount remaining, `PayCommand` throws the corresponding `CommandException`.
 
-</box>
+**Note:** Other scenarios such as a malformed command or negative values is covered by the validation regex, which ensures that the command follows the specified format.
 
-Similarly, how an undo operation goes through the `Model` component is shown below:
+The following diagram summarizes what happens when a user executes a `pay` command:
 
-<puml src="diagrams/UndoSequenceDiagram-Model.puml" alt="UndoSequenceDiagram-Model" />
+**Design considerations:**
+- For Compound Interest, a flexible payment schedule (like the one we have implemented) greatly complicates calculations, as early payments can reduce principal earlier and thus overall interest, vice versa. In addition, allowing flexible payments can change the effective interest rate.
+- **Proposed Extension:** allowing the user to choose between a fixed monthly plan and flexible repayment would be a future feature that could alleviate this problem.
 
-The `redo` command does the opposite — it calls `Model#redoAddressBook()`, which shifts the `currentStatePointer` once to the right, pointing to the previously undone state, and restores the address book to that state.
+[//]: # (### \[Proposed\] Undo/redo feature)
 
-<box type="info" seamless>
+[//]: # ()
+[//]: # (#### Proposed Implementation)
 
-**Note:** If the `currentStatePointer` is at index `addressBookStateList.size() - 1`, pointing to the latest address book state, then there are no undone AddressBook states to restore. The `redo` command uses `Model#canRedoAddressBook()` to check if this is the case. If so, it will return an error to the user rather than attempting to perform the redo.
+[//]: # ()
+[//]: # (The proposed undo/redo mechanism is facilitated by `VersionedAddressBook`. It extends `AddressBook` with an undo/redo history, stored internally as an `addressBookStateList` and `currentStatePointer`. Additionally, it implements the following operations:)
 
-</box>
+[//]: # ()
+[//]: # (* `VersionedAddressBook#commit&#40;&#41;` — Saves the current address book state in its history.)
 
-Step 5. The user then decides to execute the command `list`. Commands that do not modify the address book, such as `list`, will usually not call `Model#commitAddressBook()`, `Model#undoAddressBook()` or `Model#redoAddressBook()`. Thus, the `addressBookStateList` remains unchanged.
+[//]: # (* `VersionedAddressBook#undo&#40;&#41;` — Restores the previous address book state from its history.)
 
-<puml src="diagrams/UndoRedoState4.puml" alt="UndoRedoState4" />
+[//]: # (* `VersionedAddressBook#redo&#40;&#41;` — Restores a previously undone address book state from its history.)
 
-Step 6. The user executes `clear`, which calls `Model#commitAddressBook()`. Since the `currentStatePointer` is not pointing at the end of the `addressBookStateList`, all address book states after the `currentStatePointer` will be purged. Reason: It no longer makes sense to redo the `add n/David …​` command. This is the behavior that most modern desktop applications follow.
+[//]: # ()
+[//]: # (These operations are exposed in the `Model` interface as `Model#commitAddressBook&#40;&#41;`, `Model#undoAddressBook&#40;&#41;` and `Model#redoAddressBook&#40;&#41;` respectively.)
 
-<puml src="diagrams/UndoRedoState5.puml" alt="UndoRedoState5" />
+[//]: # ()
+[//]: # (Given below is an example usage scenario and how the undo/redo mechanism behaves at each step.)
 
-The following activity diagram summarizes what happens when a user executes a new command:
+[//]: # ()
+[//]: # (Step 1. The user launches the application for the first time. The `VersionedAddressBook` will be initialized with the initial address book state, and the `currentStatePointer` pointing to that single address book state.)
 
-<puml src="diagrams/CommitActivityDiagram.puml" width="250" />
+[//]: # ()
+[//]: # (<puml src="diagrams/UndoRedoState0.puml" alt="UndoRedoState0" />)
 
-#### Design considerations:
+[//]: # ()
+[//]: # (Step 2. The user executes `delete 5` command to delete the 5th person in the address book. The `delete` command calls `Model#commitAddressBook&#40;&#41;`, causing the modified state of the address book after the `delete 5` command executes to be saved in the `addressBookStateList`, and the `currentStatePointer` is shifted to the newly inserted address book state.)
 
-**Aspect: How undo & redo executes:**
+[//]: # ()
+[//]: # (<puml src="diagrams/UndoRedoState1.puml" alt="UndoRedoState1" />)
 
-* **Alternative 1 (current choice):** Saves the entire address book.
-  * Pros: Easy to implement.
-  * Cons: May have performance issues in terms of memory usage.
+[//]: # ()
+[//]: # (Step 3. The user executes `add n/David …​` to add a new person. The `add` command also calls `Model#commitAddressBook&#40;&#41;`, causing another modified address book state to be saved into the `addressBookStateList`.)
 
-* **Alternative 2:** Individual command knows how to undo/redo by
-  itself.
-  * Pros: Will use less memory (e.g. for `delete`, just save the person being deleted).
-  * Cons: We must ensure that the implementation of each individual command are correct.
+[//]: # ()
+[//]: # (<puml src="diagrams/UndoRedoState2.puml" alt="UndoRedoState2" />)
 
-_{more aspects and alternatives to be added}_
+[//]: # ()
+[//]: # (<box type="info" seamless>)
 
-### \[Proposed\] Data archiving
+[//]: # ()
+[//]: # (**Note:** If a command fails its execution, it will not call `Model#commitAddressBook&#40;&#41;`, so the address book state will not be saved into the `addressBookStateList`.)
 
-_{Explain here how the data archiving feature will be implemented}_
+[//]: # ()
+[//]: # (</box>)
+
+[//]: # ()
+[//]: # (Step 4. The user now decides that adding the person was a mistake, and decides to undo that action by executing the `undo` command. The `undo` command will call `Model#undoAddressBook&#40;&#41;`, which will shift the `currentStatePointer` once to the left, pointing it to the previous address book state, and restores the address book to that state.)
+
+[//]: # ()
+[//]: # (<puml src="diagrams/UndoRedoState3.puml" alt="UndoRedoState3" />)
+
+[//]: # ()
+[//]: # ()
+[//]: # (<box type="info" seamless>)
+
+[//]: # ()
+[//]: # (**Note:** If the `currentStatePointer` is at index 0, pointing to the initial AddressBook state, then there are no previous AddressBook states to restore. The `undo` command uses `Model#canUndoAddressBook&#40;&#41;` to check if this is the case. If so, it will return an error to the user rather)
+
+[//]: # (than attempting to perform the undo.)
+
+[//]: # ()
+[//]: # (</box>)
+
+[//]: # ()
+[//]: # (The following sequence diagram shows how an undo operation goes through the `Logic` component:)
+
+[//]: # ()
+[//]: # (<puml src="diagrams/UndoSequenceDiagram-Logic.puml" alt="UndoSequenceDiagram-Logic" />)
+
+[//]: # ()
+[//]: # (<box type="info" seamless>)
+
+[//]: # ()
+[//]: # (**Note:** The lifeline for `UndoCommand` should end at the destroy marker &#40;X&#41; but due to a limitation of PlantUML, the lifeline reaches the end of diagram.)
+
+[//]: # ()
+[//]: # (</box>)
+
+[//]: # ()
+[//]: # (Similarly, how an undo operation goes through the `Model` component is shown below:)
+
+[//]: # ()
+[//]: # (<puml src="diagrams/UndoSequenceDiagram-Model.puml" alt="UndoSequenceDiagram-Model" />)
+
+[//]: # ()
+[//]: # (The `redo` command does the opposite — it calls `Model#redoAddressBook&#40;&#41;`, which shifts the `currentStatePointer` once to the right, pointing to the previously undone state, and restores the address book to that state.)
+
+[//]: # ()
+[//]: # (<box type="info" seamless>)
+
+[//]: # ()
+[//]: # (**Note:** If the `currentStatePointer` is at index `addressBookStateList.size&#40;&#41; - 1`, pointing to the latest address book state, then there are no undone AddressBook states to restore. The `redo` command uses `Model#canRedoAddressBook&#40;&#41;` to check if this is the case. If so, it will return an error to the user rather than attempting to perform the redo.)
+
+[//]: # ()
+[//]: # (</box>)
+
+[//]: # ()
+[//]: # (Step 5. The user then decides to execute the command `list`. Commands that do not modify the address book, such as `list`, will usually not call `Model#commitAddressBook&#40;&#41;`, `Model#undoAddressBook&#40;&#41;` or `Model#redoAddressBook&#40;&#41;`. Thus, the `addressBookStateList` remains unchanged.)
+
+[//]: # ()
+[//]: # (<puml src="diagrams/UndoRedoState4.puml" alt="UndoRedoState4" />)
+
+[//]: # ()
+[//]: # (Step 6. The user executes `clear`, which calls `Model#commitAddressBook&#40;&#41;`. Since the `currentStatePointer` is not pointing at the end of the `addressBookStateList`, all address book states after the `currentStatePointer` will be purged. Reason: It no longer makes sense to redo the `add n/David …​` command. This is the behavior that most modern desktop applications follow.)
+
+[//]: # ()
+[//]: # (<puml src="diagrams/UndoRedoState5.puml" alt="UndoRedoState5" />)
+
+[//]: # ()
+[//]: # (The following activity diagram summarizes what happens when a user executes a new command:)
+
+[//]: # ()
+[//]: # (<puml src="diagrams/CommitActivityDiagram.puml" width="250" />)
+
+[//]: # ()
+[//]: # (#### Design considerations:)
+
+[//]: # ()
+[//]: # (**Aspect: How undo & redo executes:**)
+
+[//]: # ()
+[//]: # (* **Alternative 1 &#40;current choice&#41;:** Saves the entire address book.)
+
+[//]: # (  * Pros: Easy to implement.)
+
+[//]: # (  * Cons: May have performance issues in terms of memory usage.)
+
+[//]: # ()
+[//]: # (* **Alternative 2:** Individual command knows how to undo/redo by)
+
+[//]: # (  itself.)
+
+[//]: # (  * Pros: Will use less memory &#40;e.g. for `delete`, just save the person being deleted&#41;.)
+
+[//]: # (  * Cons: We must ensure that the implementation of each individual command are correct.)
+
+[//]: # ()
+[//]: # (_{more aspects and alternatives to be added}_)
+
+[//]: # ()
+[//]: # (### \[Proposed\] Data archiving)
+
+[//]: # ()
+[//]: # (_{Explain here how the data archiving feature will be implemented}_)
 
 
 --------------------------------------------------------------------------------------------------------------------
@@ -295,46 +413,46 @@ _{Explain here how the data archiving feature will be implemented}_
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
-| Priority | As a …​                                     | I want to …​                                   | So that I can…​                                                    |
-|----------|--------------------------------------------|-----------------------------------------------|-------------------------------------------------------------------|
-| `* * *`  | new user                                   | see usage instructions                        | refer to instructions when I forget how to use the app            |
-|          | **Client Tracking**                                                                                                                                            |
-| `* * *`  | licensed moneylender                       | add a new person                              |                                                                   |
-| `* * *`  | licensed moneylender                       | delete a person                               | remove entries that I no longer need                              |
-| `* * *`  | ethical loanshark                          | view client profiles                          | track client contact details                                      |
-| `* * *`  | ethical loanshark                          | edit client profiles                          | keep records up to date                                           |
-| `* *`    | ethical loanshark                          | tag clients with labels                       | quickly identify and categorize them                              |
-| `* *`    | ethical loanshark                          | search clients by name, contact number, loan ID | quickly locate their records                                      |
-| `* *`    | ethical loanshark                          | predict client risk                           | assess the risk of a new client                                   |
-| `* *`    | ethical loanshark                          | archive inactive client profiles              | declutter active records while keeping history accessible         |
-| `*`      | ethical loanshark                          | log time of reminders for each client         | have a record of communication                                    |
-| `*`      | ethical loanshark                          | view a log of all reminders sent to a client  | know when to schedule future reminders                            |
-|          | **Loan Tracking and Analysis**                                                                                                                                 |
-| `* * *`  | ethical loanshark                          | add loan by client                            | track when money is lent to a client loan                               |
-| `* * *`  | ethical loanshark                          | delete loan by client                         | track when a client pays their loanloan                               |
-| `* * *`  | ethical loanshark                          | view loans by client                          | track when a client pays their loan                               |
-| `* * *`  | ethical loanshark                          | edit loans                                    | update details as needed                                          |
-| `* * *`  | ethical loanshark                          | handle multiple interest calculation methods  | use the most suitable one for each loan                           |
-| `* *`    | ethical loanshark                          | sort loans by priority                        | know which loans to chase                                         |
-| `*`      | ethical loanshark                          | generate a summary of all loans connected to a guarantor | assess their risk exposure                                       |
-| `*`      | ethical loanshark                          | summarize outstanding loans, due dates, and overdue payments on a dashboard | have an overview of my business                                  |
-| `*`      | ethical loanshark                          | view overdue payments as a percentage of total active loans | gauge my portfolio’s health                                      |
-| `*`      | ethical loanshark                          | view repayment trends (weekly, monthly, yearly) | identify seasonal patterns in client payments                     |
-| `*`      | ethical loanshark                          | apply discounts or waive fees in special cases | accommodate loyal clients or challenging situations               |
-| `*`      | ethical loanshark                          | compare repayment rates between loan types    | optimize my offerings                                             |
-|          | **Related Party Management**                                                                             |
-| `* *`    | ethical loanshark                          | add related parties for each client           | categorize them as family, guarantors, or friends                 |
-| `* *`    | ethical loanshark                          | track contact preferences of related parties  | approach them respectfully                                        |
-| `* *`    | ethical loanshark                          | store multiple contact methods for related parties | have options for reminders                                      |
-| `*`      | ethical loanshark                          | identify the most responsive related party    | know who to contact first if necessary                            |
-|          | **Data Management**                                                                                       |
-| `* * *`  | ethical loanshark                          | save data locally at end of session           | keep record history from previous session                         |
-| `* *`    | ethical loanshark                          | import data                                   | ensure seamless onboarding of information                         |
-| `* *`    | ethical loanshark                          | export data                                   | share or back up information                                      |
-| `*`      | ethical loanshark                          | purge all data                                | cleanse the system                                                |
-| `*`      | ethical loanshark                          | save data selectively (filter/sort)          | save only certain data                                            |
-| `*`      | ethical loanshark                          | log all data changes (e.g., updates to client profiles, loan terms) | have a clear audit trail                                        |
-| `*`      | ethical loanshark                          | encrypt all data                              | ensure client data safety in the event of a leak                  |
+| Priority | As a …​                        | I want to …​                                                                | So that I can…​                                           |
+|----------|--------------------------------|-----------------------------------------------------------------------------|-----------------------------------------------------------|
+| `* * *`  | new user                       | see usage instructions                                                      | refer to instructions when I forget how to use the app    |
+|          | **Client Tracking**            |
+| `* * *`  | licensed moneylender           | add a new person                                                            |                                                           |
+| `* * *`  | licensed moneylender           | delete a person                                                             | remove entries that I no longer need                      |
+| `* * *`  | ethical loanshark              | view client profiles                                                        | track client contact details                              |
+| `* * *`  | ethical loanshark              | edit client profiles                                                        | keep records up to date                                   |
+| `* *`    | ethical loanshark              | tag clients with labels                                                     | quickly identify and categorize them                      |
+| `* *`    | ethical loanshark              | search clients by name, contact number, loan ID                             | quickly locate their records                              |
+| `* *`    | ethical loanshark              | predict client risk                                                         | assess the risk of a new client                           |
+| `* *`    | ethical loanshark              | archive inactive client profiles                                            | declutter active records while keeping history accessible |
+| `*`      | ethical loanshark              | log time of reminders for each client                                       | have a record of communication                            |
+| `*`      | ethical loanshark              | view a log of all reminders sent to a client                                | know when to schedule future reminders                    |
+|          | **Loan Tracking and Analysis** |
+| `* * *`  | ethical loanshark              | add loan by client                                                          | track when money is lent to a client loan                 |
+| `* * *`  | ethical loanshark              | delete loan by client                                                       | track when a client pays their loanloan                   |
+| `* * *`  | ethical loanshark              | view loans by client                                                        | track when a client pays their loan                       |
+| `* * *`  | ethical loanshark              | edit loans                                                                  | update details as needed                                  |
+| `* * *`  | ethical loanshark              | handle multiple interest calculation methods                                | use the most suitable one for each loan                   |
+| `* *`    | ethical loanshark              | sort loans by priority                                                      | know which loans to chase                                 |
+| `*`      | ethical loanshark              | generate a summary of all loans connected to a guarantor                    | assess their risk exposure                                |
+| `*`      | ethical loanshark              | summarize outstanding loans, due dates, and overdue payments on a dashboard | have an overview of my business                           |
+| `*`      | ethical loanshark              | view overdue payments as a percentage of total active loans                 | gauge my portfolio’s health                               |
+| `*`      | ethical loanshark              | view repayment trends (weekly, monthly, yearly)                             | identify seasonal patterns in client payments             |
+| `*`      | ethical loanshark              | apply discounts or waive fees in special cases                              | accommodate loyal clients or challenging situations       |
+| `*`      | ethical loanshark              | compare repayment rates between loan types                                  | optimize my offerings                                     |
+|          | **Related Party Management**   |
+| `* *`    | ethical loanshark              | add related parties for each client                                         | categorize them as family, guarantors, or friends         |
+| `* *`    | ethical loanshark              | track contact preferences of related parties                                | approach them respectfully                                |
+| `* *`    | ethical loanshark              | store multiple contact methods for related parties                          | have options for reminders                                |
+| `*`      | ethical loanshark              | identify the most responsive related party                                  | know who to contact first if necessary                    |
+|          | **Data Management**            |
+| `* * *`  | ethical loanshark              | save data locally at end of session                                         | keep record history from previous session                 |
+| `* *`    | ethical loanshark              | import data                                                                 | ensure seamless onboarding of information                 |
+| `* *`    | ethical loanshark              | export data                                                                 | share or back up information                              |
+| `*`      | ethical loanshark              | purge all data                                                              | cleanse the system                                        |
+| `*`      | ethical loanshark              | save data selectively (filter/sort)                                         | save only certain data                                    |
+| `*`      | ethical loanshark              | log all data changes (e.g., updates to client profiles, loan terms)         | have a clear audit trail                                  |
+| `*`      | ethical loanshark              | encrypt all data                                                            | ensure client data safety in the event of a leak          |
 
 
 *{More to be added}*
@@ -465,6 +583,9 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 * **Mainstream OS**: Windows, Linux, Unix, MacOS
 * **Private contact detail**: A contact detail that is not meant to be shared with others
+* **Simple Interest Loan**: A loan that accrues interest based on the principal only
+* **Compound Interest Loan**: A loan that accrues interest based on the principal **and** any previously accrued interest.
+* **Args**: Short-form for **arguments**, referring to the components of a `command` necessary for it to work as specified. These include parameters such as indices, and amount.
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -558,6 +679,8 @@ Our team of 5 spent significant effort extending the base AB3 functionality into
 - Built fully functional `pay`, `filterLoan`, and `sort` commands
 - Enhanced UI responsiveness and modularity
 - 0 reused code: All logic and data structures were built from scratch
+- Edited existing code to fit our requirements
+- Completely revamped and customized UI to fit our theme
 
 ---
 
