@@ -60,8 +60,6 @@ public class DeleteLoanCommand extends DeleteCommand {
             throw new CommandException(e.getMessage());
         }
 
-        model.setPerson(personToDeleteLoan, personToDeleteLoan); // Force UI refresh
-
         return new CommandResult(MESSAGE_DELETE_LOAN_SUCCESS);
     }
 }

@@ -54,7 +54,8 @@ public class LogicManager implements Logic {
 
         try {
             storage.saveAddressBook(model.getAddressBook());
-
+            Person tempPerson = model.getFilteredPersonList().get(0);
+            model.setPerson(tempPerson, tempPerson); // force ui refresh
         } catch (AccessDeniedException e) {
             throw new CommandException(String.format(FILE_OPS_PERMISSION_ERROR_FORMAT, e.getMessage()), e);
         } catch (IOException ioe) {
