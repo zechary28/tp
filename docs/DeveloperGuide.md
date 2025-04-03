@@ -211,6 +211,10 @@ The Payment feature is facilitated by `LoanList`, as described previously. Addit
 
 The `PayCommand` class features an overloaded constructor which supports 3 different ways to pay for a loan - amount, months' worth of instalments, and all at once. A `pay` command (e.g., `pay 1 2 100.00`) is parsed by `PayCommandParser`, which chooses the appropriate constructor and returns a `PayCommand` object.
 
+The below image illustrates the above relationship:
+
+![image](images/PayCommandClassDiagram.png)
+
 Given below is an example usage scenario and how the Pay feature behaves at each step.
 
 Step 1. The user creates a `loan` (e.g., `loan 1 s 1000 5.5 2025-12-31`) for an existing `Person`, adding it to their `LoanList`.
@@ -228,8 +232,6 @@ Step 6. Assuming no errors occur (such as the amount being more than the remaind
 **Note:** If either index is out-of-bounds, `PayCommandParser` throws the corresponding `ParserException`. If the amount exceeds the amount remaining, `PayCommand` throws the corresponding `CommandException`.
 
 **Note:** Other scenarios such as a malformed command or negative values is covered by the validation regex, which ensures that the command follows the specified format.
-
-The following diagram summarizes what happens when a user executes a `pay` command:
 
 **Design considerations:**
 - For Compound Interest, a flexible payment schedule (like the one we have implemented) greatly complicates calculations, as early payments can reduce principal earlier and thus overall interest, vice versa. In addition, allowing flexible payments can change the effective interest rate.
