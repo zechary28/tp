@@ -199,6 +199,27 @@ public abstract class Loan {
     public abstract void pay(float amt) throws IllegalValueException;
 
     /**
+     * Deducts an amount equivalent to multiple months from the amount owed.
+     *
+     * @param months The number of months the loanee is paying for
+     */
+    public void payByMonths(int months) throws IllegalValueException {
+        float totalAmount = getMonthlyInstalmentAmount() * months;
+
+        if (totalAmount > getRemainingOwed()) {
+            String paidTooMuchMessage = "Payment exceeds the remaining owed!";
+            throw new IllegalValueException(paidTooMuchMessage);
+        }
+
+        this.incrementAmtPaid(totalAmount);
+        this.setDateLastPaid(LocalDate.now());
+
+        if (getRemainingOwed() == 0.0) {
+            this.setIsPaid(true);
+        }
+    }
+
+    /**
      * Compares amount paid with amount owed in preceding months.
      * @return a positive number if client paid less than owed in previous months, negative if client paid more.
      */
@@ -491,7 +512,6 @@ public abstract class Loan {
     */
     public void updateIsPaid() {
         this.isPaid = getRemainingOwed() == 0f;
-
     }
 
     public abstract String getName();
