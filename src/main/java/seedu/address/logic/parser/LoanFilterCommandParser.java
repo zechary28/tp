@@ -29,8 +29,7 @@ public class LoanFilterCommandParser implements Parser<LoanFilterCommand> {
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args, PREFIX_FILTER_PREDICATE);
 
-        if (!arePrefixesPresent(argMultimap, PREFIX_FILTER_PREDICATE)
-                || !argMultimap.getPreamble().isEmpty()) {
+        if (argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
         }
 
@@ -39,14 +38,4 @@ public class LoanFilterCommandParser implements Parser<LoanFilterCommand> {
         Set<LoanPredicate> predicateList = ParserUtil.parseLoanPredicates(argMultimap.getAllValues(PREFIX_FILTER_PREDICATE));
         return new LoanFilterCommand(personIndex, predicateList);
     }
-
-
-    /**
-     * Returns true if none of the prefixes contains empty {@code Optional} values in the given
-     * {@code ArgumentMultimap}.
-     */
-    private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
-        return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
-    }
-    // todo code duplication from AddCommandParser, maybe make interface
 }

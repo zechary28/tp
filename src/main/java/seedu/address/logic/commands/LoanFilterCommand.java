@@ -7,10 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.person.Loan;
 import seedu.address.model.person.LoanPredicate;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.UniquePersonList;
 
 /**
  * Filters and displays all loans across all persons in the address book
@@ -25,14 +27,13 @@ public class LoanFilterCommand extends Command {
     public static final String COMMAND_WORD = "filterLoan";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Filters loans by paid status.\n"
-            + "Parameters: /pred [predicate type] [predicate parameters]\n"
-            + "Available Predicate Types: person, amount, loanType, dueDate, paidStatus \n"
-            + "person parameters:   pred/ person [personIndex] \n"
+            + "Parameters: [personIndex] /pred [predicate type] [predicate parameters]\n"
+            + "Available Predicate Types: amount, loanType, dueDate, paidStatus \n"
             + "amount parameters:   pred/ amount [< or >] [amount] \n"
             + "loanType parameters: pred/ loanType [s or c] \n"
             + "isPaid parameters:   pred/ isPaid [y or n] \n"
             + "dueDate parameters:  pred/ dueDate [< or >] [date in yyyy-mm-dd] \n"
-            + "Example: " + COMMAND_WORD + " pred/ person 2 pred/ amount > 100.00 pred/ loanType s";
+            + "Example: " + COMMAND_WORD + "3 pred/ amount > 100.00 pred/ loanType s";
 
     private final Set<LoanPredicate> predicateSet;
     private final int personIndex;
@@ -55,8 +56,11 @@ public class LoanFilterCommand extends Command {
      * @return A CommandResult with the filtered loan information or a message if none found.
      */
     @Override
-    public CommandResult execute(Model model) {
+    public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
+        if (!model.getIsChangeable()) {
+            throw new CommandException(UniquePersonList.UNMODIFIABLE_MESSAGE);
+        }
         Person person = model.getFilteredPersonList().get(this.personIndex);
         List<Loan> filteredLoans = person.getLoanList().getLoans(); // todo demeter
 
