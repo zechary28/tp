@@ -1,6 +1,13 @@
+.root {
+    -fx-background-image: url("images/bg.png");
+    -fx-background-size: cover; /* or contain, or specific dimensions */
+    -fx-background-position: center center;
+    -fx-background-repeat: repeat;
+}
+
 .background {
-    -fx-background-color: derive(#1d1d1d, 20%);
-    background-color: #383838; /* Used in the default.html file */
+    -fx-background-color: transparent;
+    background-color: transparent; /* Used in the default.html file */
 }
 
 .label {
@@ -40,9 +47,9 @@
 }
 
 .table-view {
-    -fx-base: #1d1d1d;
-    -fx-control-inner-background: #1d1d1d;
-    -fx-background-color: #1d1d1d;
+    -fx-base: transparent;
+    -fx-control-inner-background: transparent;
+    -fx-background-color: transparent;
     -fx-table-cell-border-color: transparent;
     -fx-table-header-border-color: transparent;
     -fx-padding: 5;
