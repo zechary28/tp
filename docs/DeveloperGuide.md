@@ -177,6 +177,10 @@ The `loan` feature is facilitated by `Loanlist`, which contains an `ArrayList<Lo
 - `LoanCommandParser`, which implements `Parser`. It is passed the arguments from a `loan` command by the Ui, and in turn generates a `LoanCommand` object.
 - `LoanCommand`  — , which inherits from `Commadn`. When executed, it creates a new loan based on the arguments (if they are all valid), and adds it to the `LoanList` of a specified `Person`.
 
+Below is the class diagram showing `Loan` and its child classes:
+
+![image](images/LoanClassDiagram.png)
+
 Given below is an example usage scenario and how the `loan` feature behaves at each step.
 
 Step 1. The user adds a `Person` to The Sharkives using an `add` command.
@@ -193,8 +197,6 @@ Step 5. Then, these args are split and passed to `LoanCommand`, which processes 
 
 Step 6. `execute()` in `LoanCommand` is called, which in turn creates a `Loan` object based on the provided args and then adds it to the specified person's `LoanList`.
 
-The following diagram summarizes what happens when the user uses a `pay` command:
-
 **Design considerations:**
 - Although the `add` command uses predicates (e.g. `n/`, `e/`), we elected not to use those as having too many predicates would be confusing to the user, and unnecessarily wordy for a relatively shorter command. In addition, none of these arguments are optional.
 - As each person has a `has-a` relationship with loans, we modeled this by making `LoanList` a new field in each `Person`, which is initiated empty.
@@ -208,6 +210,10 @@ The Payment feature is facilitated by `LoanList`, as described previously. Addit
 - `PayCommandParser`  —  a `Parser` class that implements `Parser` and returns a `PayCommand`
 
 The `PayCommand` class features an overloaded constructor which supports 3 different ways to pay for a loan - amount, months' worth of instalments, and all at once. A `pay` command (e.g., `pay 1 2 100.00`) is parsed by `PayCommandParser`, which chooses the appropriate constructor and returns a `PayCommand` object.
+
+The below image illustrates the above relationship:
+
+![image](images/PayCommandClassDiagram.png)
 
 Given below is an example usage scenario and how the Pay feature behaves at each step.
 
@@ -226,8 +232,6 @@ Step 6. Assuming no errors occur (such as the amount being more than the remaind
 **Note:** If either index is out-of-bounds, `PayCommandParser` throws the corresponding `ParserException`. If the amount exceeds the amount remaining, `PayCommand` throws the corresponding `CommandException`.
 
 **Note:** Other scenarios such as a malformed command or negative values is covered by the validation regex, which ensures that the command follows the specified format.
-
-The following diagram summarizes what happens when a user executes a `pay` command:
 
 **Design considerations:**
 - For Compound Interest, a flexible payment schedule (like the one we have implemented) greatly complicates calculations, as early payments can reduce principal earlier and thus overall interest, vice versa. In addition, allowing flexible payments can change the effective interest rate.
