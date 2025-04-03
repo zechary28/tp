@@ -25,7 +25,6 @@
         <Label fx:id="email" styleClass="cell_small_label"/>
     </VBox>
 
-    <!-- Replace the VBox with ListView -->
     <ListView fx:id="loanListView" VBox.vgrow="ALWAYS" />
 
     <Button text="← Back" onAction="#handleBackButtonClick" styleClass = "back_button"/>

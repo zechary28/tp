@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" spacing="10">
+    <!-- Loan Type -->
+    <Label fx:id="loanType" text="Loan Type"/>
+    
+    <!-- Grouping Principal & Interest -->
+    <Label fx:id="principal" text="Principal"/>
+    <Label fx:id="interest" text="Interest"/>
+
+    
+    <!-- Grouping Date Info -->
+
+    <Label fx:id="dateCreated" text="Date Created"/>
+    <Label fx:id="dueDate" text="Due Date"/>
+
+    
+    <!-- Grouping Last Payment Info -->
+
+    <Label fx:id="lastPaid" text="Last Paid"/>
+    <Label fx:id="amtPaid" text="Amount Paid"/>
+
+    
+    <!-- Loan Paid Status -->
+    <Label fx:id="isPaid" text="Status"/>
+</HBox>

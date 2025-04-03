@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.ListView?>
 
 <?import javafx.scene.control.ScrollPane?>
 <HBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:id="cardPane" alignment="CENTER_LEFT">
@@ -30,9 +31,7 @@
                     <Label fx:id="address" styleClass="cell_small_label"/>
                     <Label fx:id="email" styleClass="cell_small_label"/>
                     <Label text="Loans: " styleClass="cell_small_label"/>
-                    <ScrollPane onMouseClicked="#handleCardClick">
-                        <Label fx:id="loans" styleClass="cell_small_label"/>
-                    </ScrollPane>
+                    <ListView fx:id="loanListView" VBox.vgrow="ALWAYS" />
                 </VBox>
             </StackPane>
         </graphic>
