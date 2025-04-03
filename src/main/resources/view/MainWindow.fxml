@@ -19,7 +19,7 @@
   <scene>
     <Scene>
       <stylesheets>
-        <URL value="@DarkTheme.css" />
+        <URL value="@SharkTheme.css" />
         <URL value="@Extensions.css" />
       </stylesheets>
 
@@ -46,6 +46,7 @@
           </padding>
         </StackPane>
 
+        <!-- Placeholder for the person list or person card (we will swap content here) -->
         <VBox fx:id="personList" styleClass="pane-with-border" minWidth="340" prefWidth="340" VBox.vgrow="ALWAYS">
           <padding>
             <Insets top="10" right="10" bottom="10" left="10" />

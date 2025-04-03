@@ -199,18 +199,67 @@ public abstract class Loan {
     public abstract void pay(float amt) throws IllegalValueException;
 
     /**
+     * Deducts an amount equivalent to multiple months from the amount owed.
+     *
+     * @param months The number of months the loanee is paying for
+     */
+    public void payByMonths(int months) throws IllegalValueException {
+        float totalAmount = getMonthlyInstalmentAmount() * months;
+
+        if (totalAmount > getRemainingOwed()) {
+            String paidTooMuchMessage = "Payment exceeds the remaining owed!";
+            throw new IllegalValueException(paidTooMuchMessage);
+        }
+
+        this.incrementAmtPaid(totalAmount);
+        this.setDateLastPaid(LocalDate.now());
+
+        if (getRemainingOwed() == 0.0) {
+            this.setIsPaid(true);
+        }
+    }
+
+    /**
      * Compares amount paid with amount owed in preceding months.
      * @return a positive number if client paid less than owed in previous months, negative if client paid more.
      */
-    abstract float getPaymentDifference();
+    public abstract float getPaymentDifference();
 
-    abstract boolean isOverDue();
+    public abstract float getLoanValue();
 
-    // is an estimation (amount owed over monthly cost)
-    abstract int getOverDueMonths();
+    /**
+     * Returns whether loan is past due date.
+     */
+    public boolean isOverDue() {
+        return LocalDate.now().isAfter(this.dueDate);
+    }
 
-    // is an estimation (amount owed over monthly cost)
-    abstract float getOverDueMonthsPrecise();
+    /**
+     * Returns whether the client has missed instalments
+     */
+    public boolean missedInstalments() {
+        return this.getMissedInstalmentsMonths() > 0;
+    };
+
+    /**
+     * Returns months' worth of instalments missed, rounded up.
+     */
+    public int getMissedInstalmentsMonths() {
+        return (int) Math.ceil(this.getMissedInstalmentsMonthsPrecise());
+    };
+
+    /**
+     * Returns precise number of months' worth of instalments missed.
+     */
+    public float getMissedInstalmentsMonthsPrecise() {
+        float moneyOwed = this.getPaymentDifference();
+
+        if (moneyOwed <= 0) { // loan is not overdue
+            return 0;
+        }
+
+        return moneyOwed / this.getMonthlyInstalmentAmount();
+    };
 
     public float getMonthlyAveragePrincipal() {
         return principal / this.getLoanLengthMonths();
@@ -268,14 +317,16 @@ public abstract class Loan {
     }
 
     /**
-     * Gets months until due date, unrounded.
+     * Gets months until due date, rounded to 1 if below a month.
+     * Assumes monthly due date is on the 1st.
      */
     public int getMonthsUntilDueDate() {
         LocalDate currentDate = LocalDate.now();
 
         LocalDate dueDayOfMonth = currentDate.withDayOfMonth(Loan.MONTHLY_DUE_DATE);
 
-        return (int) ChronoUnit.MONTHS.between(dueDayOfMonth, dueDate);
+        // We don't want a negative value for this
+        return (int) ChronoUnit.MONTHS.between(dueDayOfMonth, dueDate.withDayOfMonth(Loan.MONTHLY_DUE_DATE));
     }
 
     public int getLoanLengthMonths() {
@@ -385,7 +436,6 @@ public abstract class Loan {
                 && amtPaid == otherLoan.getAmtPaid()
                 && interest == otherLoan.getInterest()
                 && dueDate.equals(otherLoan.getDueDate())
-                && dateLastPaid.equals(otherLoan.getDateLastPaid())
                 && dateCreated.equals(otherLoan.getDateCreated())
                 && isPaid == otherLoan.isPaid()
                 && this.getName().equals(otherLoan.getName());
@@ -452,12 +502,16 @@ public abstract class Loan {
         this.amountOwed = amountOwed;
     }
 
+    // Test method
+    protected void setDueDate(String dueDate) {
+        this.dueDate = LocalDate.parse(dueDate);
+    };
+
     /**
      * Updates the isPaid status
     */
     public void updateIsPaid() {
         this.isPaid = getRemainingOwed() == 0f;
-
     }
 
     public abstract String getName();

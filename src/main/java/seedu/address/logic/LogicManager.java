@@ -72,6 +72,11 @@ public class LogicManager implements Logic {
     }
 
     @Override
+    public void setPersonListChangeable(boolean change) {
+        model.setIsChangeable(change);
+    }
+
+    @Override
     public Path getAddressBookFilePath() {
         return model.getAddressBookFilePath();
     }
