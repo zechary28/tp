@@ -10,7 +10,7 @@
 <?import javafx.scene.control.ListView?>
 
 <VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" spacing="10">
-    <VBox fx:id="contentBox" alignment="TOP_LEFT" spacing="5">
+    <VBox fx:id="contentBox" alignment="TOP_LEFT" spacing="5" styleClass="vbox-container">
         <padding>
             <Insets top="5" right="5" bottom="5" left="15"/>
         </padding>
@@ -19,9 +19,9 @@
             <Label fx:id="name" styleClass="cell_big_label"/>
         </HBox>
         <FlowPane fx:id="tags" hgap="5" vgap="5"/>
-        <Label fx:id="phone" styleClass="cell_small_label"/>
-        <Label fx:id="address" styleClass="cell_small_label"/>
-        <Label fx:id="email" styleClass="cell_small_label"/>
+        <Label fx:id="phone" styleClass="cell_big_label"/>
+        <Label fx:id="address" styleClass="cell_big_label"/>
+        <Label fx:id="email" styleClass="cell_big_label"/>
     </VBox>
 
     <!-- Replace the VBox with ListView -->

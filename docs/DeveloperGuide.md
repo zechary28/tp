@@ -115,6 +115,14 @@ How the parsing works:
 * When called upon to parse a user command, the `AddressBookParser` class creates an `XYZCommandParser` (`XYZ` is a placeholder for the specific command name e.g., `AddCommandParser`) which uses the other classes shown above to parse the user command and create a `XYZCommand` object (e.g., `AddCommand`) which the `AddressBookParser` returns back as a `Command` object.
 * All `XYZCommandParser` classes (e.g., `AddCommandParser`, `DeleteCommandParser`, ...) inherit from the `Parser` interface so that they can be treated similarly where possible e.g, during testing.
 
+The following classes were added to support new commands:
+
+- `PayCommand` and `PayCommandParser`
+- `SortCommand` and `SortCommandParser`
+- `FilterLoanCommand` and `FilterLoanCommandParser`
+
+Each new command follows the Command design pattern and extends the abstract `Command` class.
+
 ### Model component
 **API** : [`Model.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/model/Model.java)
 
@@ -274,27 +282,60 @@ _{Explain here how the data archiving feature will be implemented}_
 
 **Target user profile**:
 
-* has a need to manage a significant number of contacts
-* prefer desktop apps over other types
-* can type fast
-* prefers typing to mouse interactions
-* is reasonably comfortable using CLI apps
+* licenced moneylender with a significant number of clients
+* needs to keep track of client contacts 
+* needs to keep track of clients' loans
+* prefers desktop apps over other types
+* prefers typing input on CLI to mouse interactions
 
-**Value proposition**: manage contacts faster than a typical mouse/GUI driven app
+**Value proposition**: manage client contacts and loans faster than a typical mouse/GUI driven app
 
 
 ### User stories
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
-| Priority | As a …​                                    | I want to …​                 | So that I can…​                                                        |
-|----------|--------------------------------------------|------------------------------|------------------------------------------------------------------------|
-| `* * *`  | new user                                   | see usage instructions       | refer to instructions when I forget how to use the App                 |
-| `* * *`  | user                                       | add a new person             |                                                                        |
-| `* * *`  | user                                       | delete a person              | remove entries that I no longer need                                   |
-| `* * *`  | user                                       | find a person by name        | locate details of persons without having to go through the entire list |
-| `* *`    | user                                       | hide private contact details | minimize chance of someone else seeing them by accident                |
-| `*`      | user with many persons in the address book | sort persons by name         | locate a person easily                                                 |
+| Priority | As a …​                                     | I want to …​                                   | So that I can…​                                                    |
+|----------|--------------------------------------------|-----------------------------------------------|-------------------------------------------------------------------|
+| `* * *`  | new user                                   | see usage instructions                        | refer to instructions when I forget how to use the app            |
+|          | **Client Tracking**                                                                                                                                            |
+| `* * *`  | licensed moneylender                       | add a new person                              |                                                                   |
+| `* * *`  | licensed moneylender                       | delete a person                               | remove entries that I no longer need                              |
+| `* * *`  | ethical loanshark                          | view client profiles                          | track client contact details                                      |
+| `* * *`  | ethical loanshark                          | edit client profiles                          | keep records up to date                                           |
+| `* *`    | ethical loanshark                          | tag clients with labels                       | quickly identify and categorize them                              |
+| `* *`    | ethical loanshark                          | search clients by name, contact number, loan ID | quickly locate their records                                      |
+| `* *`    | ethical loanshark                          | predict client risk                           | assess the risk of a new client                                   |
+| `* *`    | ethical loanshark                          | archive inactive client profiles              | declutter active records while keeping history accessible         |
+| `*`      | ethical loanshark                          | log time of reminders for each client         | have a record of communication                                    |
+| `*`      | ethical loanshark                          | view a log of all reminders sent to a client  | know when to schedule future reminders                            |
+|          | **Loan Tracking and Analysis**                                                                                                                                 |
+| `* * *`  | ethical loanshark                          | add loan by client                            | track when money is lent to a client loan                               |
+| `* * *`  | ethical loanshark                          | delete loan by client                         | track when a client pays their loanloan                               |
+| `* * *`  | ethical loanshark                          | view loans by client                          | track when a client pays their loan                               |
+| `* * *`  | ethical loanshark                          | edit loans                                    | update details as needed                                          |
+| `* * *`  | ethical loanshark                          | handle multiple interest calculation methods  | use the most suitable one for each loan                           |
+| `* *`    | ethical loanshark                          | sort loans by priority                        | know which loans to chase                                         |
+| `*`      | ethical loanshark                          | generate a summary of all loans connected to a guarantor | assess their risk exposure                                       |
+| `*`      | ethical loanshark                          | summarize outstanding loans, due dates, and overdue payments on a dashboard | have an overview of my business                                  |
+| `*`      | ethical loanshark                          | view overdue payments as a percentage of total active loans | gauge my portfolio’s health                                      |
+| `*`      | ethical loanshark                          | view repayment trends (weekly, monthly, yearly) | identify seasonal patterns in client payments                     |
+| `*`      | ethical loanshark                          | apply discounts or waive fees in special cases | accommodate loyal clients or challenging situations               |
+| `*`      | ethical loanshark                          | compare repayment rates between loan types    | optimize my offerings                                             |
+|          | **Related Party Management**                                                                             |
+| `* *`    | ethical loanshark                          | add related parties for each client           | categorize them as family, guarantors, or friends                 |
+| `* *`    | ethical loanshark                          | track contact preferences of related parties  | approach them respectfully                                        |
+| `* *`    | ethical loanshark                          | store multiple contact methods for related parties | have options for reminders                                      |
+| `*`      | ethical loanshark                          | identify the most responsive related party    | know who to contact first if necessary                            |
+|          | **Data Management**                                                                                       |
+| `* * *`  | ethical loanshark                          | save data locally at end of session           | keep record history from previous session                         |
+| `* *`    | ethical loanshark                          | import data                                   | ensure seamless onboarding of information                         |
+| `* *`    | ethical loanshark                          | export data                                   | share or back up information                                      |
+| `*`      | ethical loanshark                          | purge all data                                | cleanse the system                                                |
+| `*`      | ethical loanshark                          | save data selectively (filter/sort)          | save only certain data                                            |
+| `*`      | ethical loanshark                          | log all data changes (e.g., updates to client profiles, loan terms) | have a clear audit trail                                        |
+| `*`      | ethical loanshark                          | encrypt all data                              | ensure client data safety in the event of a leak                  |
+
 
 *{More to be added}*
 
@@ -302,16 +343,33 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 (For all use cases below, the **System** is the `AddressBook` and the **Actor** is the `user`, unless specified otherwise)
 
-**Use case: Delete a person**
+**Use case: Add a client**
 
 **MSS**
 
-1.  User requests to list persons
-2.  AddressBook shows a list of persons
-3.  User requests to delete a specific person in the list
-4.  AddressBook deletes the person
+1.  User requests to add a client and his details to the list
+2.  AddressBook adds the person
 
-    Use case ends.
+   Use case ends.
+
+**Extensions**
+
+* 1a. The given input is invalid
+    * 1a1. AddressBook shows an error message.
+
+      Use case resumes at step 1
+
+
+**Use case: Delete a client**
+
+**MSS**
+
+1.  User requests to list clients
+2.  AddressBook shows a list of clients
+3.  User requests to delete a specific client in the list
+4.  AddressBook deletes the client
+
+      Use case ends.
 
 **Extensions**
 
@@ -320,10 +378,78 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
   Use case ends.
 
 * 3a. The given index is invalid.
+    * 3a1. AddressBook shows an error message.
+      
+      Use case resumes at step 2.
 
+
+**Use case: Edit a client**
+
+**MSS**
+
+1.  User requests to list clients
+2.  AddressBook shows a list of clients
+3.  User requests an amendment to an existing entry in the list
+4.  AddressBook updates the client details
+
+      Use case ends.
+
+**Extensions**
+
+* 2a. The list is empty.
+
+  Use case ends.
+
+* 3a. The given index or client details are invalid.
     * 3a1. AddressBook shows an error message.
 
       Use case resumes at step 2.
+
+**Use case: Add a loan for a client**
+
+**MSS**
+
+1.  User requests to list clients
+2.  AddressBook shows a list of clients
+3.  User requests to add a loan to a specific client in the list
+4.  AddressBook adds a loan entry to the client
+
+      Use case ends.
+
+**Extensions**
+
+* 2a. The list is empty.
+
+  Use case ends.
+
+* 3a. The given index or loan details are invalid.
+    * 3a1. AddressBook shows an error message.
+      
+      Use case resumes at step 2.
+
+
+**Use case: Delete a loan for a client**
+
+**MSS**
+
+1.  User requests to list clients
+2.  AddressBook shows a list of clients
+3.  User requests to delete a loan to a specific client in the list
+4.  AddressBook removes the loan entry to the client
+
+      Use case ends.
+
+**Extensions**
+
+* 2a. The list is empty.
+
+  Use case ends.
+
+* 3a. The given index of client or loan are invalid.
+    * 3a1. AddressBook shows an error message.
+      
+      Use case resumes at step 2.
+
 
 *{More to be added}*
 
@@ -342,55 +468,96 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 --------------------------------------------------------------------------------------------------------------------
 
-## **Appendix: Instructions for manual testing**
+### **Appendix: Instructions for Manual Testing**
 
 Given below are instructions to test the app manually.
 
-<box type="info" seamless>
+> **Note:** These instructions only provide a starting point for testers to work on.
+> Testers are expected to do more *exploratory* testing.
 
-**Note:** These instructions only provide a starting point for testers to work on;
-testers are expected to do more *exploratory* testing.
+---
 
-</box>
+### Launch and Shutdown
 
-### Launch and shutdown
+#### Initial Launch
 
-1. Initial launch
+1. Download the `.jar` file and place it in an empty folder.
+2. Double-click the `.jar` file.
+   **Expected:** The app launches with a sample list of persons. The window may not be optimally sized.
 
-   1. Download the jar file and copy into an empty folder
+#### Saving Window Preferences
 
-   1. Double-click the jar file Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
+1. Resize and reposition the window to a new location.
+2. Close the window and re-launch the `.jar` file.
+   **Expected:** The most recent window size and location are retained.
 
-1. Saving window preferences
+---
 
-   1. Resize the window to an optimum size. Move the window to a different location. Close the window.
+### Deleting a Person
 
-   1. Re-launch the app by double-clicking the jar file.<br>
-       Expected: The most recent window size and location is retained.
+#### While all persons are shown
 
-1. _{ more test cases …​ }_
+1. **Prerequisite:** Run the `list` command to display all persons. Ensure there are at least 2 persons in the list.
+2. **Test case:** `delete 1`
+   **Expected:** First person in the list is deleted. Status message displays deleted contact details. Timestamp updates.
+3. **Test case:** `delete 0`
+   **Expected:** No person is deleted. Error message is shown. Status bar remains unchanged.
+4. **Test case:** `delete`
+   **Expected:** Error message for missing index.
+5. **Test case:** `delete x` (where `x` is larger than the list size)
+   **Expected:** Error message for invalid index.
 
-### Deleting a person
+---
 
-1. Deleting a person while all persons are being shown
+### Saving Data
 
-   1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
+#### Missing or Corrupted Data File
 
-   1. Test case: `delete 1`<br>
-      Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
+1. Locate the `data/addressbook.json` file and rename/delete it while the app is closed.
+2. Re-launch the app.
+   **Expected:** A new data file is generated with sample data, or an appropriate error message is shown.
+3. Alternatively, open `addressbook.json` and modify it to an invalid JSON format (e.g., remove a closing brace).
+4. Re-launch the app.
+   **Expected:** App shows error message about corrupted data and starts with an empty dataset.
 
-   1. Test case: `delete 0`<br>
-      Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
+---
 
-   1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
-      Expected: Similar to previous.
+### Sort Command
 
-1. _{ more test cases …​ }_
+1. **Test case:** `sort`
+   **Expected:** List is sorted with overdue loans at the top, followed by others in descending order of loan amount.
+2. **Test case:** `sort extraArg`
+   **Expected:** Error message for invalid command format.
 
-### Saving data
+---
 
-1. Dealing with missing/corrupted data files
+### FilterLoan Command
 
-   1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
+1. **Test case:** `filterLoan unpaid`
+   **Expected:** Only persons with unpaid loans are displayed.
+2. **Test case:** `filterLoan paid`
+   **Expected:** Only persons with fully paid loans are displayed.
+3. **Test case:** `filterLoan abc`
+   **Expected:** Error message indicating invalid filter option.
 
-1. _{ more test cases …​ }_
+---
+
+## **Appendix: Effort**
+
+Our team of 5 spent significant effort extending the base AB3 functionality into a **financial loan tracking application**.
+
+### Challenges:
+
+- Implementing accurate logic for **compound vs. simple interest**, especially across multiple repayments
+- Designing a flexible `Loan` model to support **filtering, sorting, payment tracking**
+- Maintaining UI consistency while adding new fields (e.g., status, amounts)
+- Managing state updates in `ModelManager` to ensure correct `ObservableList` behavior
+
+### Achievements:
+
+- Built fully functional `pay`, `filterLoan`, and `sort` commands
+- Enhanced UI responsiveness and modularity
+- 0 reused code: All logic and data structures were built from scratch
+
+---
+

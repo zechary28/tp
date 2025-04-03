@@ -100,9 +100,13 @@ public class MainWindow extends UiPart<Stage> {
      * switches back to the person page
      */
     public void switchToPersonPage() {
-        // allow list modifcation
+        // Clear the individual person page
+        personListPanelPlaceholder.getChildren().clear();
+
+        // allow list modification
         logic.setPersonListChangeable(true);
 
+        // Fill with the regular person list view
         this.fillInnerParts();
     }
 
