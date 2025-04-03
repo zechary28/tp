@@ -23,20 +23,28 @@ public class PayCommandParser implements Parser<PayCommand> {
     public PayCommand parse(String args) throws ParseException {
         requireNonNull(args);
         args = args.trim();
+        String[] splitArgs = args.split("\\s+");
 
-        if (!args.matches(VALIDATION_REGEX)) {
+        if (splitArgs.length != 3) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, PayCommand.MESSAGE_USAGE));
         }
 
-        String[] splitArgs = args.split("\\s+");
-
         try {
             Index index = ParserUtil.parseIndex(splitArgs[0]);
-            int loanAmount = Integer.parseInt(splitArgs[1]);
-            float loanRate = Float.parseFloat(splitArgs[2]);
-            return new PayCommand(index, loanAmount, loanRate);
-        } catch (ParseException pe) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, PayCommand.MESSAGE_USAGE), pe);
+            int loanIndex = Integer.parseInt(splitArgs[1]);
+            String thirdArg = splitArgs[2];
+
+            if (thirdArg.equalsIgnoreCase("all")) {
+                return new PayCommand(index, loanIndex);
+            } else if (thirdArg.matches("\\d+M")) {
+                int months = Integer.parseInt(thirdArg.substring(0, thirdArg.length() - 1));
+                return new PayCommand(index, loanIndex, months);
+            } else {
+                float amount = Float.parseFloat(thirdArg);
+                return new PayCommand(index, loanIndex, amount);
+            }
+        } catch (NumberFormatException | ParseException e) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, PayCommand.MESSAGE_USAGE), e);
         }
     }
 }
