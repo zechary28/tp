@@ -6,6 +6,7 @@ import java.util.stream.Stream;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.Messages;
 
@@ -18,8 +19,9 @@ public class LoanList {
     //private final ArrayList<Loan> loanList = new ArrayList<>();
 
     private final ObservableList<Loan> internalList = FXCollections.observableArrayList();
+    private final FilteredList<Loan> filteredList = new FilteredList<>(internalList);
     private final ObservableList<Loan> internalUnmodifiableList =
-            FXCollections.unmodifiableObservableList(internalList);
+            FXCollections.unmodifiableObservableList(filteredList);
 
     /**
      * Initializes a LoanList.
@@ -31,6 +33,13 @@ public class LoanList {
      */
     public void add(Loan loan) {
         internalList.add(loan);
+    }
+
+    /**
+     * filters loanlist
+     */
+    public void filter(LoanPredicate pred) {
+        filteredList.setPredicate(loan -> pred.test(loan));
     }
 
     /**

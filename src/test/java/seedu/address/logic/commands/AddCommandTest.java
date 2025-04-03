@@ -23,6 +23,7 @@ import seedu.address.model.Model;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.ReadOnlyUserPrefs;
 import seedu.address.model.person.LoanList;
+import seedu.address.model.person.LoanPredicate;
 import seedu.address.model.person.Person;
 import seedu.address.testutil.PersonBuilder;
 
@@ -89,10 +90,14 @@ public class AddCommandTest {
      * A default model stub that have all of the methods failing.
      */
     private class ModelStub implements Model {
+        @Override
+        public void filter(Integer index, LoanPredicate pred) {
+            throw new AssertionError("This method should not be called.");
+        }
 
         @Override
         public LoanList getLoanList() {
-            return new LoanList();
+            throw new AssertionError("This method should not be called.");
         }
 
         @Override
