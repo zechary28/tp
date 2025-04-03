@@ -31,8 +31,8 @@ public class LoanCommand extends Command {
             + "[DUE DATE]...\n"
             + "Example: " + COMMAND_WORD + " 1 s 1000 10 2020-10-10";
 
-    public static final String MESSAGE_ADD_LOAN_SUCCESS = "Added loan to %1$s (Type: %2$s, Amount: $%3$s, Due Date: %4$s"
-            + ", Interest: %5$s%%).";
+    public static final String MESSAGE_ADD_LOAN_SUCCESS = "Added loan to %1$s (Type: %2$s, Amount: $%3$s"
+            + ", Due Date: %4$s, Interest: %5$s%%).";
     public static final String MESSAGE_INVALID_INTEREST_TYPE = "Interest loan type must be either 's' or 'c'.";
 
     private final String type;
@@ -91,8 +91,8 @@ public class LoanCommand extends Command {
         }
 
         model.updateFilteredPersonList(Model.PREDICATE_SHOW_ALL_PERSONS);
-        return new CommandResult(String.format(MESSAGE_ADD_LOAN_SUCCESS, personToAddLoan.getName()
-                , (type.equals("s") ? "Simple" : "Compound")
-                , amount, dueDate, interest));
+        return new CommandResult(String.format(MESSAGE_ADD_LOAN_SUCCESS, personToAddLoan.getName(), type.equals("s")
+                ? "Simple" : "Compound", amount, dueDate, interest)
+        );
     }
 }
