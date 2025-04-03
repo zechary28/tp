@@ -167,14 +167,12 @@ public class LoanList {
         if (internalList.isEmpty()) {
             builder.append("No loans found. \n");
         } else {
-            builder.append("Loans: \n");
-        }
-
-        for (int i = 0; i < internalList.size(); i++) {
-            Loan loan = internalList.get(i);
-            builder.append(String.format((i + 1) + ". "));
-            builder.append(Messages.format(loan));
-            builder.append("\n");
+            for (int i = 0; i < internalList.size(); i++) {
+                Loan loan = internalList.get(i);
+                builder.append(String.format((i + 1) + ". "));
+                builder.append(Messages.format(loan));
+                builder.append("\n");
+            }
         }
 
         return builder.toString();
