@@ -177,6 +177,10 @@ The `loan` feature is facilitated by `Loanlist`, which contains an `ArrayList<Lo
 - `LoanCommandParser`, which implements `Parser`. It is passed the arguments from a `loan` command by the Ui, and in turn generates a `LoanCommand` object.
 - `LoanCommand`  — , which inherits from `Commadn`. When executed, it creates a new loan based on the arguments (if they are all valid), and adds it to the `LoanList` of a specified `Person`.
 
+The following UML diagram shows the loan class diagram:
+
+<puml src="../diagrams/LoanClassDiagram.puml" alt="LoanCLassDiagram"></puml>
+
 Given below is an example usage scenario and how the `loan` feature behaves at each step.
 
 Step 1. The user adds a `Person` to The Sharkives using an `add` command.
