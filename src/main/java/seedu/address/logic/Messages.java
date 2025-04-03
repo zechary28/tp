@@ -67,7 +67,7 @@ public class Messages {
         return loan.getName()
                 + ": [Amount owed: $"
                 + String.format("%.2f", loan.getAmountOwed() - loan.getAmtPaid())
-                + "%, Due: "
+                + ", Due: "
                 + loan.getDueDate()
                 + ", Monthly Instalment: $"
                 + String.format("%.2f", loan.getMonthlyInstalmentAmount())
