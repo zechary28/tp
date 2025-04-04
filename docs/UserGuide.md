@@ -133,15 +133,18 @@ Records a payment made by the loanee.
 
 ---
 
-### Filtering loans of client: `filter`
+### Filtering loans: `filter`
 
-Filters and displays the loans of a specified client by the given conditions and parameters.
+Filters and displays the loans by the given conditions and parameters.
 You can chain multiple predicates of different parameters.
 
-**Format:** `filterLoan INDEX [pred/ PARAMETER [TOKENS]...]...`
+**Format:** `filter INDEX(optional) [pred/ PARAMETER [TOKENS]...]...`
 - `INDEX` refers to the index number of the loanee in the contact list.
 - `PARAMETER` refers to which parameter to sort by `AMOUNT` (Total amount of loans owed for each borrower), `OVERDUE` (Borrower with the most overdue loan), `NAME` (Name of borrower).
 - `TOKENS` refer to the further arguments to specify a predicate, respective tokens for each parameter are listed below.
+
+**Format:** `filter clear`
+- clears all predicates and shows all loans
 
 | Parameter    | Required Tokens                                                                                                                  |
 |--------------|----------------------------------------------------------------------------------------------------------------------------------|
@@ -150,7 +153,11 @@ You can chain multiple predicates of different parameters.
 | **loanType** | `loanType(s or c)` <br> e.g., `pred/ loanType s` <br> shows client's simple interest loans                                       |
 | **isPaid**   | `paidStatus(y or n)` <br> e.g., `pred/ isPaid n` <br> shows client's loans that are unpaid                                       |
 
-**Example:** `filterLoan 3 pred/ amount > 500 pred/ loanType c pred/ isPaid n`
+**Example:** `filter 3 pred/ amount > 500 pred/ loanType c pred/ isPaid n` (with person index)
+
+**Example:** `filter pred/ amount < 200 pred/ isPaid y` (without person index)
+
+**Example:** `filter clear` (to clear all predicates)
 
 ---
 
