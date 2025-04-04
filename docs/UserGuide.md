@@ -154,7 +154,9 @@ You can chain multiple predicates of different parameters.
 | **isPaid**   | `paidStatus(y or n)` <br> e.g., `pred/ isPaid n` <br> shows client's loans that are unpaid                                       |
 
 **Example:** `filter 3 pred/ amount > 500 pred/ loanType c pred/ isPaid n` (with person index)
+
 **Example:** `filter pred/ amount < 200 pred/ isPaid y` (without person index)
+
 **Example:** `filter clear` (to clear all predicates)
 
 ---
