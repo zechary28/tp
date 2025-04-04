@@ -45,6 +45,33 @@ public class UniquePersonList implements Iterable<Person> {
     }
 
     /**
+     * refreshes the list
+     */
+    public void refreshList() {
+        if (!internalList.isEmpty()) {
+            Person person = internalList.get(0);
+            internalList.remove(0);
+            internalList.add(0, person);
+        }
+    }
+
+    /**
+     * filters the list
+     */
+    public void filter(Integer index, LoanPredicate pred) {
+        if (index == -2) { // special index for filter all
+            for (Person person : internalList) {
+                LoanList loanList = person.getLoanList();
+                loanList.filter(pred);
+            }
+        } else { // filter specific person
+            LoanList loanList = internalList.get(index).getLoanList();
+            loanList.filter(pred);
+        }
+        refreshList();
+    }
+
+    /**
      * Sorts the list
      */
     public void sort(String sort, String order) {

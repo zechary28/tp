@@ -6,6 +6,7 @@ import java.util.List;
 
 import javafx.collections.ObservableList;
 import seedu.address.commons.util.ToStringBuilder;
+import seedu.address.model.person.LoanPredicate;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.UniquePersonList;
 
@@ -53,12 +54,20 @@ public class AddressBook implements ReadOnlyAddressBook {
     public boolean getPersonListChangeable() {
         return this.persons.getChangeable();
     }
+
     /**
      * Replaces the contents of the person list with {@code persons}.
      * {@code persons} must not contain duplicate persons.
      */
     public void sortPeople(String sort, String order) {
         this.persons.sort(sort, order);
+    }
+
+    /**
+     * filters people
+     */
+    public void filter(Integer index, LoanPredicate pred) {
+        this.persons.filter(index, pred);
     }
 
     /**

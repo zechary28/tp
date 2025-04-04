@@ -2,17 +2,13 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
-import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
-import seedu.address.model.person.Loan;
 import seedu.address.model.person.LoanPredicate;
-import seedu.address.model.person.Person;
-import seedu.address.model.person.UniquePersonList;
+import seedu.address.model.person.LoanPredicate.LoanParameter;
 
 /**
  * Filters and displays all loans across all persons in the address book
@@ -24,29 +20,43 @@ import seedu.address.model.person.UniquePersonList;
  * paidStatus (paid | unpaid).
  */
 public class LoanFilterCommand extends Command {
-    public static final String COMMAND_WORD = "filterLoan";
+    public static final String COMMAND_WORD = "filter";
+
+    public static final String CLEAR = "clear";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Filters loans of specified person by given parameters.\n"
-            + "Parameters: [personIndex] /pred [predicate type] [predicate parameters]\n"
+            + "Parameters: [personIndex] pred/ [predicate type] [predicate parameters]\n"
             + "Available Predicate Types: amount, loanType, dueDate, paidStatus \n"
             + "amount parameters:   pred/ amount [< or >] [amount] \n"
             + "dueDate parameters:  pred/ dueDate [< or >] [date in yyyy-mm-dd] \n"
             + "loanType parameters: pred/ loanType [s or c] \n"
             + "isPaid parameters:   pred/ isPaid [y or n] \n"
-            + "Example: " + COMMAND_WORD + "3 pred/ amount > 100.00 pred/ loanType s";
+            + "Example: " + COMMAND_WORD + " 3 pred/ amount > 100.00 pred/ loanType s";
 
     private final Set<LoanPredicate> predicateSet;
-    private final int personIndex;
+    private final Integer personIndex;
+    private Boolean clear = false;
 
     /**
      * Constructs a LoanFilterCommand.
      *
      * @param predicateSet Set of LoanPredicate which will be used for filtering
      */
-    public LoanFilterCommand(int personIndex, Set<LoanPredicate> predicateSet) {
+    public LoanFilterCommand(Integer personIndex, Set<LoanPredicate> predicateSet) {
         this.personIndex = personIndex;
         this.predicateSet = predicateSet;
+    }
+
+    /**
+     * Constructs a LoanFilterCommand used for clearing the filter
+     *
+     * @param predicateSet Set of LoanPredicate which will be used for filtering
+     */
+    public LoanFilterCommand(Integer personIndex, boolean clear) {
+        this.clear = clear;
+        this.personIndex = personIndex;
+        this.predicateSet = null;
     }
 
     /**
@@ -59,10 +69,41 @@ public class LoanFilterCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
-        if (!model.getIsChangeable()) {
-            throw new CommandException(UniquePersonList.UNMODIFIABLE_MESSAGE);
+        String result = "";
+
+        // case for clearing
+        if (clear) {
+            model.filter(personIndex - 1, null);
+        } else {
+            // default predicate will always resolve to true
+            LoanPredicate combinedPred = new LoanPredicate(
+                LoanParameter.AMOUNT,
+                Optional.empty(),
+                Optional.of(-10f),
+                Optional.empty(),
+                Optional.of('>')
+            );
+
+            // combine predicates
+            for (LoanPredicate pred : predicateSet) {
+                combinedPred = combinedPred.and(pred);
+                result += pred.toString();
+            }
+
+            // filter
+            model.filter(personIndex - 1, combinedPred);
         }
+
+        /*
+        if (!model.getIsChangeable()) {
+            //throw new CommandException(UniquePersonList.UNMODIFIABLE_MESSAGE);
+        }
+
         List<Person> lastShownList = model.getFilteredPersonList();
+
+        if (personIndex == null) {
+            throw new CommandException("hi");
+        }
 
         if (this.personIndex > lastShownList.size()) {
             throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
@@ -87,8 +128,11 @@ public class LoanFilterCommand extends Command {
         }
 
         return new CommandResult(result.toString().trim());
+        */
+        return new CommandResult(result);
     }
 
+    /*
     private List<Loan> filterLoanList(List<Loan> loans, LoanPredicate pred) {
         List<Loan> result = new ArrayList<>();
         for (Loan loan : loans) {
@@ -99,10 +143,10 @@ public class LoanFilterCommand extends Command {
         return result;
     }
 
-    private void printList(List<Loan> loans) {
+    public static void printList(List<Loan> loans) {
         for (Loan loan: loans) {
             System.out.println(loan.toString() + "\n");
         }
     }
-
+    */
 }

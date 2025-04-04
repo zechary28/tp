@@ -6,8 +6,11 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Region;
+import seedu.address.model.person.Loan;
 import seedu.address.model.person.Person;
 
 /**
@@ -38,9 +41,9 @@ public class PersonCard extends UiPart<Region> {
     @FXML
     private Label email;
     @FXML
-    private Label loans;
-    @FXML
     private FlowPane tags;
+    @FXML
+    private ListView<Loan> loanListView;
 
     /**
      * Creates a personcard controller
@@ -55,6 +58,7 @@ public class PersonCard extends UiPart<Region> {
         this.displayedIndex = displayedIndex;
         this.personList = personList;
         initializePersonDetails(displayedIndex);
+        initializeLoanListView();
     }
 
     private void initializePersonDetails(int displayedIndex) {
@@ -63,13 +67,32 @@ public class PersonCard extends UiPart<Region> {
         phone.setText(person.getPhone().value);
         address.setText(person.getAddress().value);
         email.setText(person.getEmail().value);
-        loans.setText(person.getLoanList().toString());
 
         tags.getChildren().clear();
         person.getTags().stream()
                 .sorted(Comparator.comparing(tag -> tag.tagName))
                 .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
     }
+
+    private void initializeLoanListView() {
+        loanListView.setItems(person.getLoanList().getLoans());
+        loanListView.setCellFactory(listView -> new LoanListViewCell());
+    }
+
+    class LoanListViewCell extends ListCell<Loan> {
+        @Override
+        protected void updateItem(Loan loan, boolean empty) {
+            super.updateItem(loan, empty);
+
+            if (empty || loan == null) {
+                setGraphic(null);
+                setText(null);
+            } else {
+                setGraphic(new LoanIndivSmall(person.getLoanList().getLoans(), loan).getRoot());
+            }
+        }
+    }
+
 
     @FXML
     private void handleCardClick() {

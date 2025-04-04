@@ -1,9 +1,3 @@
----
-  layout: default.md
-  title: "User Guide"
-  pageNav: 3
----
-
 # 🦈 The Sharkives User Guide
 
 The Sharkives is a **desktop application for managing loan records**, optimized for use via a **Command Line Interface (CLI)** while still offering a **Graphical User Interface (GUI)**. If you can type fast, The Sharkster helps you manage loans, repayments, and outstanding debts **more efficiently** than traditional GUI apps.
@@ -85,6 +79,8 @@ Examples:
 * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01`
 * `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 t/criminal`
 
+<div style="page-break-after: always;"></div>
+
 ### Adding a Loan : `loan`
 
 Adds a loan to a contact in the address book. Loans can be either **Simple Interest Loans** or **Compound Interest Loans**.
@@ -139,15 +135,20 @@ Records a payment made by the loanee.
 
 ---
 
-### Filtering loans of client: `filter`
+<div style="page-break-after: always;"></div>
 
-Filters and displays the loans of a specified client by the given conditions and parameters.
+### Filtering loans: `filter`
+
+Filters and displays the loans by the given conditions and parameters.
 You can chain multiple predicates of different parameters.
 
-**Format:** `filterLoan INDEX [pred/ PARAMETER [TOKENS]...]...`
+**Format:** `filter INDEX(optional) [pred/ PARAMETER [TOKENS]...]...`
 - `INDEX` refers to the index number of the loanee in the contact list.
 - `PARAMETER` refers to which parameter to sort by `AMOUNT` (Total amount of loans owed for each borrower), `OVERDUE` (Borrower with the most overdue loan), `NAME` (Name of borrower).
 - `TOKENS` refer to the further arguments to specify a predicate, respective tokens for each parameter are listed below.
+
+**Format:** `filter clear`
+- clears all predicates and shows all loans
 
 | Parameter    | Required Tokens                                                                                                                  |
 |--------------|----------------------------------------------------------------------------------------------------------------------------------|
@@ -156,7 +157,11 @@ You can chain multiple predicates of different parameters.
 | **loanType** | `loanType(s or c)` <br> e.g., `pred/ loanType s` <br> shows client's simple interest loans                                       |
 | **isPaid**   | `paidStatus(y or n)` <br> e.g., `pred/ isPaid n` <br> shows client's loans that are unpaid                                       |
 
-**Example:** `filterLoan 3 pred/ amount > 500 pred/ loanType c pred/ isPaid n`
+**Example:** `filter 3 pred/ amount > 500 pred/ loanType c pred/ isPaid n` (with person index)
+
+**Example:** `filter pred/ amount < 200 pred/ isPaid y` (without person index)
+
+**Example:** `filter clear` (to clear all predicates)
 
 ---
 
@@ -182,6 +187,8 @@ Deletes a specified loan from a loanee.
 **Example:** `delete 2 1`
 
 ---
+
+<div style="page-break-after: always;"></div>
 
 ### Listing all Loanees: `list`
 
@@ -245,6 +252,8 @@ _Details coming soon ..._
 
 --------------------------------------------------------------------------------------------------------------------
 
+<div style="page-break-after: always;"></div>
+
 ## Command summary
 
 | Action     | Format, Examples                                                                                                                                                                                           |
@@ -254,7 +263,7 @@ _Details coming soon ..._
 | **Delete** | `delete PERSON_INDEX`<br> e.g., `delete 3`<br> <br>`delete loan PERSON_INDEX LOAN_INDEX` <br> e.g., `delete loan 3 1`                                                                                      ||
 | **Sort**   | `sort [s/PARAMETER] [o/ORDER]`<br> e.g., `sort s/AMOUNT o/ASC`                                                                                                                                             |
 | **Pay**    | `pay PERSON_INDEX LOAN_INDEX AMOUNT`<br> e.g., `pay 1 1 1000`<br> <br> `pay PERSON_INDEX LOAN_INDEX MONTHS'M'`<br> e.g., `pay 1 1 5M` <br> <br> `pay PERSON_INDEX LOAN_INDEX all` <br> e.g., `pay 1 1 all` |
-| **Filter** | `filterLoan INDEX [pred/PREDICATE] ...`<br> e.g., `filterLoan 3 pred/ amount > 500 pred/ loanType c`                                                                                                       |
+| **Filter** | `filter INDEX(optional) [pred/PREDICATE] ...`<br> e.g., `filter 3 pred/ amount > 500 pred/ loanType c`                                                                                                     |
 | **Edit**   | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`                                                                                |
 | **Find**   | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`                                                                                                                                                 |
 | **List**   | `list`                                                                                                                                                                                                     |
