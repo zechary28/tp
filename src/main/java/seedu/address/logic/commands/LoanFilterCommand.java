@@ -26,7 +26,7 @@ public class LoanFilterCommand extends Command {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Filters loans of specified person by given parameters.\n"
-            + "Parameters: [personIndex] /pred [predicate type] [predicate parameters]\n"
+            + "Parameters: [personIndex] pred/ [predicate type] [predicate parameters]\n"
             + "Available Predicate Types: amount, loanType, dueDate, paidStatus \n"
             + "amount parameters:   pred/ amount [< or >] [amount] \n"
             + "dueDate parameters:  pred/ dueDate [< or >] [date in yyyy-mm-dd] \n"
