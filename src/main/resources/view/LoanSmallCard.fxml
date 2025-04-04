@@ -2,28 +2,28 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-
-<HBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" spacing="10">
+<?import javafx.scene.control.ListCell?>
+<HBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" spacing="10" style="-fx-padding: 0; -fx-background-color: transparent; -fx-border-color: transparent;">
     <!-- Loan Type -->
-    <Label fx:id="loanType" text="Loan Type"/>
+    <Label fx:id="loanType" text="Loan Type" styleClass="cell_small_label"/>
 
     <!-- Grouping Principal & Interest -->
-    <Label fx:id="principal" text="Principal"/>
-    <Label fx:id="interest" text="Interest"/>
+    <Label fx:id="remainingOwed" text="Remaining Owed" styleClass="cell_small_label"/>
+<!--    <Label fx:id="interest" text="Interest" styleClass="cell_small_label"/>-->
 
 
     <!-- Grouping Date Info -->
 
-    <Label fx:id="dateCreated" text="Date Created"/>
-    <Label fx:id="dueDate" text="Due Date"/>
+<!--    <Label fx:id="dateCreated" text="Date Created" styleClass="cell_small_label"/>-->
+    <Label fx:id="dueDate" text="Due Date" styleClass="cell_small_label"/>
 
 
     <!-- Grouping Last Payment Info -->
 
-    <Label fx:id="lastPaid" text="Last Paid"/>
-    <Label fx:id="amtPaid" text="Amount Paid"/>
+    <Label fx:id="lastPaid" text="Last Paid" styleClass="cell_small_label"/>
+    <Label fx:id="amtPaid" text="Amount Paid" styleClass="cell_small_label"/>
 
 
     <!-- Loan Paid Status -->
-    <Label fx:id="isPaid" text="Status"/>
+<!--    <Label fx:id="isPaid" text="Status" styleClass="cell_small_label"/>-->
 </HBox>
