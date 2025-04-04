@@ -468,3 +468,9 @@
     -fx-padding: 10px;
     -fx-border-width: 0px;
 }
+
+.loan-list-view {
+    -fx-background-color: transparent;
+
+}
+

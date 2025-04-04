@@ -421,28 +421,6 @@ public abstract class Loan {
     }
 
     @Override
-    public boolean equals(Object other) {
-        if (other == this) {
-            return true;
-        }
-
-        // instanceof handles nulls
-        if (!(other instanceof Loan)) {
-            return false;
-        }
-
-        Loan otherLoan = (Loan) other;
-        return principal == otherLoan.principal
-                && amtPaid == otherLoan.getAmtPaid()
-                && interest == otherLoan.getInterest()
-                && dueDate.equals(otherLoan.getDueDate())
-                && dateCreated.equals(otherLoan.getDateCreated())
-                && isPaid == otherLoan.isPaid()
-                && this.getName().equals(otherLoan.getName());
-
-    }
-
-    @Override
     public int hashCode() {
         return Objects.hash(principal, amtPaid, interest, dueDate, dateLastPaid, dateCreated, isPaid, this.getName());
     }
