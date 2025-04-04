@@ -79,6 +79,8 @@ Examples:
 * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01`
 * `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 t/criminal`
 
+<div style="page-break-after: always;"></div>
+
 ### Adding a Loan : `loan`
 
 Adds a loan to a contact in the address book. Loans can be either **Simple Interest Loans** or **Compound Interest Loans**.
@@ -133,6 +135,8 @@ Records a payment made by the loanee.
 
 ---
 
+<div style="page-break-after: always;"></div>
+
 ### Filtering loans: `filter`
 
 Filters and displays the loans by the given conditions and parameters.
@@ -183,6 +187,8 @@ Deletes a specified loan from a loanee.
 **Example:** `delete 2 1`
 
 ---
+
+<div style="page-break-after: always;"></div>
 
 ### Listing all Loanees: `list`
 
@@ -245,6 +251,8 @@ _Details coming soon ..._
 2. **If you minimize the Help Window** and then run the `help` command (or use the `Help` menu, or the keyboard shortcut `F1`) again, the original Help Window will remain minimized, and no new Help Window will appear. The remedy is to manually restore the minimized Help Window.
 
 --------------------------------------------------------------------------------------------------------------------
+
+<div style="page-break-after: always;"></div>
 
 ## Command summary
 
