@@ -87,7 +87,7 @@ public class LoanFilterCommand extends Command {
             // combine predicates
             for (LoanPredicate pred : predicateSet) {
                 combinedPred = combinedPred.and(pred);
-                result += pred.toString() + "\n";
+                result += pred.toString();
             }
 
             // filter
