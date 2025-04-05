@@ -97,7 +97,7 @@ Format: `loan INDEX TYPE AMOUNT INTEREST_RATE DUE_DATE​`
 
 Examples:
 * `loan 1 s 100.00 5.5 2025-12-31`
-* `loam 2 c 500.00 7.0 2026-06-15`
+* `loan 2 c 500 7 2026-06-15`
 
 ---
 
