@@ -180,7 +180,7 @@ Deletes all details associated with a loanee.
 
 Deletes a specified loan from a loanee.
 
-**Format:** `delete PERSON_INDEX LOAN_INDEX`
+**Format:** `delete loan PERSON_INDEX LOAN_INDEX`
 - `PERSON_INDEX` refers to the index number of the loanee in the contact list.
 - `LOAN_INDEX` refers to the index number of the loan in the loanee's loan list.
 
