@@ -81,6 +81,8 @@ Examples:
 
 <div style="page-break-after: always;"></div>
 
+---
+
 ### Adding a Loan : `loan`
 
 Adds a loan to a contact in the address book. Loans can be either **Simple Interest Loans** or **Compound Interest Loans**.
@@ -184,7 +186,7 @@ Deletes a specified loan from a loanee.
 - `PERSON_INDEX` refers to the index number of the loanee in the contact list.
 - `LOAN_INDEX` refers to the index number of the loan in the loanee's loan list.
 
-**Example:** `delete 2 1`
+**Example:** `delete loan 2 1`
 
 ---
 
@@ -202,12 +204,13 @@ Displays a list of all loanees in the address book.
 
 Edits the details of a loanee.
 
-**Format:** `edit INDEX FIELD NEW_VALUE`
+**Format:** `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`
 - `INDEX` refers to the index number of the loanee in the contact list.
-- `FIELD` specifies which detail to edit (`name`, `phone`, `email`, `address`).
-- `NEW_VALUE` is the updated information.
+- Include only the fields that need to be changed.
 
-**Example:** `edit 1 phone 91234567`
+**Examples:** 
+* `edit 2 n/James Lee e/jameslee@example.com`
+* `edit 1 a/123 NUS Street t/Enemy`
 
 ---
 
@@ -215,7 +218,7 @@ Edits the details of a loanee.
 
 Exits the program.
 
-Format: `exit`
+**Format:** `exit`
 
 ### Saving the data
 
