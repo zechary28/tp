@@ -149,14 +149,14 @@ public class LoanPredicate implements Predicate<Loan> {
     public String toString() {
         switch (this.parameter) {
         case AMOUNT:
-            return String.format("amount %s %s \n", this.operator.get(), this.value.get());
+            return String.format("amount %s %s \n", operator.orElse(null), value.orElse(null));
         case DUE_DATE:
-            return String.format("due date %s %s \n", this.operator.get() == '<' ? "before ": "after ", this.date.get());
+            return String.format("due %s %s \n", operator.orElse('a'), date.orElse(null));
         case LOAN_TYPE:
-            String typeString = operator.get() == 's' ? "simple interest" : "compound interest";
+            String typeString = operator.orElse('a') == 's' ? "simple interest" : "compound interest";
             return String.format("loan type %s \n", typeString);
         case IS_PAID:
-            String statusString = operator.get() == 'y' ? "paid" : "unpaid";
+            String statusString = operator.orElse('a') == 'y' ? "paid" : "unpaid";
             return String.format("status %s \n", statusString);
         default:
             return "blank \n";
