@@ -147,19 +147,14 @@ public class LoanPredicate implements Predicate<Loan> {
 
     @Override
     public String toString() {
-        switch (this.parameter) {
-        case AMOUNT:
-            return String.format("amount %s %s \n", operator.orElse(null), value.orElse(null));
-        case DUE_DATE:
-            return String.format("due %s %s \n", operator.orElse('a'), date.orElse(null));
-        case LOAN_TYPE:
-            String typeString = operator.orElse('a') == 's' ? "simple interest" : "compound interest";
-            return String.format("loan type %s \n", typeString);
-        case IS_PAID:
-            String statusString = operator.orElse('a') == 'y' ? "paid" : "unpaid";
-            return String.format("status %s \n", statusString);
-        default:
-            return "blank \n";
-        }
+        return switch (this.parameter) {
+            case AMOUNT -> String.format("amount %s %s \n", operator.orElse(null), value.orElse(null));
+            case DUE_DATE -> String.format("due %s %s \n", operator.orElse('a'), date.orElse(null));
+            case LOAN_TYPE -> String.format("loan type %s%n",
+                    operator.orElse(' ') == 's' ? "simple interest" : "compound interest");
+            case IS_PAID -> String.format("status %s%n",
+                    operator.orElse(' ') == 'y' ? "paid" : "unpaid");
+            default -> "blank%n";
+        };
     }
 }
