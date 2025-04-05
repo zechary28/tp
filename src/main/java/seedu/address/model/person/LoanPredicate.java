@@ -1,6 +1,7 @@
 package seedu.address.model.person;
 
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -147,7 +148,19 @@ public class LoanPredicate implements Predicate<Loan> {
 
     @Override
     public String toString() {
-        return String.format("LoanPredicate{parameter=%s, value=%s, date=%s, operator=%s}",
-                parameter, value.orElse(null), date.orElse(null), operator.orElse(null));
+        switch (this.parameter) {
+        case AMOUNT:
+            return String.format("amount %s %s", this.operator.get(), this.value.get());
+        case DUE_DATE:
+            return String.format("due date %s %s", this.operator.get() == '<' ? "before ": "after ", this.date.get());
+        case LOAN_TYPE:
+            String typeString = operator.get() == 's' ? "simple interest" : "compound interest";
+            return String.format("loan type %s", typeString);
+        case IS_PAID:
+            String statusString = operator.get() == 'y' ? "paid" : "unpaid";
+            return String.format("status %s", statusString);
+        default:
+            return "blank";
+        }
     }
 }

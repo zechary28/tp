@@ -69,7 +69,7 @@ public class LoanFilterCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
-        String result = "";
+        String result = "Filtered by these predicates: \n";
 
         // case for clearing
         if (clear) {
@@ -87,7 +87,7 @@ public class LoanFilterCommand extends Command {
             // combine predicates
             for (LoanPredicate pred : predicateSet) {
                 combinedPred = combinedPred.and(pred);
-                result += pred.toString();
+                result += pred.toString() + "\n";
             }
 
             // filter
