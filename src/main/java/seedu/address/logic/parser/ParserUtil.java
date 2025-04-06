@@ -145,6 +145,7 @@ public class ParserUtil {
                 if (tokens.length < 3) {
                     throw new ParseException("Insufficient Arguments");
                 }
+                checkOperatorLength(tokens[1], 1, "amount");
                 char op = tokens[1].charAt(0);
                 if (!(op == '<' || op == '>')) {
                     throw new ParseException("Amount operator must be < or >");
@@ -162,6 +163,7 @@ public class ParserUtil {
                 if (tokens.length < 3) {
                     throw new ParseException("Insufficient Arguments");
                 }
+                checkOperatorLength(tokens[1], 1, "dueDate");
                 char op = tokens[1].charAt(0);
                 if (!(op == '<' || op == '>')) {
                     throw new ParseException("DueDate operator must be < or >");
@@ -173,6 +175,7 @@ public class ParserUtil {
                 if (tokens.length < 2) {
                     throw new ParseException("Insufficient Arguments");
                 }
+                checkOperatorLength(tokens[1], 1, "loanType");
                 char op = tokens[1].charAt(0);
                 if (!(op == 's' || op == 'c')) {
                     throw new ParseException("LoanType operator must be s or c");
@@ -184,9 +187,10 @@ public class ParserUtil {
                 if (tokens.length < 2) {
                     throw new ParseException("Insufficient Arguments");
                 }
+                checkOperatorLength(tokens[1], 1, "IsPaid");
                 char op = tokens[1].charAt(0);
                 if (!(op == 'y' || op == 'n')) {
-                    throw new ParseException("Amount operator must be y or n");
+                    throw new ParseException("isPaid operator must be y or n");
                 }
                 operator = Optional.of(op);
                 value = Optional.empty();
@@ -199,6 +203,17 @@ public class ParserUtil {
         }
         Optional<Integer> index = Optional.empty();
         return new LoanPredicate(parameter, index, value, date, operator);
+    }
+
+    /**
+     * Checks length of string if it exceeds certain length
+     *
+     * @throws ParseException if length exceeds specified length
+     */
+    private static void checkOperatorLength(String str, int len, String opName) throws ParseException {
+        if (str.length() > len) {
+            throw new ParseException(String.format("%s operator must be %d character(s)", opName, len));
+        }
     }
 
     /**
