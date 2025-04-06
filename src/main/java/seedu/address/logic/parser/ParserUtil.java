@@ -150,6 +150,12 @@ public class ParserUtil {
                     throw new ParseException("Amount operator must be < or >");
                 }
                 operator = Optional.of(op);
+                try {
+                    Float flt = Float.parseFloat(tokens[2]);
+                    if (flt < 0) throw new ParseException("Amount must be non-negative");
+                } catch (NumberFormatException e) {
+                    throw new ParseException("Amount must be a valid number and non-negative");
+                }
                 value = Optional.of(Float.parseFloat(tokens[2]));
                 date = Optional.empty();
             } else if (parameter == LoanPredicate.LoanParameter.DUE_DATE) {
