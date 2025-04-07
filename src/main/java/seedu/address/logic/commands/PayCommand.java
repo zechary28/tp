@@ -106,21 +106,27 @@ public class PayCommand extends Command {
             throw new CommandException(MESSAGE_INVALID_LOAN_INDEX);
         }
 
+        String result = " paid by " + personWhoPaid.getName().fullName
+            + "(" + targetIndex.getOneBased() + ")";
+
         try {
             float totalPayment = 0;
 
             switch (paymentType) {
             case AMOUNT:
                 totalPayment = amount;
+                result = "$" + amount + result;
                 break;
             case MONTHS:
                 float monthlyInstalment = personWhoPaid.getLoans()
                         .get(adjustedLoanIndex)
                         .getMonthlyInstalmentAmount();
                 totalPayment = monthlyInstalment * months;
+                result = "$" + totalPayment + result;
                 break;
             case ALL:
                 totalPayment = personWhoPaid.getLoans().get(adjustedLoanIndex).getRemainingOwed();
+                result = "$" + totalPayment + " all" + result;
                 break;
             default:
                 throw new IllegalValueException("Unexpected value: " + paymentType);
@@ -132,7 +138,7 @@ public class PayCommand extends Command {
             throw new CommandException(e.getMessage());
         }
 
-        return new CommandResult(String.format(MESSAGE_PAYMENT_SUCCESS, Messages.format(personWhoPaid)));
+        return new CommandResult(String.format(MESSAGE_PAYMENT_SUCCESS, result));
     }
 
     @Override

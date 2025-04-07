@@ -1,5 +1,7 @@
 package seedu.address.model.person;
 
+import java.time.LocalDate;
+
 import seedu.address.commons.exceptions.IllegalValueException;
 
 /**
@@ -89,6 +91,8 @@ public class SimpleInterestLoan extends Loan {
         }
 
         this.incrementAmtPaid(payment);
+
+        this.setDateLastPaid(LocalDate.now());
 
         if (getRemainingOwed() == 0.0) {
             this.setIsPaid(true);

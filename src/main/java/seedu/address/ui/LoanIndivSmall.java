@@ -39,8 +39,6 @@ public class LoanIndivSmall extends UiPart<VBox> {
             int index = this.loans.indexOf(loan) + 1;
             loanType.setText(index + ". " + "Loan Type: " + loan.getName());
 
-            boolean isPaidLoan = loan.isPaid();
-
             // 1st 4
             remainingOwed.setText("Remaining owed: $" + String.format("%.2f", loan.getRemainingOwed()));
             dueDate.setText("Due Date: " + loan.getDueDate());
