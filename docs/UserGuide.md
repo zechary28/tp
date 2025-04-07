@@ -34,8 +34,7 @@ The Sharkives is a **desktop application for managing loan records**, optimized 
 1. Ensure you have Java `17` or above installed in your Computer.<br>
    **Mac users:** Ensure you have the precise JDK version prescribed [here](https://se-education.org/guides/tutorials/javaInstallationMac.html).
 
-2. Download the latest `.jar` file from [here]([https://github.com/se-edu/addressbook-level3/releases](https://github.com/AY2425S2-CS2103T-T14-2/tp/releases).
-
+2. Download the latest `.jar` file from [here](https://github.com/AY2425S2-CS2103T-T14-2/tp/releases)
 3. Copy the file to the folder you want to use as the _home folder_ for The Sharkives.
 
 4. Open a [command terminal](#glossary), `cd` into the folder you put the jar file in, and use the `java -jar sharkives.jar` command to run the application. `cd` [quick guide](https://www.ibm.com/docs/en/aix/7.3?topic=directories-changing-another-directory-cd-command).<br>
