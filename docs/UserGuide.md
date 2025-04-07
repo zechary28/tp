@@ -167,10 +167,18 @@ Records a payment made by the loanee.
 Filters and displays the loans by the given conditions and parameters.
 You can chain multiple predicates of different parameters.
 
-**Format:** `filter INDEX(optional) [pred/ PARAMETER [TOKENS]...]...`
+> [!WARNING]
+> Invalid predicates will be accepted as input but will not do anything.
+> e.g. no valid predicates as input will show all loans as if without filter.
+> Valid predicates will be listed in the output.
+
+**Format:** `filter [INDEX] PREDICATE PREDICATE...`
 - `INDEX` refers to the index number of the loanee in the contact list.
-- `PARAMETER` refers to which parameter to sort by `AMOUNT` (Total amount of loans owed for each borrower), `OVERDUE` (Borrower with the most overdue loan), `NAME` (Name of borrower).
-- `TOKENS` refer to the further arguments to specify a predicate, respective tokens for each parameter are listed below.
+- `PREDICATE` refers to an operation that returns true or false.
+  - is of format: `PARAMETER TOKENS` 
+    - `PARAMETER` refers to which loan parameter to check by.
+    - `TOKENS` refer to further information required to specify a predicate
+  - Available loan parameters and their respective tokens are listed below.
 
 **Format:** `filter clear`
 - clears all [predicates](#glossary) and shows all loans
@@ -316,6 +324,6 @@ _Details coming soon ..._
 ---
 
 ## Glossary
-- `predicate`: An argument that determines the parameter to use (in this case, what to filter by)
-- `command terminal`: Called "Terminal" on both Windows and Mac, can be searched from the search bar
-- `GUI`: Stands for "Graphical User Interface", essentially the parts of the application that you see
+- `predicate`: An operation which returns true or false.
+- `command terminal`: Called "Terminal" on both Windows and Mac, can be searched from the search bar.
+- `GUI`: Stands for "Graphical User Interface", essentially the parts of the application that you see.
