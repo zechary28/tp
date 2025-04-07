@@ -38,7 +38,7 @@ The Sharkives is a **desktop application for managing loan records**, optimized 
 
 3. Copy the file to the folder you want to use as the _home folder_ for The Sharkives.
 
-4. Open a [command terminal](#glossary), `cd` into the folder you put the jar file in, and use the `java -jar sharkives.jar` command to run the application. ('cd' [quick guide]([https://www.ibm.com/docs/en/aix/7.2?topic=directories-changing-another-directory-cd-command))(https://www.ibm.com/docs/en/aix/7.3?topic=directories-changing-another-directory-cd-command) to using `cd`)<br>
+4. Open a [command terminal](#glossary), `cd` into the folder you put the jar file in, and use the `java -jar sharkives.jar` command to run the application. 'cd' [quick guide]([https://www.ibm.com/docs/en/aix/7.2?topic=directories-changing-another-directory-cd-command)(https://www.ibm.com/docs/en/aix/7.3?topic=directories-changing-another-directory-cd-command) to using `cd`)<br>
    A [GUI](#glossary) similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
    ![Ui](images/Ui.png)
 
