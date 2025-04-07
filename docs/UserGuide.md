@@ -47,7 +47,7 @@ The Sharkives is a **desktop application for managing loan records**, optimized 
 
     * `loan 1 s 1000 10 2027-10-10` : Creates a new simple interest loan with 10% interest for a selected borrower.
 
-    * `sort` : Sort borrowers by name and order asc (default).
+    * `sort` : Sort borrowers by amount and order desc (default).
 
     * `list` : Lists all recorded borrowers and their loans.
 
@@ -56,7 +56,9 @@ The Sharkives is a **desktop application for managing loan records**, optimized 
     * `clear` : Deletes all borrower records.
 
     * `exit` : Exits the app.
-
+   
+> **💡 Tip:** Click anywhere on a client's "card" to get more analytics on their loans and loan details!
+ 
 6. Refer to the [Features](#features) below for details of each command.
 
 7. Alternatively, skip straight to our [Command Summary](#command-summary) to get started immediately!
@@ -78,11 +80,13 @@ The Sharkives is a **desktop application for managing loan records**, optimized 
 * Items with `…`​ after them can be used multiple times including zero times.<br>
   e.g. `[t/TAG]…​` can be used as ` ` (i.e. 0 times), `t/friend`, `t/friend t/family` etc.
 
-* Parameters can be in any order.<br>
+* Parameters can be in any order except for `loan` and `pay` commands.<br>
   e.g. if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable.
 
 * Extraneous parameters for commands that do not take in parameters (such as `help`, `list`, `exit` and `clear`) will be ignored.<br>
   e.g. if the command specifies `help 123`, it will be interpreted as `help`.
+
+* Commands are case-sensitive unless specified otherwise.
 
 * If you are using a PDF version of this document, be careful when copying and pasting commands that span multiple lines as space characters surrounding line-breaks may be omitted when copied over to the application.
 </box>
@@ -95,9 +99,31 @@ Adds a person to the address book.
 
 Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​`
 
-<div markdown="span" class="alert alert-primary">💡 Tip:
-A person can have any number of tags (including 0)
+<div markdown="span" class="alert alert-primary">  
+💡 Tips:
+
+- **add** command is case sensitive
+  > Example: `"add"` is **not** equal to `"ADD"`
+
+- A person's **name** is case-sensitive for repeated person checks.  
+  > Example: `"Jane Doe"` is **not** equal to `"jane doe"`
+- A person's **name** cannot be longer than **20 characters**.
+
+- A person's **phone number** must contain **only numerals**.  
+  > It must start with and **8** or a **9** and have only **8** digits in total.
+  > 2 different people can have the same phone number
+
+- A person's **email** must be a **valid email address** and cannot be longer than **20 characters**.
+    > 2 different people can have the same email
+
+- An **address** can be **any alphanumeric text** and cannot be longer than **20 characters**.
+    > 2 different people can have the same address
+
+- A person can have **any number of tags** (including 0).  
+  > A **tag cannot contain spaces** and cannot be longer than **20 characters**.
+
 </div>
+
 
 Examples:
 * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01`
@@ -114,10 +140,21 @@ Adds a loan to a contact in the address book. Loans can be either **Simple Inter
 Format: `loan INDEX TYPE AMOUNT INTEREST_RATE DUE_DATE​`
 - `INDEX` refers to the index number of the contact as displayed in the contact list.
 - `TYPE` is either `s` (Simple Interest Loan) or `c` (Compound Interest Loan).
-- `AMOUNT` is the principal loan amount (accepts up to 2 d.p.).
-- `INTEREST_RATE` is the percentage interest rate (accepts up to 2 d.p.).
+- `AMOUNT` is the principal loan amount (accepts only positive integers).
+- `INTEREST_RATE` is the percentage **yearly** interest rate (accepts up to a positive 2 d.p. number).
 - `DUE_DATE` is the loan's due date in `YYYY-MM-DD` format.
 
+<div markdown="span" class="alert alert-primary">  
+💡 Tips:
+
+- **loan** command is case sensitive.
+  > Example: `"loan"` is **not** equal to `"LOAN"`.
+
+- **AMOUNT** or **INTEREST_RATE** cannot be greater than 2147483647.
+
+- The total loan amount when calculated cannot be greater than 2147483647 .
+- (Loan calculations: [Check the Appendix](#appendix)).
+</div>
 
 Examples:
 * `loan 1 s 100.00 5.5 2025-12-31`
@@ -130,13 +167,22 @@ Examples:
 Sorts the borrowers by parameter and order.
 
 **Format:** `sort s/PARAMETER o/ORDER`
-- `PARAMETER` refers to which parameter to sort by:
-  - `AMOUNT`: Total amount of loans owed for each borrower
-  - `OVERDUE`: Borrower with the most overdue loan
-  - `NAME`: Name of borrower
-- `ORDER` refers to order which to sort by:
-  - `ASC`: Ascending order
-  - `DESC`: Descending order
+- `PARAMETER` refers to which parameter to sort by `AMOUNT` (Total amount of loans owed for each borrower), `OVERDUE` (Borrower with the most overdue loan), `NAME` (Name of borrower).
+- `AMOUNT` refer to order which to sort by. (`ASC` or `DESC`).
+
+<div markdown="span" class="alert alert-primary">  
+💡 Tips:
+
+- **sort** command is case sensitive
+  > Example: `"sort"` is **not** equal to `"SORT"`.
+
+- Typing `"sort"` will sort by **AMOUNT** and **DESC** be default.
+
+- **sort** cannot be used in the individual person page as it modifies the person list.
+
+- **sort** can be used after **filter** (not in the same command) to filter and sort a list.
+
+</div>
 
 **Example:** `sort s/AMOUNT o/ASC`
 
@@ -164,6 +210,16 @@ Records a payment made by the loanee.
 
 **Example:** `pay 1 2 all`
 
+<div markdown="span" class="alert alert-primary">  
+💡 Tips:
+
+- **pay** command is case sensitive.
+  > Example: `"pay"` is **not** equal to `"PAY"`.
+
+- The total **AMOUNT** paid in any format cannot exceed 2147483647.
+
+</div>
+
 ---
 
 <div style="page-break-after: always;"></div>
@@ -177,6 +233,17 @@ You can chain multiple predicates of different parameters.
 > Invalid predicates will be accepted as input but will not do anything.
 > e.g. no valid predicates as input will show all loans as if without filter.
 > Valid predicates will be listed in the output.
+> Having other alphanumeric characters in your predicates which are seperated by spaces from the predicate will still allow your predicates to function as normal
+
+<div markdown="span" class="alert alert-primary">  
+💡 Tips:
+
+- **filter** command is case sensitive.
+  > Example: `"filter"` is **not** equal to `"FILTER"`.
+
+- **filter** can be used after **sort** (not in the same command) to filter and sort a list.
+
+</div>
 
 **Format:** `filter [INDEX] pred/ PREDICATE pred/ PREDICATE...`
 - `INDEX` refers to the index number of the loanee in the contact list.
@@ -211,6 +278,18 @@ Deletes all details associated with a loanee.
 **Format:** `delete INDEX`
 - `INDEX` refers to the index number of the loanee in the contact list.
 
+<div markdown="span" class="alert alert-primary">  
+💡 Tips:
+
+- **delete** command is case sensitive
+  > Example: `"delete"` is **not** equal to `"DELETE"`.
+
+- **delete** cannot be used in the individual person page as it modifies the person list
+
+- 
+
+</div>
+
 **Example:** `delete 2`
 
 ---
@@ -222,6 +301,14 @@ Deletes a specified loan from a loanee.
 **Format:** `delete loan PERSON_INDEX LOAN_INDEX`
 - `PERSON_INDEX` refers to the index number of the loanee in the contact list.
 - `LOAN_INDEX` refers to the index number of the loan in the loanee's loan list.
+
+<div markdown="span" class="alert alert-primary">  
+💡 Tips:
+
+- **delete loan** command is case sensitive
+  > Example: `"delete loan"` is **not** equal to `"DELETE LOAN"`
+
+</div>
 
 **Example:** `delete loan 2 1`
 
@@ -235,7 +322,14 @@ Displays a list of all loanees in the address book.
 
 **Format:** `list`
 
-💡 Tip: Use this to show the full list of people after commands like `find`!
+<div markdown="span" class="alert alert-primary">  
+💡 Tips:
+
+- **list** command is case sensitive
+  > Example: `"list"` is **not** equal to `"LIST"`
+
+
+</div>
 
 ---
 
@@ -246,6 +340,16 @@ Edits the details of a loanee.
 **Format:** `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`
 - `INDEX` refers to the index number of the loanee in the contact list.
 - Include only the fields that need to be changed.
+
+<div markdown="span" class="alert alert-primary">  
+💡 Tips:
+
+- **edit** command is case sensitive
+  > Example: `"edit"` is **not** equal to `"EDIT"`
+
+- The **edit** command parameters follow the same rules as the add command [Go to Adding a person](#adding-a-person-add)
+
+</div>
 
 **Examples:** 
 * `edit 2 n/James Lee e/jameslee@example.com`
@@ -260,6 +364,21 @@ Finds all persons whose names contain any of the specified keywords (case-insens
 **Format:** `find KEYWORD [MORE_KEYWORDS]`
 - `KEYWORD` refers to the alphanumerical string to search. Note that the search is an exact match (i.e. `find Jak` will not include `Jake` in the displayed list).
 
+<div markdown="span" class="alert alert-primary">  
+💡 Tips:
+
+- **find** command is case sensitive
+  > Example: `"find"` is **not** equal to `"FIND"`
+
+- **find** splits the keywords by spacing and returns all people who's names match any keyword present in the keywords
+- For example: `"find alex james"` will return `"Alex Oh"` and `"James Ho"`
+
+- **find** cannot be used in the individual person page as it modifies the person list
+
+- To undo **find** use **list**, however, this will undo previous list modification you have made such as **sort** or **filter**
+
+</div>
+
 **Example:** `find James Jake` 
 
 ---
@@ -269,6 +388,14 @@ Finds all persons whose names contain any of the specified keywords (case-insens
 Exits the program.
 
 **Format:** `exit`
+<div markdown="span" class="alert alert-primary">
+
+💡 Tips:
+
+- **exit** command is case sensitive
+  > Example: `"exit"` is **not** equal to `"exit"`
+
+</div>
 
 ---
 
@@ -307,7 +434,7 @@ _Details coming soon ..._
 3. **Compound interest loan amount** can behave strangely when using a flexible payment schedule (i.e. payments made anytime instead of monthly)<br>
   a. As our algorithm assumes that the loanee will pay monthly for easier calculations, paying off-schedule can cause discrepancies in the remaining amount owed due to the way compound interest is calculated.<br>
   b. An update to this will be coming in future, where we will introduce a more sophisticated algorithm capable of calculating compound interest on a flexible repayment basis.
-
+4. **When using sort**, currently there exsists no unsort feature. However, it is 1 of the future features we plan to implement.
 --------------------------------------------------------------------------------------------------------------------
 
 <div style="page-break-after: always;"></div>
