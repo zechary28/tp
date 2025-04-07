@@ -26,11 +26,11 @@ public class LoanCommandParser implements Parser<LoanCommand> {
         args = args.trim();
         // Validates that args is of the right format, throws ParseException otherwise
         if (!args.matches(
-                "^(\\d+)\\s+" // Matches index, which must be a positive integer
-                        + "([sc])\\s+" // Matches interest type, which must be either s or c
-                        + "(\\d+(\\.\\d{1,2})?)\\s+" // Matches amount, allowing numbers with up to 2 d.p.
-                        + "(\\d+(\\.\\d{1,2})?)\\s+" // Matches interest rate, similar to amount
-                        + "(\\d{4}-\\d{2}-\\d{2})$" // Matches due date in YYYY-MM-DD format
+            "^(\\d+)\\s+" // Index: positive integer
+            + "([sc])\\s+" // Interest type: 's' or 'c'
+            + "(\\d+)\\s+" // Amount: positive integer only
+            + "(\\d+(\\.\\d{1,2})?)\\s+" // Interest rate: up to 2 decimal places
+            + "(\\d{4}-\\d{2}-\\d{2})$" // Date: YYYY-MM-DD
         )) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, LoanCommand.MESSAGE_USAGE));
         }

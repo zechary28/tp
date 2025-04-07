@@ -1,5 +1,7 @@
 package seedu.address.model.person;
 
+import static seedu.address.commons.util.AppUtil.checkArgument;
+
 import java.time.LocalDate;
 
 import seedu.address.commons.exceptions.IllegalValueException;
@@ -109,8 +111,13 @@ public class SimpleInterestLoan extends Loan {
         // Duration of loan in days
         float loanDurationDays = getLoanLengthDays();
         float amountOwed = getPrincipal() + getPrincipal() * interestPerDay * loanDurationDays;
+
+        // Check for overflow
+        checkArgument(!(amountOwed > Integer.MAX_VALUE), "Overflow in amount owed calculation");
+
         // Round to avoid hidden "unpayable" decimal points.
         float amountOwedRounded = Math.round(amountOwed * 100) / 100f;
+
         super.setAmountOwed(amountOwedRounded);
     }
 }
