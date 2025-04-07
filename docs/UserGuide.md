@@ -36,10 +36,10 @@ The Sharkives is a **desktop application for managing loan records**, optimized 
 
 2. Download the latest `.jar` file from [here](https://github.com/se-edu/addressbook-level3/releases).
 
-3. Copy the file to the folder you want to use as the _home folder_ for your AddressBook.
+3. Copy the file to the folder you want to use as the _home folder_ for The Sharkives.
 
-4. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar sharkster.jar` command to run the application.<br>
-   A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
+4. Open a [command terminal](#glossary), `cd` into the folder you put the jar file in, and use the `java -jar sharkives.jar` command to run the application. ([Quick guide](https://www.ibm.com/docs/en/aix/7.2?topic=directories-changing-another-directory-cd-command) to using `cd`)<br>
+   A [GUI](#glossary) similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
    ![Ui](images/Ui.png)
 
 5. Type the command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open the help window.<br>
@@ -305,4 +305,6 @@ _Details coming soon ..._
 ---
 
 ## Glossary
-- `Predicate`: An argument that determines the parameter to use (in this case, what to filter by)
+- `predicate`: An argument that determines the parameter to use (in this case, what to filter by)
+- `command terminal`: Called "Terminal" on both Windows and Mac, can be searched from the search bar
+- `GUI`: Stands for "Graphical User Interface", essentially the parts of the application that you see
