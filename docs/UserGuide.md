@@ -289,7 +289,7 @@ _Details coming soon ..._
 |------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **Add**    | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague`                                      |
 | **Loan**   | `loan INDEX TYPE(s/c) AMOUNT INTEREST_RATE DUE_DATE​` <br> e.g..`loan 1 s 100.00 5 2030-12-31`
-                                                                          |
+                                                                          ||
 | **Clear**  | `clear`                                                                                                                                                                                                    |
 | **Delete** | `delete PERSON_INDEX`<br> e.g., `delete 3`<br> <br>`delete loan PERSON_INDEX LOAN_INDEX` <br> e.g., `delete loan 3 1`                                                                                      ||
 | **Sort**   | `sort [s/PARAMETER] [o/ORDER]`<br> e.g., `sort s/AMOUNT o/ASC`                                                                                                                                             |
