@@ -2,13 +2,37 @@
 # The Sharkives Developer Guide
 
 <!-- * Table of Contents -->
+# Table of Contents
+
+1. [Acknowledgements](#acknowledgements)
+2. [Setting up, getting started](#setting-up-getting-started)
+3. [Design](#design)
+    - [Architecture](#architecture)
+    - [UI component](#ui-component)
+    - [Logic component](#logic-component)
+    - [Model component](#model-component)
+    - [Storage component](#storage-component)
+    - [Common classes](#common-classes)
+4. [Implementation](#implementation)
+    - [Add loan feature](#add-loan-feature)
+    - [Payment feature](#payment-feature)
+5. [Documentation, logging, testing, configuration, dev-ops](#documentation-logging-testing-configuration-dev-ops)
+6. [Appendix: Requirements](#appendix-requirements)
+    - [Product scope](#product-scope)
+    - [User stories](#user-stories)
+    - [Use cases](#use-cases)
+    - [Non-Functional Requirements](#non-functional-requirements)
+    - [Glossary](#glossary)
+7. [Appendix: Instructions for Manual Testing](#appendix-instructions-for-manual-testing)
+8. [Appendix: Effort](#appendix-effort)
+
 <page-nav-print />
 
 --------------------------------------------------------------------------------------------------------------------
 
 ## **Acknowledgements**
 
-- [SE-Education's AddressBook Level-3](https://se-education.org/addressbook-level3/), upon which this is built on.
+- [SE-Education's AddressBook Level-3](https://se-education.org/AddressBook-level3/), upon which this is built on.
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -30,7 +54,7 @@ Given below is a quick overview of main components and how they interact with ea
 
 **Main components of the architecture**
 
-**`Main`** (consisting of classes [`Main`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/Main.java) and [`MainApp`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/MainApp.java)) is in charge of the app launch and shut down.
+**`Main`** (consisting of classes [`Main`](https://github.com/AY2425S2-CS2103T-T14-2/tp/blob/master/src/main/java/seedu/address/Main.java) and [`MainApp`](https://github.com/AY2425S2-CS2103T-T14-2/tp/blob/master/src/main/java/seedu/address/MainApp.java)) is in charge of the app launch and shut down.
 * At app launch, it initializes the other components in the correct sequence, and connects them up with each other.
 * At shut down, it shuts down the other components and invokes cleanup methods where necessary.
 
@@ -62,13 +86,13 @@ The sections below give more details of each component.
 
 ### UI component
 
-The **API** of this component is specified in [`Ui.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/ui/Ui.java)
+The **API** of this component is specified in [`Ui.java`](https://github.com/AY2425S2-CS2103T-T14-2/tp/blob/master/src/main/java/seedu/address/ui/Ui.java)
 
 <puml src="diagrams/UiClassDiagram.puml" alt="Structure of the UI Component"/>
 
 The UI consists of a `MainWindow` that is made up of parts e.g.`CommandBox`, `ResultDisplay`, `PersonListPanel`, `StatusBarFooter` etc. All these, including the `MainWindow`, inherit from the abstract `UiPart` class which captures the commonalities between classes that represent parts of the visible GUI.
 
-The `UI` component uses the JavaFx UI framework. The layout of these UI parts are defined in matching `.fxml` files that are in the `src/main/resources/view` folder. For example, the layout of the [`MainWindow`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/ui/MainWindow.java) is specified in [`MainWindow.fxml`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/resources/view/MainWindow.fxml)
+The `UI` component uses the JavaFx UI framework. The layout of these UI parts are defined in matching `.fxml` files that are in the `src/main/resources/view` folder. For example, the layout of the [`MainWindow`](https://github.com/se-edu/The Sharkives-level3/tree/master/src/main/java/seedu/address/ui/MainWindow.java) is specified in [`MainWindow.fxml`](https://github.com/se-edu/The Sharkives-level3/tree/master/src/main/resources/view/MainWindow.fxml)
 
 The `UI` component,
 
@@ -79,7 +103,7 @@ The `UI` component,
 
 ### Logic component
 
-**API** : [`Logic.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/logic/Logic.java)
+**API** : [`Logic.java`](https://github.com/AY2425S2-CS2103T-T14-2/tp/blob/master/src/main/java/seedu/address/logic/Logic.java)
 
 Here's a (partial) class diagram of the `Logic` component:
 
@@ -96,9 +120,9 @@ The sequence diagram below illustrates the interactions within the `Logic` compo
 
 How the `Logic` component works:
 
-1. When `Logic` is called upon to execute a command, it is passed to an `AddressBookParser` object which in turn creates a parser that matches the command (e.g., `DeleteCommandParser`) and uses it to parse the command.
+1. When `Logic` is called upon to execute a command, it is passed to an `The SharkivesParser` object which in turn creates a parser that matches the command (e.g., `DeleteCommandParser`) and uses it to parse the command.
 1. This results in a `Command` object (more precisely, an object of one of its subclasses e.g., `DeleteCommand`) which is executed by the `LogicManager`.
-1. The command can communicate with the `Model` when it is executed (e.g. to delete a person).<br>
+1. The command can communicate with the `Model` when it is executed (e.g. to delete a client).<br>
    Note that although this is shown as a single step in the diagram above (for simplicity), in the code it can take several interactions (between the command object and the `Model`) to achieve.
 1. The result of the command execution is encapsulated as a `CommandResult` object which is returned back from `Logic`.
 
@@ -107,7 +131,7 @@ Here are the other classes in `Logic` (omitted from the class diagram above) tha
 <puml src="diagrams/ParserClasses.puml" width="600"/>
 
 How the parsing works:
-* When called upon to parse a user command, the `AddressBookParser` class creates an `XYZCommandParser` (`XYZ` is a placeholder for the specific command name e.g., `AddCommandParser`) which uses the other classes shown above to parse the user command and create a `XYZCommand` object (e.g., `AddCommand`) which the `AddressBookParser` returns back as a `Command` object.
+* When called upon to parse a user command, the `The SharkivesParser` class creates an `XYZCommandParser` (`XYZ` is a placeholder for the specific command name e.g., `AddCommandParser`) which uses the other classes shown above to parse the user command and create a `XYZCommand` object (e.g., `AddCommand`) which the `The SharkivesParser` returns back as a `Command` object.
 * All `XYZCommandParser` classes (e.g., `AddCommandParser`, `DeleteCommandParser`, ...) inherit from the `Parser` interface so that they can be treated similarly where possible e.g, during testing.
 
 The following classes were added to support new commands:
@@ -120,7 +144,7 @@ The following classes were added to support new commands:
 Each new command follows the Command design pattern and extends the abstract `Command` class.
 
 ### Model component
-**API** : [`Model.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/model/Model.java)
+**API** : [`Model.java`](https://github.com/AY2425S2-CS2103T-T14-2/tp/blob/master/src/main/java/seedu/address/model/Model.java)
 
 <puml src="diagrams/ModelClassDiagram.puml" width="450" />
 
@@ -134,7 +158,7 @@ The `Model` component,
 
 <box type="info" seamless>
 
-**Note:** An alternative (arguably, a more OOP) model is given below. It has a `Tag` list in the `AddressBook`, which `Person` references. This allows `AddressBook` to only require one `Tag` object per unique tag, instead of each `Person` needing their own `Tag` objects.<br>
+**Note:** An alternative (arguably, a more OOP) model is given below. It has a `Tag` list in the `The Sharkives`, which `Person` references. This allows `The Sharkives` to only require one `Tag` object per unique tag, instead of each `Person` needing their own `Tag` objects.<br>
 
 <puml src="diagrams/BetterModelClassDiagram.puml" width="450" />
 
@@ -143,13 +167,13 @@ The `Model` component,
 
 ### Storage component
 
-**API** : [`Storage.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/storage/Storage.java)
+**API** : [`Storage.java`](https://github.com/AY2425S2-CS2103T-T14-2/tp/blob/master/src/main/java/seedu/address/storage/Storage.java)
 
 <puml src="diagrams/StorageClassDiagram.puml" width="550" />
 
 The `Storage` component,
 * can save both address book data and user preference data in JSON format, and read them back into corresponding objects.
-* inherits from both `AddressBookStorage` and `UserPrefStorage`, which means it can be treated as either one (if only the functionality of only one is needed).
+* inherits from both `The SharkivesStorage` and `UserPrefStorage`, which means it can be treated as either one (if only the functionality of only one is needed).
 * depends on some classes in the `Model` component (because the `Storage` component's job is to save/retrieve objects that belong to the `Model`)
 
 ### Common classes
@@ -238,35 +262,35 @@ Step 6. Assuming no errors occur (such as the amount being more than the remaind
 [//]: # (#### Proposed Implementation)
 
 [//]: # ()
-[//]: # (The proposed undo/redo mechanism is facilitated by `VersionedAddressBook`. It extends `AddressBook` with an undo/redo history, stored internally as an `addressBookStateList` and `currentStatePointer`. Additionally, it implements the following operations:)
+[//]: # (The proposed undo/redo mechanism is facilitated by `VersionedThe Sharkives`. It extends `The Sharkives` with an undo/redo history, stored internally as an `The SharkivesStateList` and `currentStatePointer`. Additionally, it implements the following operations:)
 
 [//]: # ()
-[//]: # (* `VersionedAddressBook#commit&#40;&#41;` — Saves the current address book state in its history.)
+[//]: # (* `VersionedThe Sharkives#commit&#40;&#41;` — Saves the current address book state in its history.)
 
-[//]: # (* `VersionedAddressBook#undo&#40;&#41;` — Restores the previous address book state from its history.)
+[//]: # (* `VersionedThe Sharkives#undo&#40;&#41;` — Restores the previous address book state from its history.)
 
-[//]: # (* `VersionedAddressBook#redo&#40;&#41;` — Restores a previously undone address book state from its history.)
+[//]: # (* `VersionedThe Sharkives#redo&#40;&#41;` — Restores a previously undone address book state from its history.)
 
 [//]: # ()
-[//]: # (These operations are exposed in the `Model` interface as `Model#commitAddressBook&#40;&#41;`, `Model#undoAddressBook&#40;&#41;` and `Model#redoAddressBook&#40;&#41;` respectively.)
+[//]: # (These operations are exposed in the `Model` interface as `Model#commitThe Sharkives&#40;&#41;`, `Model#undoThe Sharkives&#40;&#41;` and `Model#redoThe Sharkives&#40;&#41;` respectively.)
 
 [//]: # ()
 [//]: # (Given below is an example usage scenario and how the undo/redo mechanism behaves at each step.)
 
 [//]: # ()
-[//]: # (Step 1. The user launches the application for the first time. The `VersionedAddressBook` will be initialized with the initial address book state, and the `currentStatePointer` pointing to that single address book state.)
+[//]: # (Step 1. The user launches the application for the first time. The `VersionedThe Sharkives` will be initialized with the initial address book state, and the `currentStatePointer` pointing to that single address book state.)
 
 [//]: # ()
 [//]: # (<puml src="diagrams/UndoRedoState0.puml" alt="UndoRedoState0" />)
 
 [//]: # ()
-[//]: # (Step 2. The user executes `delete 5` command to delete the 5th person in the address book. The `delete` command calls `Model#commitAddressBook&#40;&#41;`, causing the modified state of the address book after the `delete 5` command executes to be saved in the `addressBookStateList`, and the `currentStatePointer` is shifted to the newly inserted address book state.)
+[//]: # (Step 2. The user executes `delete 5` command to delete the 5th person in the address book. The `delete` command calls `Model#commitThe Sharkives&#40;&#41;`, causing the modified state of the address book after the `delete 5` command executes to be saved in the `The SharkivesStateList`, and the `currentStatePointer` is shifted to the newly inserted address book state.)
 
 [//]: # ()
 [//]: # (<puml src="diagrams/UndoRedoState1.puml" alt="UndoRedoState1" />)
 
 [//]: # ()
-[//]: # (Step 3. The user executes `add n/David …​` to add a new person. The `add` command also calls `Model#commitAddressBook&#40;&#41;`, causing another modified address book state to be saved into the `addressBookStateList`.)
+[//]: # (Step 3. The user executes `add n/David …​` to add a new person. The `add` command also calls `Model#commitThe Sharkives&#40;&#41;`, causing another modified address book state to be saved into the `The SharkivesStateList`.)
 
 [//]: # ()
 [//]: # (<puml src="diagrams/UndoRedoState2.puml" alt="UndoRedoState2" />)
@@ -275,13 +299,13 @@ Step 6. Assuming no errors occur (such as the amount being more than the remaind
 [//]: # (<box type="info" seamless>)
 
 [//]: # ()
-[//]: # (**Note:** If a command fails its execution, it will not call `Model#commitAddressBook&#40;&#41;`, so the address book state will not be saved into the `addressBookStateList`.)
+[//]: # (**Note:** If a command fails its execution, it will not call `Model#commitThe Sharkives&#40;&#41;`, so the address book state will not be saved into the `The SharkivesStateList`.)
 
 [//]: # ()
 [//]: # (</box>)
 
 [//]: # ()
-[//]: # (Step 4. The user now decides that adding the person was a mistake, and decides to undo that action by executing the `undo` command. The `undo` command will call `Model#undoAddressBook&#40;&#41;`, which will shift the `currentStatePointer` once to the left, pointing it to the previous address book state, and restores the address book to that state.)
+[//]: # (Step 4. The user now decides that adding the person was a mistake, and decides to undo that action by executing the `undo` command. The `undo` command will call `Model#undoThe Sharkives&#40;&#41;`, which will shift the `currentStatePointer` once to the left, pointing it to the previous address book state, and restores the address book to that state.)
 
 [//]: # ()
 [//]: # (<puml src="diagrams/UndoRedoState3.puml" alt="UndoRedoState3" />)
@@ -291,7 +315,7 @@ Step 6. Assuming no errors occur (such as the amount being more than the remaind
 [//]: # (<box type="info" seamless>)
 
 [//]: # ()
-[//]: # (**Note:** If the `currentStatePointer` is at index 0, pointing to the initial AddressBook state, then there are no previous AddressBook states to restore. The `undo` command uses `Model#canUndoAddressBook&#40;&#41;` to check if this is the case. If so, it will return an error to the user rather)
+[//]: # (**Note:** If the `currentStatePointer` is at index 0, pointing to the initial The Sharkives state, then there are no previous The Sharkives states to restore. The `undo` command uses `Model#canUndoThe Sharkives&#40;&#41;` to check if this is the case. If so, it will return an error to the user rather)
 
 [//]: # (than attempting to perform the undo.)
 
@@ -320,25 +344,25 @@ Step 6. Assuming no errors occur (such as the amount being more than the remaind
 [//]: # (<puml src="diagrams/UndoSequenceDiagram-Model.puml" alt="UndoSequenceDiagram-Model" />)
 
 [//]: # ()
-[//]: # (The `redo` command does the opposite — it calls `Model#redoAddressBook&#40;&#41;`, which shifts the `currentStatePointer` once to the right, pointing to the previously undone state, and restores the address book to that state.)
+[//]: # (The `redo` command does the opposite — it calls `Model#redoThe Sharkives&#40;&#41;`, which shifts the `currentStatePointer` once to the right, pointing to the previously undone state, and restores the address book to that state.)
 
 [//]: # ()
 [//]: # (<box type="info" seamless>)
 
 [//]: # ()
-[//]: # (**Note:** If the `currentStatePointer` is at index `addressBookStateList.size&#40;&#41; - 1`, pointing to the latest address book state, then there are no undone AddressBook states to restore. The `redo` command uses `Model#canRedoAddressBook&#40;&#41;` to check if this is the case. If so, it will return an error to the user rather than attempting to perform the redo.)
+[//]: # (**Note:** If the `currentStatePointer` is at index `The SharkivesStateList.size&#40;&#41; - 1`, pointing to the latest address book state, then there are no undone The Sharkives states to restore. The `redo` command uses `Model#canRedoThe Sharkives&#40;&#41;` to check if this is the case. If so, it will return an error to the user rather than attempting to perform the redo.)
 
 [//]: # ()
 [//]: # (</box>)
 
 [//]: # ()
-[//]: # (Step 5. The user then decides to execute the command `list`. Commands that do not modify the address book, such as `list`, will usually not call `Model#commitAddressBook&#40;&#41;`, `Model#undoAddressBook&#40;&#41;` or `Model#redoAddressBook&#40;&#41;`. Thus, the `addressBookStateList` remains unchanged.)
+[//]: # (Step 5. The user then decides to execute the command `list`. Commands that do not modify the address book, such as `list`, will usually not call `Model#commitThe Sharkives&#40;&#41;`, `Model#undoThe Sharkives&#40;&#41;` or `Model#redoThe Sharkives&#40;&#41;`. Thus, the `The SharkivesStateList` remains unchanged.)
 
 [//]: # ()
 [//]: # (<puml src="diagrams/UndoRedoState4.puml" alt="UndoRedoState4" />)
 
 [//]: # ()
-[//]: # (Step 6. The user executes `clear`, which calls `Model#commitAddressBook&#40;&#41;`. Since the `currentStatePointer` is not pointing at the end of the `addressBookStateList`, all address book states after the `currentStatePointer` will be purged. Reason: It no longer makes sense to redo the `add n/David …​` command. This is the behavior that most modern desktop applications follow.)
+[//]: # (Step 6. The user executes `clear`, which calls `Model#commitThe Sharkives&#40;&#41;`. Since the `currentStatePointer` is not pointing at the end of the `The SharkivesStateList`, all address book states after the `currentStatePointer` will be purged. Reason: It no longer makes sense to redo the `add n/David …​` command. This is the behavior that most modern desktop applications follow.)
 
 [//]: # ()
 [//]: # (<puml src="diagrams/UndoRedoState5.puml" alt="UndoRedoState5" />)
@@ -458,115 +482,128 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 ### Use cases
 
-(For all use cases below, the **System** is the `AddressBook` and the **Actor** is the `user`, unless specified otherwise)
+(For all use cases below, the **System** is `The Sharkives` and the **Actor** is the `user`, unless specified otherwise)
 
-**Use case: Add a client**
+**Use case UC01: Add a client**
 
 **MSS**
 
 1.  User requests to add a client and his details to the list
-2.  AddressBook adds the person
+2.  The Sharkives adds the person
 
    Use case ends.
 
 **Extensions**
 
 * 1a. The given input is invalid
-    * 1a1. AddressBook shows an error message.
+    * 1a1. The Sharkives shows an error message.
 
       Use case resumes at step 1
 
 
-**Use case: Delete a client**
+**Use case UC02: Delete a client**
 
 **MSS**
 
-1.  User requests to list clients
-2.  AddressBook shows a list of clients
-3.  User requests to delete a specific client in the list
-4.  AddressBook deletes the client
+1. User requests to delete a specific client in the list
+2. The Sharkives deletes the client
 
       Use case ends.
 
 **Extensions**
 
-* 2a. The list is empty.
+* 1a. The given index is invalid.
+    * 1a1. The Sharkives shows an error message.
 
-  Use case ends.
-
-* 3a. The given index is invalid.
-    * 3a1. AddressBook shows an error message.
-
-      Use case resumes at step 2.
+      Use case resumes at step 1.
 
 
-**Use case: Edit a client**
+**Use case UC03: Edit a client**
 
 **MSS**
 
-1.  User requests to list clients
-2.  AddressBook shows a list of clients
-3.  User requests an amendment to an existing entry in the list
-4.  AddressBook updates the client details
+1.  User requests an amendment to an existing entry in the list
+2.  The Sharkives updates the client details
 
       Use case ends.
 
 **Extensions**
 
-* 2a. The list is empty.
+* 1a. The given index or client details are invalid.
+    * 1a1. The Sharkives shows an error message.
 
-  Use case ends.
+      Use case resumes at step 1.
 
-* 3a. The given index or client details are invalid.
-    * 3a1. AddressBook shows an error message.
-
-      Use case resumes at step 2.
-
-**Use case: Add a loan for a client**
+**Use case UC04: Add a loan for a client**
 
 **MSS**
 
-1.  User requests to list clients
-2.  AddressBook shows a list of clients
-3.  User requests to add a loan to a specific client in the list
-4.  AddressBook adds a loan entry to the client
+1. User requests to add a loan to a specific client in the list
+2. The Sharkives adds a loan entry to the client
 
       Use case ends.
 
 **Extensions**
 
-* 2a. The list is empty.
+* 1a. The given index or loan details are invalid.
+    * 1a1. The Sharkives shows an error message.
 
-  Use case ends.
-
-* 3a. The given index or loan details are invalid.
-    * 3a1. AddressBook shows an error message.
-
-      Use case resumes at step 2.
+      Use case resumes at step 1.
 
 
-**Use case: Delete a loan for a client**
+**Use case UC05: Delete a loan for a client**
 
 **MSS**
 
-1.  User requests to list clients
-2.  AddressBook shows a list of clients
-3.  User requests to delete a loan to a specific client in the list
-4.  AddressBook removes the loan entry to the client
+1. User requests to delete a loan to a specific client in the list
+2. The Sharkives removes the loan entry to the client
 
       Use case ends.
 
 **Extensions**
 
-* 2a. The list is empty.
+* 1a. The given index of client or loan are invalid.
+    * 1a1. The Sharkives shows an error message.
 
-  Use case ends.
+      Use case resumes at step 1.
 
-* 3a. The given index of client or loan are invalid.
-    * 3a1. AddressBook shows an error message.
+**Use case UC06: Filter loans**
 
-      Use case resumes at step 2.
+**MSS**
 
+1. User requests to filter loans based on a specified predicate.
+2. The Sharkives shows only the loans that fit the specified predicate.
+3. User clears filter.
+4. The Sharkives shows all the loans again in their default order.
+
+    Use case ends.
+
+**Extensions**
+* 1a. The predicate specified is invalid.
+  * 1a1. The Sharkives shows that it did not filter by any predicate, and maintains the default view.
+
+    Use case resumes at step 1.
+
+**Use case UC07: Sort loans**
+
+**MSS**
+
+1. User requests to sort by a parameter in a specified order.
+2. The Sharkives sorts and orders the clients based on the parameter in the specified order.
+
+    Use case ends.
+
+**Extensions**
+
+* 1a. The user neglects to specify any arguments.
+  * 1a1. The Sharkives defaults to ordering the clients in descending order based on amount.
+
+    Use case ends.
+
+* 1b. The parameter or order is invalid.
+  * 1b1. The Sharkives shows an error message.
+
+    Use case resumes at step 1.
 
 *{More to be added}*
 
@@ -633,10 +670,10 @@ Given below are instructions to test the app manually.
 
 #### Missing or Corrupted Data File
 
-1. Locate the `data/addressbook.json` file and rename/delete it while the app is closed.
+1. Locate the `data/The Sharkives.json` file and rename/delete it while the app is closed.
 2. Re-launch the app.
    **Expected:** A new data file is generated with sample data, or an appropriate error message is shown.
-3. Alternatively, open `addressbook.json` and modify it to an invalid JSON format (e.g., remove a closing brace).
+3. Alternatively, open `The Sharkives.json` and modify it to an invalid JSON format (e.g., remove a closing brace).
 4. Re-launch the app.
    **Expected:** App shows error message about corrupted data and starts with an empty dataset.
 
@@ -672,14 +709,14 @@ Our team of 5 spent significant effort extending the base AB3 functionality into
 - Designing a flexible `Loan` model to support **filtering, sorting, payment tracking**
 - Maintaining UI consistency while adding new fields (e.g., status, amounts)
 - Managing state updates in `ModelManager` to ensure correct `ObservableList` behavior
+- Designing UI to make sure home screen is not too cluttered while showing necessary information.
 
 ### Achievements:
 
-- Built fully functional `pay`, `filterLoan`, and `sort` commands
+- Built fully functional `loan`, `delete loan`, `pay`, `filterLoan`, and `sort` commands
 - Enhanced UI responsiveness and modularity
 - 0 reused code: All logic and data structures were built from scratch
 - Edited existing code to fit our requirements
 - Completely revamped and customized UI to fit our theme
 
 ---
-

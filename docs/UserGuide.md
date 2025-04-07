@@ -1,6 +1,6 @@
 # 🦈 The Sharkives User Guide
 
-The Sharkives is a **desktop application for managing loan records**, optimized for use via a **Command Line Interface (CLI)** while still offering a **Graphical User Interface (GUI)**. If you can type fast, The Sharkster helps you manage loans, repayments, and outstanding debts **more efficiently** than traditional GUI apps.
+The Sharkives is a **desktop application for managing loan records**, optimized for use via a **Command Line Interface (CLI)** while still offering a **Graphical User Interface (GUI)**. If you can type fast, The Sharkives helps you manage loans, repayments, and outstanding debts **more efficiently** than traditional GUI apps.
 
 ## Table of Contents
 
@@ -56,7 +56,9 @@ The Sharkives is a **desktop application for managing loan records**, optimized 
     * `clear` : Deletes all borrower records.
 
     * `exit` : Exits the app.
-
+   
+> **💡 Tip:** Click anywhere on a client's "card" to get more analytics on their loans and loan details!
+ 
 6. Refer to the [Features](#features) below for details of each command.
 
 7. Alternatively, skip straight to our [Command Summary](#command-summary) to get started immediately!
@@ -78,11 +80,13 @@ The Sharkives is a **desktop application for managing loan records**, optimized 
 * Items with `…`​ after them can be used multiple times including zero times.<br>
   e.g. `[t/TAG]…​` can be used as ` ` (i.e. 0 times), `t/friend`, `t/friend t/family` etc.
 
-* Parameters can be in any order.<br>
+* Parameters can be in any order except for `loan` and `pay` commands.<br>
   e.g. if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable.
 
 * Extraneous parameters for commands that do not take in parameters (such as `help`, `list`, `exit` and `clear`) will be ignored.<br>
   e.g. if the command specifies `help 123`, it will be interpreted as `help`.
+
+* Commands are case-sensitive unless specified otherwise.
 
 * If you are using a PDF version of this document, be careful when copying and pasting commands that span multiple lines as space characters surrounding line-breaks may be omitted when copied over to the application.
 </box>
@@ -137,7 +141,7 @@ Format: `loan INDEX TYPE AMOUNT INTEREST_RATE DUE_DATE​`
 - `INDEX` refers to the index number of the contact as displayed in the contact list.
 - `TYPE` is either `s` (Simple Interest Loan) or `c` (Compound Interest Loan).
 - `AMOUNT` is the principal loan amount (accepts only positive integers).
-- `INTEREST_RATE` is the percentage interest rate (accepts up to a positive 2 d.p. number).
+- `INTEREST_RATE` is the percentage **yearly** interest rate (accepts up to a positive 2 d.p. number).
 - `DUE_DATE` is the loan's due date in `YYYY-MM-DD` format.
 
 <div markdown="span" class="alert alert-primary">  
@@ -241,7 +245,7 @@ You can chain multiple predicates of different parameters.
 
 </div>
 
-**Format:** `filter [INDEX] PREDICATE PREDICATE...`
+**Format:** `filter [INDEX] pred/ PREDICATE pred/ PREDICATE...`
 - `INDEX` refers to the index number of the loanee in the contact list.
 - `PREDICATE` refers to an operation that returns true or false.
   - is of format: `PARAMETER TOKENS` 
@@ -427,7 +431,7 @@ _Details coming soon ..._
 
 1. **When using multiple screens**, if you move the application to a secondary screen, and later switch to using only the primary screen, the GUI will open off-screen. The remedy is to delete the `preferences.json` file created by the application before running the application again.
 2. **If you minimize the Help Window** and then run the `help` command (or use the `Help` menu, or the keyboard shortcut `F1`) again, the original Help Window will remain minimized, and no new Help Window will appear. The remedy is to manually restore the minimized Help Window.
-3. **Compound interest loan amount** behaves strangely when using a flexible payment schedule (i.e. payments made anytime instead of monthly)<br>
+3. **Compound interest loan amount** can behave strangely when using a flexible payment schedule (i.e. payments made anytime instead of monthly)<br>
   a. As our algorithm assumes that the loanee will pay monthly for easier calculations, paying off-schedule can cause discrepancies in the remaining amount owed due to the way compound interest is calculated.<br>
   b. An update to this will be coming in future, where we will introduce a more sophisticated algorithm capable of calculating compound interest on a flexible repayment basis.
 4. **When using sort**, currently there exsists no unsort feature. However, it is 1 of the future features we plan to implement.
