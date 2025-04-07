@@ -229,11 +229,11 @@ Records a payment made by the loanee.
 Filters and displays the loans by the given conditions and parameters.
 You can chain multiple predicates of different parameters.
 
-> [!WARNING]
-> Invalid predicates will be accepted as input but will not do anything.
-> e.g. no valid predicates as input will show all loans as if without filter.
-> Valid predicates will be listed in the output.
-> Having other alphanumeric characters in your predicates which are seperated by spaces from the predicate will still allow your predicates to function as normal
+[!WARNING]
+Invalid predicates will be accepted as input but will not do anything.
+e.g. no valid predicates as input will show all loans as if without filter.
+Valid predicates will be listed in the output.
+Having other alphanumeric characters in your predicates which are seperated by spaces from the predicate will still allow your predicates to function as normal
 
 <div markdown="span" class="alert alert-primary">  
 💡 Tips:
