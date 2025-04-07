@@ -130,8 +130,13 @@ Examples:
 Sorts the borrowers by parameter and order.
 
 **Format:** `sort s/PARAMETER o/ORDER`
-- `PARAMETER` refers to which parameter to sort by `AMOUNT` (Total amount of loans owed for each borrower), `OVERDUE` (Borrower with the most overdue loan), `NAME` (Name of borrower).
-- `AMOUNT` refer to order which to sort by. (`ASC` or `DESC`).
+- `PARAMETER` refers to which parameter to sort by:
+  - `AMOUNT`: Total amount of loans owed for each borrower
+  - `OVERDUE`: Borrower with the most overdue loan
+  - `NAME`: Name of borrower
+- `ORDER` refers to order which to sort by:
+  - `ASC`: Ascending order
+  - `DESC`: Descending order
 
 **Example:** `sort s/AMOUNT o/ASC`
 
@@ -173,7 +178,7 @@ You can chain multiple predicates of different parameters.
 > e.g. no valid predicates as input will show all loans as if without filter.
 > Valid predicates will be listed in the output.
 
-**Format:** `filter [INDEX] PREDICATE PREDICATE...`
+**Format:** `filter [INDEX] pred/ PREDICATE pred/ PREDICATE...`
 - `INDEX` refers to the index number of the loanee in the contact list.
 - `PREDICATE` refers to an operation that returns true or false.
   - is of format: `PARAMETER TOKENS` 
