@@ -99,9 +99,7 @@ Adds a person to the address book.
 
 Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​`
 
-<div markdown="span" class="alert alert-primary">💡 Tip:
-A person can have any number of tags (including 0)
-</div>
+>**💡 Tip:** A person can have any number of tags (including 0)!
 
 Examples:
 * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01`
@@ -239,7 +237,7 @@ Displays a list of all loanees in the address book.
 
 **Format:** `list`
 
-💡 Tip: Use this to show the full list of people after commands like `find`!
+>**💡 Tip:** Use this to show the full list of people after commands like `find`!
 
 ---
 
