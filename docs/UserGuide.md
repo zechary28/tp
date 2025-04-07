@@ -326,7 +326,8 @@ _Details coming soon ..._
   - `t` is the number of time periods
  
 #### Compound Interest Loans
-- Calculated using the formula ![equation](https://github.com/user-attachments/assets/70d57e96-a2f1-42c2-93c4-e886e7d017a0), where:
+![equation](https://github.com/user-attachments/assets/70d57e96-a2f1-42c2-93c4-e886e7d017a0)
+- Calculated using the formula show above, where:
   - `A` is the periodic payment amount
   - `P` is the principal amount
   - `i` is the periodic interest rate
