@@ -4,6 +4,7 @@ import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_FILTER_PREDICATE;
 
 import java.util.Set;
+import java.util.stream.Stream;
 
 import seedu.address.logic.commands.LoanFilterCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -22,7 +23,6 @@ public class LoanFilterCommandParser implements Parser<LoanFilterCommand> {
      * @throws ParseException If the input does not match "paid" or "unpaid".
      */
     public LoanFilterCommand parse(String args) throws ParseException {
-        System.out.println("Asdsadadas " + args);
         // clear filter command
         if (args.toLowerCase().strip().equals(LoanFilterCommand.CLEAR)) {
             return new LoanFilterCommand(-1, true);
@@ -33,6 +33,7 @@ public class LoanFilterCommandParser implements Parser<LoanFilterCommand> {
                 ArgumentTokenizer.tokenize(args, PREFIX_FILTER_PREDICATE);
 
         Set<LoanPredicate> preds = ParserUtil.parseLoanPredicates(argMultimap.getAllValues(PREFIX_FILTER_PREDICATE));
+
         if (preds.isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, LoanFilterCommand.MESSAGE_USAGE));
         }
