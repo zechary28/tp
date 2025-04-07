@@ -63,7 +63,7 @@ public class SortCommand extends Command {
 
     @Override
     public CommandResult execute(Model model) throws CommandException {
-        if (!model.getIsChangeable()) {
+        if (!model.isChangeable()) {
             throw new CommandException(UniquePersonList.UNMODIFIABLE_MESSAGE);
         }
 

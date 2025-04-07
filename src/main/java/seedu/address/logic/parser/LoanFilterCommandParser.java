@@ -33,7 +33,7 @@ public class LoanFilterCommandParser implements Parser<LoanFilterCommand> {
 
         Set<LoanPredicate> preds = ParserUtil.parseLoanPredicates(argMultimap.getAllValues(PREFIX_FILTER_PREDICATE));
 
-        if (preds.isEmpty()) {
+        if (preds.isEmpty() || !argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, LoanFilterCommand.MESSAGE_USAGE));
         }
 

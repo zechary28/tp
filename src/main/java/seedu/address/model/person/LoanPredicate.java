@@ -154,7 +154,7 @@ public class LoanPredicate implements Predicate<Loan> {
                 operator.orElse(' ') == 's' ? "simple interest" : "compound interest");
         case IS_PAID -> String.format("status %s%n",
                 operator.orElse(' ') == 'y' ? "paid" : "unpaid");
-        default -> "blank%n";
+        default -> "";
         };
     }
 }

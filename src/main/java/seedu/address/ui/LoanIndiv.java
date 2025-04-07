@@ -84,7 +84,7 @@ public class LoanIndiv extends UiPart<VBox> {
             float monthlyInstalment = loan.getMonthlyInstalmentAmount();
             monthlyInstallment.setText("Monthly Instalment: $" + String.format("%.2f", monthlyInstalment));
 
-            float accruedInterest = loan.getAmountOwed() - loan.getPrincipal();
+            float accruedInterest = loan.getLoanValue() - loan.getPrincipal();
             interestAccrued.setText("Total Interest: $" + String.format("%.2f", accruedInterest));
 
             //3rd 4

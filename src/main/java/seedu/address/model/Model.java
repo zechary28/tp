@@ -34,7 +34,7 @@ public interface Model {
     /**
      * get changeable
      */
-    boolean getIsChangeable();
+    boolean isChangeable();
 
     /**
      * Replaces user prefs data with the data in {@code userPrefs}.

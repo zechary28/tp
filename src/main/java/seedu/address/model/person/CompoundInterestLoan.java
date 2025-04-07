@@ -1,5 +1,7 @@
 package seedu.address.model.person;
 
+import static seedu.address.commons.util.AppUtil.checkArgument;
+
 import java.time.LocalDate;
 
 import seedu.address.commons.exceptions.IllegalValueException;
@@ -19,7 +21,9 @@ public class CompoundInterestLoan extends Loan {
      */
     public CompoundInterestLoan(String amount, String interest, String dueDate) {
         super(amount, interest, dueDate);
-        this.setAmountOwed(this.getLoanValue());
+        float loanValue = this.getLoanValue();
+        checkArgument(!(loanValue > Integer.MAX_VALUE), "Overflow in amount owed calculation");
+        this.setAmountOwed(loanValue);
     }
 
     /**

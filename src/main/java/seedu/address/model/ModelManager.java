@@ -144,7 +144,7 @@ public class ModelManager implements Model {
     }
 
     @Override
-    public boolean getIsChangeable() {
+    public boolean isChangeable() {
         return this.addressBook.getPersonListChangeable();
     }
 

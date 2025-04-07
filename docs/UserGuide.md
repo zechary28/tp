@@ -23,6 +23,7 @@ The Sharkives is a **desktop application for managing loan records**, optimized 
 - [Known issues](#known-issues)
 - [Command summary](#command-summary)
 - [Appendix](#appendix)
+  - [Interest calculation for loans](#interest-calculation-for-loans)
 - [Glossary](#glossary)
 
 <page-nav-print />
@@ -167,10 +168,18 @@ Records a payment made by the loanee.
 Filters and displays the loans by the given conditions and parameters.
 You can chain multiple predicates of different parameters.
 
-**Format:** `filter INDEX(optional) [pred/ PARAMETER [TOKENS]...]...`
+> [!WARNING]
+> Invalid predicates will be accepted as input but will not do anything.
+> e.g. no valid predicates as input will show all loans as if without filter.
+> Valid predicates will be listed in the output.
+
+**Format:** `filter [INDEX] PREDICATE PREDICATE...`
 - `INDEX` refers to the index number of the loanee in the contact list.
-- `PARAMETER` refers to which parameter to sort by `AMOUNT` (Total amount of loans owed for each borrower), `OVERDUE` (Borrower with the most overdue loan), `NAME` (Name of borrower).
-- `TOKENS` refer to the further arguments to specify a predicate, respective tokens for each parameter are listed below.
+- `PREDICATE` refers to an operation that returns true or false.
+  - is of format: `PARAMETER TOKENS` 
+    - `PARAMETER` refers to which loan parameter to check by.
+    - `TOKENS` refer to further information required to specify a predicate
+  - Available loan parameters and their respective tokens are listed below.
 
 **Format:** `filter clear`
 - clears all [predicates](#glossary) and shows all loans
@@ -221,6 +230,8 @@ Displays a list of all loanees in the address book.
 
 **Format:** `list`
 
+💡 Tip: Use this to show the full list of people after commands like `find`!
+
 ---
 
 ### Editing Loanee Details: `edit`
@@ -237,6 +248,17 @@ Edits the details of a loanee.
 
 ---
 
+### Finding a name: `find`
+
+Finds all persons whose names contain any of the specified keywords (case-insensitive) and displays them as a list with index numbers.
+
+**Format:** `find KEYWORD [MORE_KEYWORDS]`
+- `KEYWORD` refers to the alphanumerical string to search. Note that the search is an exact match (i.e. `find Jak` will not include `Jake` in the displayed list).
+
+**Example:** `find James Jake` 
+
+---
+
 ### Exiting the program: `exit`
 
 Exits the program.
@@ -247,17 +269,17 @@ Exits the program.
 
 ### Saving the data
 
-AddressBook data are saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
+The data are saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
 
 ### Editing the data file
 
-AddressBook data are saved automatically as a JSON file `[JAR file location]/data/addressbook.json`. Advanced users are welcome to update data directly by editing that data file.
+The data are saved automatically as a JSON file `[JAR file location]/data/addressbook.json`. Advanced users are welcome to update data directly by editing that data file.
 
 <box type="warning" seamless>
 
 **Caution:**
-If your changes to the data file makes its format invalid, AddressBook will discard all data and start with an empty data file at the next run.  Hence, it is recommended to take a backup of the file before editing it.<br>
-Furthermore, certain edits can cause the AddressBook to behave in unexpected ways (e.g., if a value entered is outside the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
+If your changes to the data file makes its format invalid, the app will discard all data and start with an empty data file at the next run.  Hence, it is recommended to take a backup of the file before editing it.<br>
+Furthermore, certain edits can cause the app to behave in unexpected ways (e.g., if a value entered is outside the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
 </box>
 
 ### Archiving data files `[coming in v2.0]`
@@ -269,7 +291,7 @@ _Details coming soon ..._
 ## FAQ
 
 **Q**: How do I transfer my data to another Computer?<br>
-**A**: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous AddressBook home folder.
+**A**: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous Sharkives home folder.
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -277,6 +299,9 @@ _Details coming soon ..._
 
 1. **When using multiple screens**, if you move the application to a secondary screen, and later switch to using only the primary screen, the GUI will open off-screen. The remedy is to delete the `preferences.json` file created by the application before running the application again.
 2. **If you minimize the Help Window** and then run the `help` command (or use the `Help` menu, or the keyboard shortcut `F1`) again, the original Help Window will remain minimized, and no new Help Window will appear. The remedy is to manually restore the minimized Help Window.
+3. **Compound interest loan amount** can behave strangely when using a flexible payment schedule (i.e. payments made anytime instead of monthly)<br>
+  a. As our algorithm assumes that the loanee will pay monthly for easier calculations, paying off-schedule can cause discrepancies in the remaining amount owed due to the way compound interest is calculated.<br>
+  b. An update to this will be coming in future, where we will introduce a more sophisticated algorithm capable of calculating compound interest on a flexible repayment basis.
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -302,9 +327,26 @@ _Details coming soon ..._
 
 ## Appendix
 
+### Interest calculation for loans
+
+#### Simple Interest Loans
+- Calculated using the formula `I = Prt`, where:
+  - `I` is the interest amount
+  - `P` is the principal amount
+  - `r` is the rate of interest
+  - `t` is the number of time periods
+ 
+#### Compound Interest Loans
+![equation](https://github.com/user-attachments/assets/70d57e96-a2f1-42c2-93c4-e886e7d017a0)
+- Calculated using the formula show above, where:
+  - `A` is the periodic payment amount
+  - `P` is the principal amount
+  - `i` is the periodic interest rate
+  - `n` is the total number of payments
+
 ---
 
 ## Glossary
-- `predicate`: An argument that determines the parameter to use (in this case, what to filter by)
-- `command terminal`: Called "Terminal" on both Windows and Mac, can be searched from the search bar
-- `GUI`: Stands for "Graphical User Interface", essentially the parts of the application that you see
+- `predicate`: An operation which returns true or false.
+- `command terminal`: Called "Terminal" on both Windows and Mac, can be searched from the search bar.
+- `GUI`: Stands for "Graphical User Interface", essentially the parts of the application that you see.

@@ -39,4 +39,14 @@ public class AppUtil {
             throw new IllegalArgumentException(errorMessage);
         }
     }
+    /**
+     * Checks that float not over the float limit
+     *
+     * @throws IllegalArgumentException with {@code errorMessage} if float is wrong
+     */
+    public static void checkFloat(float f, String errorMessage) {
+        if (f >= Integer.MAX_VALUE) { // cast to double for precision
+            throw new IllegalArgumentException(errorMessage);
+        }
+    }
 }
