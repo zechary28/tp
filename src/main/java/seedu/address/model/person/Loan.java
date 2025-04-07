@@ -38,11 +38,7 @@ public abstract class Loan {
 
     private static final List<DateTimeFormatter> DATE_FORMATTERS = Arrays.asList(
         DateTimeFormatter.ISO_LOCAL_DATE, // yyyy-MM-dd
-        DateTimeFormatter.ofPattern("dd/MM/yyyy"),
-        DateTimeFormatter.ofPattern("MM/dd/yyyy"),
         DateTimeFormatter.ofPattern("yyyyMMdd"),
-        DateTimeFormatter.ofPattern("dd-MM-yyyy"),
-        DateTimeFormatter.ofPattern("MM-dd-yyyy"),
         DateTimeFormatter.ofPattern("EEE MMM d yyyy", Locale.ENGLISH) // Wed Dec 27 2023
     );
 

@@ -3,6 +3,7 @@ package seedu.address.logic.parser;
 import static java.util.Objects.requireNonNull;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Optional;
@@ -172,7 +173,11 @@ public class ParserUtil {
                 }
                 operator = Optional.of(op);
                 value = Optional.empty();
-                date = Optional.of(LocalDate.parse(tokens[2]));
+                try {
+                    date = Optional.of(LocalDate.parse(tokens[2]));
+                } catch (DateTimeParseException e) {
+                    throw new ParseException("Date must be in format yyyy-mm-dd");
+                }
             } else if (parameter == LoanPredicate.LoanParameter.LOAN_TYPE) {
                 if (tokens.length < 2) {
                     throw new ParseException("Insufficient Arguments");

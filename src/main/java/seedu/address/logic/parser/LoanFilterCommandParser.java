@@ -22,7 +22,6 @@ public class LoanFilterCommandParser implements Parser<LoanFilterCommand> {
      * @throws ParseException If the input does not match "paid" or "unpaid".
      */
     public LoanFilterCommand parse(String args) throws ParseException {
-        System.out.println("Asdsadadas " + args);
         // clear filter command
         if (args.toLowerCase().strip().equals(LoanFilterCommand.CLEAR)) {
             return new LoanFilterCommand(-1, true);
