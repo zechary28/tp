@@ -37,15 +37,15 @@ public class LoanIndivSmall extends UiPart<VBox> {
         this.loans = loans;
         Platform.runLater(() -> {
             int index = this.loans.indexOf(loan) + 1;
-            loanType.setText(index + ". " + "Loan Type: " + loan.getName());
+            loanType.setText(index + ". " + "Type: " + loan.getName());
 
             // 1st 4
-            remainingOwed.setText("Remaining owed: $" + String.format("%.2f", loan.getRemainingOwed()));
-            dueDate.setText("Due Date: " + loan.getDueDate());
+            remainingOwed.setText("Remaining: $" + String.format("%.2f", loan.getRemainingOwed()));
+            dueDate.setText("Due: " + loan.getDueDate());
 
             //3rd 4
             lastPaid.setText("Last Paid: "
-                + (loan.getDateLastPaid() != null ? loan.getDateLastPaid().toString() : "Not Paid Yet"));
+                + (loan.getDateLastPaid() != null ? loan.getDateLastPaid().toString() : "N.A."));
             amtPaid.setText("Amount Paid: $" + String.format("%.2f", loan.getAmtPaid()));
         });
     }
