@@ -40,6 +40,24 @@ public class ParserUtil {
     }
 
     /**
+     * parse optional index
+     * @param oneBasedIndex
+     * @throws IllegalArgumentException
+     */
+    public static int parseOptionalIndex(String oneBasedIndex) throws IllegalArgumentException {
+        if (oneBasedIndex == null || oneBasedIndex.trim().isEmpty()) {
+            throw new IllegalArgumentException(MESSAGE_INVALID_INDEX);
+        }
+
+        String trimmedIndex = oneBasedIndex.trim();
+        if (!StringUtil.isNonZeroUnsignedInteger(trimmedIndex)) {
+            return -1;
+        }
+
+        return Index.fromOneBased(Integer.parseInt(trimmedIndex)).getOneBased();
+    }
+
+    /**
      * Parses a {@code String name} into a {@code Name}.
      * Leading and trailing whitespaces will be trimmed.
      *
