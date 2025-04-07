@@ -230,6 +230,9 @@ Displays a list of all loanees in the address book.
 
 **Format:** `list`
 
+<div markdown="span" class="alert alert-primary">💡 Tip:
+Use this to show the full list of people after commands like `find`!
+
 ---
 
 ### Editing Loanee Details: `edit`
