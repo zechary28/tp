@@ -23,6 +23,7 @@ The Sharkives is a **desktop application for managing loan records**, optimized 
 - [Known issues](#known-issues)
 - [Command summary](#command-summary)
 - [Appendix](#appendix)
+- [Glossary](#glossary)
 
 <page-nav-print />
 
@@ -173,7 +174,7 @@ You can chain multiple predicates of different parameters.
 - `TOKENS` refer to the further arguments to specify a predicate, respective tokens for each parameter are listed below.
 
 **Format:** `filter clear`
-- clears all predicates and shows all loans
+- clears all [predicates](#glossary) and shows all loans
 
 | Parameter    | Required Tokens                                                                                                                  |
 |--------------|----------------------------------------------------------------------------------------------------------------------------------|
@@ -300,3 +301,8 @@ _Details coming soon ..._
 ---
 
 ## Appendix
+
+---
+
+## Glossary
+- `Predicate`: An argument that determines the parameter to use (in this case, what to filter by)
