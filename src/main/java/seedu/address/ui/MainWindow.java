@@ -107,7 +107,8 @@ public class MainWindow extends UiPart<Stage> {
         logic.setPersonListChangeable(true);
 
         // Fill with the regular person list view
-        this.fillInnerParts();
+        personListPanel = new PersonListPanel(logic.getFilteredPersonList(), this);
+        personListPanelPlaceholder.getChildren().add(personListPanel.getRoot());
     }
 
 

@@ -21,8 +21,10 @@ public class SortCommandParser implements Parser<SortCommand> {
         requireNonNull(args);
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_SORT, PREFIX_ORDER);
 
-        String sort = argMultimap.getValue(PREFIX_SORT).orElse(SortCommand.NAME).toUpperCase();
-        String order = argMultimap.getValue(PREFIX_ORDER).orElse(SortCommand.ASC).toUpperCase();
+        String sort = argMultimap.getValue(PREFIX_SORT).orElse(SortCommand.AMOUNT).toUpperCase();
+        String order = argMultimap.getValue(PREFIX_ORDER).orElse(SortCommand.DESC).toUpperCase();
+
+        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_SORT, PREFIX_ORDER);
 
         if (!SortCommand.isValidSort(sort) || !SortCommand.isValidOrder(order)) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, SortCommand.MESSAGE_USAGE));
