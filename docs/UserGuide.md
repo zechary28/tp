@@ -99,7 +99,7 @@ Format: `loan INDEX TYPE AMOUNT INTEREST_RATE DUE_DATE​`
 
 Examples:
 * `loan 1 s 100.00 5.5 2025-12-31`
-* `loam 2 c 500.00 7.0 2026-06-15`
+* `loan 2 c 500 7 2026-06-15`
 
 ---
 
@@ -184,11 +184,11 @@ Deletes all details associated with a loanee.
 
 Deletes a specified loan from a loanee.
 
-**Format:** `delete PERSON_INDEX LOAN_INDEX`
+**Format:** `delete loan PERSON_INDEX LOAN_INDEX`
 - `PERSON_INDEX` refers to the index number of the loanee in the contact list.
 - `LOAN_INDEX` refers to the index number of the loan in the loanee's loan list.
 
-**Example:** `delete 2 1`
+**Example:** `delete loan 2 1`
 
 ---
 
@@ -206,12 +206,13 @@ Displays a list of all loanees in the address book.
 
 Edits the details of a loanee.
 
-**Format:** `edit INDEX FIELD NEW_VALUE`
+**Format:** `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`
 - `INDEX` refers to the index number of the loanee in the contact list.
-- `FIELD` specifies which detail to edit (`name`, `phone`, `email`, `address`).
-- `NEW_VALUE` is the updated information.
+- Include only the fields that need to be changed.
 
-**Example:** `edit 1 phone 91234567`
+**Examples:** 
+* `edit 2 n/James Lee e/jameslee@example.com`
+* `edit 1 a/123 NUS Street t/Enemy`
 
 ---
 
@@ -219,7 +220,9 @@ Edits the details of a loanee.
 
 Exits the program.
 
-Format: `exit`
+**Format:** `exit`
+
+---
 
 ### Saving the data
 
