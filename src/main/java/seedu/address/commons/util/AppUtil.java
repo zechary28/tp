@@ -42,11 +42,10 @@ public class AppUtil {
     /**
      * Checks that float not over the float limit
      *
-     * @throws IllegalArgumentException with {@code errorMessage} if {@code condition} is false.
+     * @throws IllegalArgumentException with {@code errorMessage} if float is wrong
      */
     public static void checkFloat(float f, String errorMessage) {
-        System.out.println(f);
-        if (f == Float.POSITIVE_INFINITY || f == Float.NEGATIVE_INFINITY) {
+        if (f >= Integer.MAX_VALUE) { // cast to double for precision
             throw new IllegalArgumentException(errorMessage);
         }
     }
