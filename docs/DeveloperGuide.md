@@ -2,6 +2,30 @@
 # The Sharkives Developer Guide
 
 <!-- * Table of Contents -->
+# Table of Contents
+
+1. [Acknowledgements](#acknowledgements)
+2. [Setting up, getting started](#setting-up-getting-started)
+3. [Design](#design)
+    - [Architecture](#architecture)
+    - [UI component](#ui-component)
+    - [Logic component](#logic-component)
+    - [Model component](#model-component)
+    - [Storage component](#storage-component)
+    - [Common classes](#common-classes)
+4. [Implementation](#implementation)
+    - [Add loan feature](#add-loan-feature)
+    - [Payment feature](#payment-feature)
+5. [Documentation, logging, testing, configuration, dev-ops](#documentation-logging-testing-configuration-dev-ops)
+6. [Appendix: Requirements](#appendix-requirements)
+    - [Product scope](#product-scope)
+    - [User stories](#user-stories)
+    - [Use cases](#use-cases)
+    - [Non-Functional Requirements](#non-functional-requirements)
+    - [Glossary](#glossary)
+7. [Appendix: Instructions for Manual Testing](#appendix-instructions-for-manual-testing)
+8. [Appendix: Effort](#appendix-effort)
+
 <page-nav-print />
 
 --------------------------------------------------------------------------------------------------------------------
@@ -30,7 +54,7 @@ Given below is a quick overview of main components and how they interact with ea
 
 **Main components of the architecture**
 
-**`Main`** (consisting of classes [`Main`](https://github.com/se-edu/The Sharkives-level3/tree/master/src/main/java/seedu/address/Main.java) and [`MainApp`](https://github.com/se-edu/The Sharkives-level3/tree/master/src/main/java/seedu/address/MainApp.java)) is in charge of the app launch and shut down.
+**`Main`** (consisting of classes [`Main`](https://github.com/AY2425S2-CS2103T-T14-2/tp/blob/master/src/main/java/seedu/address/Main.java) and [`MainApp`](https://github.com/AY2425S2-CS2103T-T14-2/tp/blob/master/src/main/java/seedu/address/MainApp.java)) is in charge of the app launch and shut down.
 * At app launch, it initializes the other components in the correct sequence, and connects them up with each other.
 * At shut down, it shuts down the other components and invokes cleanup methods where necessary.
 
@@ -62,7 +86,7 @@ The sections below give more details of each component.
 
 ### UI component
 
-The **API** of this component is specified in [`Ui.java`](https://github.com/se-edu/The Sharkives-level3/tree/master/src/main/java/seedu/address/ui/Ui.java)
+The **API** of this component is specified in [`Ui.java`](https://github.com/AY2425S2-CS2103T-T14-2/tp/blob/master/src/main/java/seedu/address/ui/Ui.java)
 
 <puml src="diagrams/UiClassDiagram.puml" alt="Structure of the UI Component"/>
 
@@ -79,7 +103,7 @@ The `UI` component,
 
 ### Logic component
 
-**API** : [`Logic.java`](https://github.com/se-edu/The Sharkives-level3/tree/master/src/main/java/seedu/address/logic/Logic.java)
+**API** : [`Logic.java`](https://github.com/AY2425S2-CS2103T-T14-2/tp/blob/master/src/main/java/seedu/address/logic/Logic.java)
 
 Here's a (partial) class diagram of the `Logic` component:
 
@@ -98,7 +122,7 @@ How the `Logic` component works:
 
 1. When `Logic` is called upon to execute a command, it is passed to an `The SharkivesParser` object which in turn creates a parser that matches the command (e.g., `DeleteCommandParser`) and uses it to parse the command.
 1. This results in a `Command` object (more precisely, an object of one of its subclasses e.g., `DeleteCommand`) which is executed by the `LogicManager`.
-1. The command can communicate with the `Model` when it is executed (e.g. to delete a person).<br>
+1. The command can communicate with the `Model` when it is executed (e.g. to delete a client).<br>
    Note that although this is shown as a single step in the diagram above (for simplicity), in the code it can take several interactions (between the command object and the `Model`) to achieve.
 1. The result of the command execution is encapsulated as a `CommandResult` object which is returned back from `Logic`.
 
@@ -120,7 +144,7 @@ The following classes were added to support new commands:
 Each new command follows the Command design pattern and extends the abstract `Command` class.
 
 ### Model component
-**API** : [`Model.java`](https://github.com/se-edu/The Sharkives-level3/tree/master/src/main/java/seedu/address/model/Model.java)
+**API** : [`Model.java`](https://github.com/AY2425S2-CS2103T-T14-2/tp/blob/master/src/main/java/seedu/address/model/Model.java)
 
 <puml src="diagrams/ModelClassDiagram.puml" width="450" />
 
@@ -143,7 +167,7 @@ The `Model` component,
 
 ### Storage component
 
-**API** : [`Storage.java`](https://github.com/se-edu/The Sharkives-level3/tree/master/src/main/java/seedu/address/storage/Storage.java)
+**API** : [`Storage.java`](https://github.com/AY2425S2-CS2103T-T14-2/tp/blob/master/src/main/java/seedu/address/storage/Storage.java)
 
 <puml src="diagrams/StorageClassDiagram.puml" width="550" />
 
@@ -481,23 +505,17 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **MSS**
 
-1.  User requests to list clients
-2.  The Sharkives shows a list of clients
-3.  User requests to delete a specific client in the list
-4.  The Sharkives deletes the client
+1. User requests to delete a specific client in the list
+2. The Sharkives deletes the client
 
       Use case ends.
 
 **Extensions**
 
-* 2a. The list is empty.
+* 1a. The given index is invalid.
+    * 1a1. The Sharkives shows an error message.
 
-  Use case ends.
-
-* 3a. The given index is invalid.
-    * 3a1. The Sharkives shows an error message.
-
-      Use case resumes at step 2.
+      Use case resumes at step 1.
 
 
 **Use case UC03: Edit a client**
@@ -511,60 +529,81 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **Extensions**
 
-* 2a. The list is empty.
+* 1a. The given index or client details are invalid.
+    * 1a1. The Sharkives shows an error message.
 
-  Use case ends.
-
-* 3a. The given index or client details are invalid.
-    * 3a1. The Sharkives shows an error message.
-
-      Use case resumes at step 2.
+      Use case resumes at step 1.
 
 **Use case UC04: Add a loan for a client**
 
 **MSS**
 
-1.  User requests to list clients
-2.  The Sharkives shows a list of clients
-3.  User requests to add a loan to a specific client in the list
-4.  The Sharkives adds a loan entry to the client
+1. User requests to add a loan to a specific client in the list
+2. The Sharkives adds a loan entry to the client
 
       Use case ends.
 
 **Extensions**
 
-* 2a. The list is empty.
+* 1a. The given index or loan details are invalid.
+    * 1a1. The Sharkives shows an error message.
 
-  Use case ends.
-
-* 3a. The given index or loan details are invalid.
-    * 3a1. The Sharkives shows an error message.
-
-      Use case resumes at step 2.
+      Use case resumes at step 1.
 
 
 **Use case UC05: Delete a loan for a client**
 
 **MSS**
 
-1.  User requests to list clients
-2.  The Sharkives shows a list of clients
-3.  User requests to delete a loan to a specific client in the list
-4.  The Sharkives removes the loan entry to the client
+1. User requests to delete a loan to a specific client in the list
+2. The Sharkives removes the loan entry to the client
 
       Use case ends.
 
 **Extensions**
 
-* 2a. The list is empty.
+* 1a. The given index of client or loan are invalid.
+    * 1a1. The Sharkives shows an error message.
 
-  Use case ends.
+      Use case resumes at step 1.
 
-* 3a. The given index of client or loan are invalid.
-    * 3a1. The Sharkives shows an error message.
+**Use case UC06: Filter loans**
 
-      Use case resumes at step 2.
+**MSS**
 
+1. User requests to filter loans based on a specified predicate.
+2. The Sharkives shows only the loans that fit the specified predicate.
+3. User clears filter.
+4. The Sharkives shows all the loans again in their default order.
+
+    Use case ends.
+
+**Extensions**
+* 1a. The predicate specified is invalid.
+  * 1a1. The Sharkives shows that it did not filter by any predicate, and maintains the default view.
+
+    Use case resumes at step 1.
+
+**Use case UC07: Sort loans**
+
+**MSS**
+
+1. User requests to sort by a parameter in a specified order.
+2. The Sharkives sorts and orders the clients based on the parameter in the specified order.
+
+    Use case ends.
+
+**Extensions**
+
+* 1a. The user neglects to specify any arguments.
+  * 1a1. The Sharkives defaults to ordering the clients in descending order based on amount.
+
+    Use case ends.
+
+* 1b. The parameter or order is invalid.
+  * 1b1. The Sharkives shows an error message.
+
+    Use case resumes at step 1.
 
 *{More to be added}*
 
@@ -670,14 +709,14 @@ Our team of 5 spent significant effort extending the base AB3 functionality into
 - Designing a flexible `Loan` model to support **filtering, sorting, payment tracking**
 - Maintaining UI consistency while adding new fields (e.g., status, amounts)
 - Managing state updates in `ModelManager` to ensure correct `ObservableList` behavior
+- Designing UI to make sure home screen is not too cluttered while showing necessary information.
 
 ### Achievements:
 
-- Built fully functional `pay`, `filterLoan`, and `sort` commands
+- Built fully functional `loan`, `delete loan`, `pay`, `filterLoan`, and `sort` commands
 - Enhanced UI responsiveness and modularity
 - 0 reused code: All logic and data structures were built from scratch
 - Edited existing code to fit our requirements
 - Completely revamped and customized UI to fit our theme
 
 ---
-

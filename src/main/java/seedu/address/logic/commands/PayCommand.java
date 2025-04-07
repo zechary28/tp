@@ -1,6 +1,7 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.commons.util.AppUtil.checkFloat;
 
 import java.util.List;
 import java.util.Objects;
@@ -131,6 +132,8 @@ public class PayCommand extends Command {
             default:
                 throw new IllegalValueException("Unexpected value: " + paymentType);
             }
+
+            checkFloat(totalPayment, "Total payment overflow error");
 
             personWhoPaid.payLoan(adjustedLoanIndex, totalPayment);
 

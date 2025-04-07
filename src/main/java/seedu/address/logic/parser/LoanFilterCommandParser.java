@@ -33,7 +33,7 @@ public class LoanFilterCommandParser implements Parser<LoanFilterCommand> {
 
         Set<LoanPredicate> preds = ParserUtil.parseLoanPredicates(argMultimap.getAllValues(PREFIX_FILTER_PREDICATE));
 
-        if (preds.isEmpty() || !argMultimap.getPreamble().isEmpty()) {
+        if (preds.isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, LoanFilterCommand.MESSAGE_USAGE));
         }
 
@@ -41,12 +41,15 @@ public class LoanFilterCommandParser implements Parser<LoanFilterCommand> {
 
         try {
             // filter loans from specific person
-            personIndex = Integer.parseInt(argMultimap.getPreamble());
+            //personIndex = Integer.parseInt(argMultimap.getPreamble());
+            System.out.println(argMultimap.getPreamble());
+            personIndex = ParserUtil.parseOptionalIndex(argMultimap.getPreamble());
+
             if (personIndex < 1) {
                 throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                     LoanFilterCommand.MESSAGE_USAGE));
             }
-        } catch (NumberFormatException e) {
+        } catch (IllegalArgumentException e) {
             // filter all loans
             personIndex = -1;
         }
