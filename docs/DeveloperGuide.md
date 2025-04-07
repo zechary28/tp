@@ -46,7 +46,7 @@ Refer to the guide [_Setting up and getting started_](SettingUp.md).
 
 ### Architecture
 
-![Architecture Diagram](images/ArchitectureDiagram.png)
+![Architecture Diagram](diagrams/ArchitectureDiagram.png)
 
 The ***Architecture Diagram*** given above explains the high-level design of the App.
 
@@ -71,7 +71,7 @@ The bulk of the app's work is done by the following four components:
 
 The *Sequence Diagram* below shows how the components interact with each other for the scenario where the user issues the command `delete 1`.
 
-<puml src="diagrams/ArchitectureSequenceDiagram.puml" width="574" />
+![image](diagrams/ArchitectureSequenceDiagram.png)
 
 Each of the four main components (also shown in the diagram above),
 
@@ -80,7 +80,7 @@ Each of the four main components (also shown in the diagram above),
 
 For example, the `Logic` component defines its API in the `Logic.java` interface and implements its functionality using the `LogicManager.java` class which follows the `Logic` interface. Other components interact with a given component through its interface rather than the concrete class (reason: to prevent outside component's being coupled to the implementation of a component), as illustrated in the (partial) class diagram below.
 
-<puml src="diagrams/ComponentManagers.puml" width="300" />
+![image](diagrams/ComponentManagers.png)
 
 The sections below give more details of each component.
 
@@ -88,11 +88,11 @@ The sections below give more details of each component.
 
 The **API** of this component is specified in [`Ui.java`](https://github.com/AY2425S2-CS2103T-T14-2/tp/blob/master/src/main/java/seedu/address/ui/Ui.java)
 
-<puml src="diagrams/UiClassDiagram.puml" alt="Structure of the UI Component"/>
+![image](diagrams/UiClassDiagram.png)
 
 The UI consists of a `MainWindow` that is made up of parts e.g.`CommandBox`, `ResultDisplay`, `PersonListPanel`, `StatusBarFooter` etc. All these, including the `MainWindow`, inherit from the abstract `UiPart` class which captures the commonalities between classes that represent parts of the visible GUI.
 
-The `UI` component uses the JavaFx UI framework. The layout of these UI parts are defined in matching `.fxml` files that are in the `src/main/resources/view` folder. For example, the layout of the [`MainWindow`](https://github.com/se-edu/The Sharkives-level3/tree/master/src/main/java/seedu/address/ui/MainWindow.java) is specified in [`MainWindow.fxml`](https://github.com/se-edu/The Sharkives-level3/tree/master/src/main/resources/view/MainWindow.fxml)
+The `UI` component uses the JavaFx UI framework. The layout of these UI parts are defined in matching `.fxml` files that are in the `src/main/resources/view` folder. For example, the layout of the [`MainWindow`](https://github.com/AY2425S2-CS2103T-T14-2/tp/blob/master/src/main/java/seedu/address/ui/MainWindow.java) is specified in [`MainWindow.fxml`](https://github.com/AY2425S2-CS2103T-T14-2/tp/blob/master/src/main/resources/view/MainWindow.fxml)
 
 The `UI` component,
 
@@ -107,11 +107,11 @@ The `UI` component,
 
 Here's a (partial) class diagram of the `Logic` component:
 
-<puml src="diagrams/LogicClassDiagram.puml" width="550"/>
+![image](diagrams/LogicClassDiagram.png)
 
 The sequence diagram below illustrates the interactions within the `Logic` component, taking `execute("delete 1")` API call as an example.
 
-<puml src="diagrams/DeleteSequenceDiagram.puml" alt="Interactions Inside the Logic Component for the `delete 1` Command" />
+![image](diagrams/DeleteSequenceDiagram.png)
 
 <box type="info" seamless>
 
@@ -120,7 +120,7 @@ The sequence diagram below illustrates the interactions within the `Logic` compo
 
 How the `Logic` component works:
 
-1. When `Logic` is called upon to execute a command, it is passed to an `The SharkivesParser` object which in turn creates a parser that matches the command (e.g., `DeleteCommandParser`) and uses it to parse the command.
+1. When `Logic` is called upon to execute a command, it is passed to an `AddressBookParser` object which in turn creates a parser that matches the command (e.g., `DeleteCommandParser`) and uses it to parse the command.
 1. This results in a `Command` object (more precisely, an object of one of its subclasses e.g., `DeleteCommand`) which is executed by the `LogicManager`.
 1. The command can communicate with the `Model` when it is executed (e.g. to delete a client).<br>
    Note that although this is shown as a single step in the diagram above (for simplicity), in the code it can take several interactions (between the command object and the `Model`) to achieve.
@@ -128,10 +128,10 @@ How the `Logic` component works:
 
 Here are the other classes in `Logic` (omitted from the class diagram above) that are used for parsing a user command:
 
-<puml src="diagrams/ParserClasses.puml" width="600"/>
+![image](diagrams/ParserClasses.png)
 
 How the parsing works:
-* When called upon to parse a user command, the `The SharkivesParser` class creates an `XYZCommandParser` (`XYZ` is a placeholder for the specific command name e.g., `AddCommandParser`) which uses the other classes shown above to parse the user command and create a `XYZCommand` object (e.g., `AddCommand`) which the `The SharkivesParser` returns back as a `Command` object.
+* When called upon to parse a user command, the `AddressBookParser` class creates an `XYZCommandParser` (`XYZ` is a placeholder for the specific command name e.g., `AddCommandParser`) which uses the other classes shown above to parse the user command and create a `XYZCommand` object (e.g., `AddCommand`) which the `AddressBookParser` returns back as a `Command` object.
 * All `XYZCommandParser` classes (e.g., `AddCommandParser`, `DeleteCommandParser`, ...) inherit from the `Parser` interface so that they can be treated similarly where possible e.g, during testing.
 
 The following classes were added to support new commands:
@@ -146,8 +146,7 @@ Each new command follows the Command design pattern and extends the abstract `Co
 ### Model component
 **API** : [`Model.java`](https://github.com/AY2425S2-CS2103T-T14-2/tp/blob/master/src/main/java/seedu/address/model/Model.java)
 
-<puml src="diagrams/ModelClassDiagram.puml" width="450" />
-
+![image](diagrams/ModelClassDiagram.png)
 
 The `Model` component,
 
@@ -160,7 +159,7 @@ The `Model` component,
 
 **Note:** An alternative (arguably, a more OOP) model is given below. It has a `Tag` list in the `The Sharkives`, which `Person` references. This allows `The Sharkives` to only require one `Tag` object per unique tag, instead of each `Person` needing their own `Tag` objects.<br>
 
-<puml src="diagrams/BetterModelClassDiagram.puml" width="450" />
+![iamge](diagrams/BetterModelClassDiagram.png)
 
 </box>
 
@@ -169,11 +168,11 @@ The `Model` component,
 
 **API** : [`Storage.java`](https://github.com/AY2425S2-CS2103T-T14-2/tp/blob/master/src/main/java/seedu/address/storage/Storage.java)
 
-<puml src="diagrams/StorageClassDiagram.puml" width="550" />
+![image](diagrams/StorageClassDiagram.png)
 
 The `Storage` component,
 * can save both address book data and user preference data in JSON format, and read them back into corresponding objects.
-* inherits from both `The SharkivesStorage` and `UserPrefStorage`, which means it can be treated as either one (if only the functionality of only one is needed).
+* inherits from both `AddressBookStorage` and `UserPrefStorage`, which means it can be treated as either one (if only the functionality of only one is needed).
 * depends on some classes in the `Model` component (because the `Storage` component's job is to save/retrieve objects that belong to the `Model`)
 
 ### Common classes
@@ -202,7 +201,7 @@ Below is the class diagram showing `Loan` and its child classes:
 
 Given below is an example usage scenario and how the `loan` feature behaves at each step.
 
-Step 1. The user adds a `Person` to The Sharkives using an `add` command.
+Step 1. The user adds a `Person` to Sharkives using an `add` command.
 
 Step 2. The user uses the `loan` command to add a loan to that `Person` (e.g., `loan 1 s 1000.00 5.5 2025-12-31`).
 
@@ -256,147 +255,152 @@ Step 6. Assuming no errors occur (such as the amount being more than the remaind
 - For Compound Interest, a flexible payment schedule (like the one we have implemented) greatly complicates calculations, as early payments can reduce principal earlier and thus overall interest, vice versa. In addition, allowing flexible payments can change the effective interest rate.
 - **Proposed Extension:** allowing the user to choose between a fixed monthly plan and flexible repayment would be a future feature that could alleviate this problem.
 
-[//]: # (### \[Proposed\] Undo/redo feature)
+### \[Proposed\] Undo/redo feature
 
-[//]: # ()
-[//]: # (#### Proposed Implementation)
 
-[//]: # ()
-[//]: # (The proposed undo/redo mechanism is facilitated by `VersionedThe Sharkives`. It extends `The Sharkives` with an undo/redo history, stored internally as an `The SharkivesStateList` and `currentStatePointer`. Additionally, it implements the following operations:)
+#### Proposed Implementation
 
-[//]: # ()
-[//]: # (* `VersionedThe Sharkives#commit&#40;&#41;` — Saves the current address book state in its history.)
 
-[//]: # (* `VersionedThe Sharkives#undo&#40;&#41;` — Restores the previous address book state from its history.)
+The proposed undo/redo mechanism is facilitated by `VersionedSharkives`. It extends `The Sharkives` with an undo/redo history, stored internally as an `SharkivesStateList` and `currentStatePointer`. Additionally, it implements the following operations:
 
-[//]: # (* `VersionedThe Sharkives#redo&#40;&#41;` — Restores a previously undone address book state from its history.)
 
-[//]: # ()
-[//]: # (These operations are exposed in the `Model` interface as `Model#commitThe Sharkives&#40;&#41;`, `Model#undoThe Sharkives&#40;&#41;` and `Model#redoThe Sharkives&#40;&#41;` respectively.)
+* `VersionedSharkives#commit()` — Saves the current address book state in its history.
 
-[//]: # ()
-[//]: # (Given below is an example usage scenario and how the undo/redo mechanism behaves at each step.)
+* `VersionedSharkives#undo()` — Restores the previous address book state from its history.
 
-[//]: # ()
-[//]: # (Step 1. The user launches the application for the first time. The `VersionedThe Sharkives` will be initialized with the initial address book state, and the `currentStatePointer` pointing to that single address book state.)
+* `VersionedSharkives#redo()` — Restores a previously undone address book state from its history.
 
-[//]: # ()
-[//]: # (<puml src="diagrams/UndoRedoState0.puml" alt="UndoRedoState0" />)
 
-[//]: # ()
-[//]: # (Step 2. The user executes `delete 5` command to delete the 5th person in the address book. The `delete` command calls `Model#commitThe Sharkives&#40;&#41;`, causing the modified state of the address book after the `delete 5` command executes to be saved in the `The SharkivesStateList`, and the `currentStatePointer` is shifted to the newly inserted address book state.)
+These operations are exposed in the `Model` interface as `Model#commitSharkives()`, `Model#undoSharkives()` and `Model#redoSharkives()` respectively.
 
-[//]: # ()
-[//]: # (<puml src="diagrams/UndoRedoState1.puml" alt="UndoRedoState1" />)
 
-[//]: # ()
-[//]: # (Step 3. The user executes `add n/David …​` to add a new person. The `add` command also calls `Model#commitThe Sharkives&#40;&#41;`, causing another modified address book state to be saved into the `The SharkivesStateList`.)
+Given below is an example usage scenario and how the undo/redo mechanism behaves at each step.
 
-[//]: # ()
-[//]: # (<puml src="diagrams/UndoRedoState2.puml" alt="UndoRedoState2" />)
 
-[//]: # ()
-[//]: # (<box type="info" seamless>)
+Step 1. The user launches the application for the first time. The `VersionedSharkives` will be initialized with the initial address book state, and the `currentStatePointer` pointing to that single address book state.
 
-[//]: # ()
-[//]: # (**Note:** If a command fails its execution, it will not call `Model#commitThe Sharkives&#40;&#41;`, so the address book state will not be saved into the `The SharkivesStateList`.)
 
-[//]: # ()
-[//]: # (</box>)
+![image](diagrams/UndoRedoState0-Initial_state.png)
 
-[//]: # ()
-[//]: # (Step 4. The user now decides that adding the person was a mistake, and decides to undo that action by executing the `undo` command. The `undo` command will call `Model#undoThe Sharkives&#40;&#41;`, which will shift the `currentStatePointer` once to the left, pointing it to the previous address book state, and restores the address book to that state.)
 
-[//]: # ()
-[//]: # (<puml src="diagrams/UndoRedoState3.puml" alt="UndoRedoState3" />)
+Step 2. The user executes `delete 5` command to delete the 5th person in the address book. The `delete` command calls `Model#commitSharkives()`, causing the modified state of the address book after the `delete 5` command executes to be saved in the `SharkivesStateList`, and the `currentStatePointer` is shifted to the newly inserted address book state.
 
-[//]: # ()
-[//]: # ()
-[//]: # (<box type="info" seamless>)
 
-[//]: # ()
-[//]: # (**Note:** If the `currentStatePointer` is at index 0, pointing to the initial The Sharkives state, then there are no previous The Sharkives states to restore. The `undo` command uses `Model#canUndoThe Sharkives&#40;&#41;` to check if this is the case. If so, it will return an error to the user rather)
 
-[//]: # (than attempting to perform the undo.)
+![image](diagrams/UndoRedoState1-After_command__delete_5_.png)
 
-[//]: # ()
-[//]: # (</box>)
 
-[//]: # ()
-[//]: # (The following sequence diagram shows how an undo operation goes through the `Logic` component:)
+Step 3. The user executes `add n/David …​` to add a new person. The `add` command also calls `Model#commitSharkives()`, causing another modified address book state to be saved into the `SharkivesStateList`.
 
-[//]: # ()
-[//]: # (<puml src="diagrams/UndoSequenceDiagram-Logic.puml" alt="UndoSequenceDiagram-Logic" />)
 
-[//]: # ()
-[//]: # (<box type="info" seamless>)
 
-[//]: # ()
-[//]: # (**Note:** The lifeline for `UndoCommand` should end at the destroy marker &#40;X&#41; but due to a limitation of PlantUML, the lifeline reaches the end of diagram.)
+![image](diagrams/UndoRedoState2-After_command__add_n_David_.png)
 
-[//]: # ()
-[//]: # (</box>)
 
-[//]: # ()
-[//]: # (Similarly, how an undo operation goes through the `Model` component is shown below:)
+<box type="info" seamless>
 
-[//]: # ()
-[//]: # (<puml src="diagrams/UndoSequenceDiagram-Model.puml" alt="UndoSequenceDiagram-Model" />)
 
-[//]: # ()
-[//]: # (The `redo` command does the opposite — it calls `Model#redoThe Sharkives&#40;&#41;`, which shifts the `currentStatePointer` once to the right, pointing to the previously undone state, and restores the address book to that state.)
+**Note:** If a command fails its execution, it will not call `Model#commitSharkives()`, so the address book state will not be saved into the `SharkivesStateList`.
 
-[//]: # ()
-[//]: # (<box type="info" seamless>)
 
-[//]: # ()
-[//]: # (**Note:** If the `currentStatePointer` is at index `The SharkivesStateList.size&#40;&#41; - 1`, pointing to the latest address book state, then there are no undone The Sharkives states to restore. The `redo` command uses `Model#canRedoThe Sharkives&#40;&#41;` to check if this is the case. If so, it will return an error to the user rather than attempting to perform the redo.)
+</box>
 
-[//]: # ()
-[//]: # (</box>)
 
-[//]: # ()
-[//]: # (Step 5. The user then decides to execute the command `list`. Commands that do not modify the address book, such as `list`, will usually not call `Model#commitThe Sharkives&#40;&#41;`, `Model#undoThe Sharkives&#40;&#41;` or `Model#redoThe Sharkives&#40;&#41;`. Thus, the `The SharkivesStateList` remains unchanged.)
+Step 4. The user now decides that adding the person was a mistake, and decides to undo that action by executing the `undo` command. The `undo` command will call `Model#undoSharkives()`, which will shift the `currentStatePointer` once to the left, pointing it to the previous address book state, and restores the address book to that state.
 
-[//]: # ()
-[//]: # (<puml src="diagrams/UndoRedoState4.puml" alt="UndoRedoState4" />)
 
-[//]: # ()
-[//]: # (Step 6. The user executes `clear`, which calls `Model#commitThe Sharkives&#40;&#41;`. Since the `currentStatePointer` is not pointing at the end of the `The SharkivesStateList`, all address book states after the `currentStatePointer` will be purged. Reason: It no longer makes sense to redo the `add n/David …​` command. This is the behavior that most modern desktop applications follow.)
+![image](diagrams/UndoRedoState3-After_command__undo_.png)
 
-[//]: # ()
-[//]: # (<puml src="diagrams/UndoRedoState5.puml" alt="UndoRedoState5" />)
 
-[//]: # ()
-[//]: # (The following activity diagram summarizes what happens when a user executes a new command:)
 
-[//]: # ()
-[//]: # (<puml src="diagrams/CommitActivityDiagram.puml" width="250" />)
+<box type="info" seamless>
 
-[//]: # ()
-[//]: # (#### Design considerations:)
 
-[//]: # ()
-[//]: # (**Aspect: How undo & redo executes:**)
+**Note:** If the `currentStatePointer` is at index 0, pointing to the initial Sharkives state, then there are no previous Sharkives states to restore. The `undo` command uses `Model#canUndoSharkives()` to check if this is the case. If so, it will return an error to the user rather
 
-[//]: # ()
-[//]: # (* **Alternative 1 &#40;current choice&#41;:** Saves the entire address book.)
+than attempting to perform the undo.
 
-[//]: # (  * Pros: Easy to implement.)
 
-[//]: # (  * Cons: May have performance issues in terms of memory usage.)
+</box>
 
-[//]: # ()
-[//]: # (* **Alternative 2:** Individual command knows how to undo/redo by)
 
-[//]: # (  itself.)
+The following sequence diagram shows how an undo operation goes through the `Logic` component:
 
-[//]: # (  * Pros: Will use less memory &#40;e.g. for `delete`, just save the person being deleted&#41;.)
 
-[//]: # (  * Cons: We must ensure that the implementation of each individual command are correct.)
+![image](diagrams/UndoSequenceDiagram-Logic.png)
 
-[//]: # ()
-[//]: # (_{more aspects and alternatives to be added}_)
+
+<box type="info" seamless>
+
+
+**Note:** The lifeline for `UndoCommand` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+
+
+</box>
+
+
+Similarly, how an undo operation goes through the `Model` component is shown below:
+
+
+![image](diagrams/UndoSequenceDiagram-Model.png)
+
+
+The `redo` command does the opposite — it calls `Model#redoSharkives()`, which shifts the `currentStatePointer` once to the right, pointing to the previously undone state, and restores the address book to that state.
+
+
+<box type="info" seamless>
+
+
+**Note:** If the `currentStatePointer` is at index `SharkivesStateList.size() - 1`, pointing to the latest address book state, then there are no undone Sharkives states to restore. The `redo` command uses `Model#canRedoSharkives()` to check if this is the case. If so, it will return an error to the user rather than attempting to perform the redo.
+
+
+</box>
+
+
+Step 5. The user then decides to execute the command `list`. Commands that do not modify the address book, such as `list`, will usually not call `Model#commitSharkives()`, `Model#undoSharkives()` or `Model#redoSharkives()`. Thus, the `SharkivesStateList` remains unchanged.
+
+
+
+![image](diagrams/UndoRedoState4-After_command__list_.png)
+
+
+Step 6. The user executes `clear`, which calls `Model#commitSharkives()`. Since the `currentStatePointer` is not pointing at the end of the `SharkivesStateList`, all address book states after the `currentStatePointer` will be purged. Reason: It no longer makes sense to redo the `add n/David …​` command. This is the behavior that most modern desktop applications follow.
+
+
+
+![image](diagrams/UndoRedoState5-After_command__clear_.png)
+
+
+The following activity diagram summarizes what happens when a user executes a new command:
+
+
+
+![image](diagrams/CommitActivityDiagram.png)
+
+
+#### Design considerations:
+
+
+**Aspect: How undo & redo executes:**
+
+
+* **Alternative 1 (current choice):** Saves the entire address book.
+
+  * Pros: Easy to implement.
+
+  * Cons: May have performance issues in terms of memory usage.
+
+
+* **Alternative 2:** Individual command knows how to undo/redo by
+
+  itself.
+
+  * Pros: Will use less memory (e.g. for `delete`, just save the person being deleted).
+
+  * Cons: We must ensure that the implementation of each individual command are correct.
+
+
+_{more aspects and alternatives to be added}_
 
 [//]: # ()
 [//]: # (### \[Proposed\] Data archiving)
@@ -670,10 +674,10 @@ Given below are instructions to test the app manually.
 
 #### Missing or Corrupted Data File
 
-1. Locate the `data/The Sharkives.json` file and rename/delete it while the app is closed.
+1. Locate the `data/AddressBook.json` file and rename/delete it while the app is closed.
 2. Re-launch the app.
    **Expected:** A new data file is generated with sample data, or an appropriate error message is shown.
-3. Alternatively, open `The Sharkives.json` and modify it to an invalid JSON format (e.g., remove a closing brace).
+3. Alternatively, open `AddressBook.json` and modify it to an invalid JSON format (e.g., remove a closing brace).
 4. Re-launch the app.
    **Expected:** App shows error message about corrupted data and starts with an empty dataset.
 
