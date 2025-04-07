@@ -23,6 +23,7 @@ The Sharkives is a **desktop application for managing loan records**, optimized 
 - [Known issues](#known-issues)
 - [Command summary](#command-summary)
 - [Appendix](#appendix)
+  - [Interest calculations for loans](#interest-calculations-for-loans)
 - [Glossary](#glossary)
 
 <page-nav-print />
@@ -316,7 +317,7 @@ _Details coming soon ..._
 
 ## Appendix
 
-### Notes on interest calculation for loans
+### Interest calculation for loans
 
 #### Simple Interest Loans
 - Calculated using the formula `I = Prt`, where:
