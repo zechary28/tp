@@ -2,7 +2,27 @@
 
 The Sharkives is a **desktop application for managing loan records**, optimized for use via a **Command Line Interface (CLI)** while still offering a **Graphical User Interface (GUI)**. If you can type fast, The Sharkster helps you manage loans, repayments, and outstanding debts **more efficiently** than traditional GUI apps.
 
-<!-- * Table of Contents -->
+## Table of Contents
+
+- [Quick start](#quick-start)
+- [Features](#features)
+  - [Adding a person: `add`](#adding-a-person-add)
+  - [Adding a Loan : `loan`](#adding-a-loan-loan)
+  - [Sorting the borrowers: `sort`](#sorting-the-borrowers-sort)
+  - [Recording a Payment: `pay`](#recording-a-payment-pay)
+  - [Filtering loans: `filter`](#filtering-loans-filter)
+  - [Deleting a Loanee: `delete`](#deleting-a-loanee-delete)
+  - [Deleting a Loanee's Loan: `delete loan`](#deleting-a-loanees-loan-delete-loan)
+  - [Listing all Loanees: `list`](#listing-all-loanees-list)
+  - [Editing Loanee Details: `edit`](#editing-loanee-details-edit)
+  - [Exiting the program : `exit`](#exiting-the-program-exit)
+  - [Saving the data](#saving-the-data)
+  - [Editing the data file](#editing-the-data-file)
+  - [Archiving data files `[coming in v2.0]`](#archiving-data-files-coming-in-v20)
+- [FAQ](#faq)
+- [Known issues](#known-issues)
+- [Command summary](#command-summary)
+
 <page-nav-print />
 
 --------------------------------------------------------------------------------------------------------------------
@@ -85,7 +105,7 @@ Examples:
 
 ---
 
-### Adding a Loan : `loan`
+### Adding a Loan: `loan`
 
 Adds a loan to a contact in the address book. Loans can be either **Simple Interest Loans** or **Compound Interest Loans**.
 
@@ -216,7 +236,7 @@ Edits the details of a loanee.
 
 ---
 
-### Exiting the program : `exit`
+### Exiting the program: `exit`
 
 Exits the program.
 
