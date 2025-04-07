@@ -14,6 +14,7 @@ import seedu.address.model.person.UniquePersonList;
 public class SortCommand extends Command {
 
     public static final String COMMAND_WORD = "sort";
+    public static final String CLEAR = "clear";
 
     public static final String ASC = "ASC";
     public static final String DESC = "DESC";
