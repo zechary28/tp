@@ -23,7 +23,7 @@ The Sharkives is a **desktop application for managing loan records**, optimized 
 - [Known issues](#known-issues)
 - [Command summary](#command-summary)
 - [Appendix](#appendix)
-  - [Interest calculations for loans](#interest-calculations-for-loans)
+  - [Interest calculations for loans](#interest-calculation-for-loans)
 - [Glossary](#glossary)
 
 <page-nav-print />
