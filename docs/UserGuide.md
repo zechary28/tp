@@ -237,6 +237,17 @@ Edits the details of a loanee.
 
 ---
 
+### Finding a name: `find`
+
+Finds all persons whose names contain any of the specified keywords (case-insensitive) and displays them as a list with index numbers.
+
+**Format:** `find KEYWORD [MORE_KEYWORDS]`
+- `KEYWORD` refers to the alphanumerical string to search. Note that the search is an exact match (i.e. `find Jak` will not include `Jake` in the displayed list).
+
+**Example:** `find James Jake` 
+
+---
+
 ### Exiting the program: `exit`
 
 Exits the program.
