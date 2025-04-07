@@ -115,7 +115,7 @@ Format: `loan INDEX TYPE AMOUNT INTEREST_RATE DUE_DATE​`
 - `INDEX` refers to the index number of the contact as displayed in the contact list.
 - `TYPE` is either `s` (Simple Interest Loan) or `c` (Compound Interest Loan).
 - `AMOUNT` is the principal loan amount (accepts up to 2 d.p.).
-- `INTEREST_RATE` is the percentage interest rate (accepts up to 2 d.p.).
+- `INTEREST_RATE` is the percentage **yearly** interest rate (accepts up to 2 d.p.).
 - `DUE_DATE` is the loan's due date in `YYYY-MM-DD` format.
 
 
