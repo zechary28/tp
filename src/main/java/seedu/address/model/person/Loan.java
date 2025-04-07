@@ -72,7 +72,7 @@ public abstract class Loan {
         // check amount is valid float
         checkArgument(strPrincipal.matches(VALIDATION_REGEX), AMOUNT_MESSAGE_CONSTRAINTS);
         this.principal = Float.parseFloat(strPrincipal);
-        //checkFloat(this.principal, AMOUNT_MESSAGE_CONSTRAINTS);
+        checkFloat(this.principal, AMOUNT_MESSAGE_CONSTRAINTS);
 
         // check interest
         checkArgument(this.interest >= 0, INTEREST_MESSAGE_CONSTRAINTS);
