@@ -56,6 +56,10 @@ The Sharkives is a **desktop application for managing loan records**, optimized 
     * `clear` : Deletes all borrower records.
 
     * `exit` : Exits the app.
+   
+<box type="info" seamless>
+💡 Tip: Click anywhere on a client's "card" to get more analytics on their loans and loan details!
+</box>
 
 6. Refer to the [Features](#features) below for details of each command.
 
@@ -83,6 +87,8 @@ The Sharkives is a **desktop application for managing loan records**, optimized 
 
 * Extraneous parameters for commands that do not take in parameters (such as `help`, `list`, `exit` and `clear`) will be ignored.<br>
   e.g. if the command specifies `help 123`, it will be interpreted as `help`.
+
+* Commands are case-sensitive unless specified otherwise.
 
 * If you are using a PDF version of this document, be careful when copying and pasting commands that span multiple lines as space characters surrounding line-breaks may be omitted when copied over to the application.
 </box>
