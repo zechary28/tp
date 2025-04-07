@@ -57,10 +57,8 @@ The Sharkives is a **desktop application for managing loan records**, optimized 
 
     * `exit` : Exits the app.
    
-<box type="info" seamless>
-💡 Tip: Click anywhere on a client's "card" to get more analytics on their loans and loan details!
-</box>
-
+> **💡 Tip:** Click anywhere on a client's "card" to get more analytics on their loans and loan details!
+ 
 6. Refer to the [Features](#features) below for details of each command.
 
 7. Alternatively, skip straight to our [Command Summary](#command-summary) to get started immediately!
