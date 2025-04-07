@@ -43,8 +43,10 @@ public class PayCommandParser implements Parser<PayCommand> {
                 float amount = Float.parseFloat(thirdArg);
                 return new PayCommand(index, loanIndex, amount);
             }
-        } catch (NumberFormatException | ParseException e) {
+        } catch (ParseException e) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, PayCommand.MESSAGE_USAGE), e);
+        } catch (IllegalArgumentException e) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, e.getMessage()), e);
         }
     }
 }

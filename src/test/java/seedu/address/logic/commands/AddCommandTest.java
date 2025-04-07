@@ -106,7 +106,7 @@ public class AddCommandTest {
         }
 
         @Override
-        public boolean getIsChangeable() {
+        public boolean isChangeable() {
             throw new AssertionError("This method should not be called.");
         }
 

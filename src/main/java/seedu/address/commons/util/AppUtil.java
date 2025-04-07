@@ -39,4 +39,15 @@ public class AppUtil {
             throw new IllegalArgumentException(errorMessage);
         }
     }
+    /**
+     * Checks that float not over the float limit
+     *
+     * @throws IllegalArgumentException with {@code errorMessage} if {@code condition} is false.
+     */
+    public static void checkFloat(float f, String errorMessage) {
+        System.out.println(f);
+        if (f == Float.POSITIVE_INFINITY || f == Float.NEGATIVE_INFINITY) {
+            throw new IllegalArgumentException(errorMessage);
+        }
+    }
 }

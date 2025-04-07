@@ -2,6 +2,7 @@ package seedu.address.model.person;
 
 //import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.AppUtil.checkArgument;
+import static seedu.address.commons.util.AppUtil.checkFloat;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -39,10 +40,10 @@ public abstract class Loan {
     private static final List<DateTimeFormatter> DATE_FORMATTERS = Arrays.asList(
         DateTimeFormatter.ISO_LOCAL_DATE, // yyyy-MM-dd
         DateTimeFormatter.ofPattern("dd/MM/yyyy"),
-        DateTimeFormatter.ofPattern("MM/dd/yyyy"),
+        //DateTimeFormatter.ofPattern("MM/dd/yyyy"), disable american style
         DateTimeFormatter.ofPattern("yyyyMMdd"),
         DateTimeFormatter.ofPattern("dd-MM-yyyy"),
-        DateTimeFormatter.ofPattern("MM-dd-yyyy"),
+        //DateTimeFormatter.ofPattern("MM-dd-yyyy"),
         DateTimeFormatter.ofPattern("EEE MMM d yyyy", Locale.ENGLISH) // Wed Dec 27 2023
     );
 
@@ -66,10 +67,12 @@ public abstract class Loan {
         // check interest is valid float
         checkArgument(strInterest.matches(VALIDATION_REGEX), INTEREST_MESSAGE_CONSTRAINTS);
         this.interest = Float.parseFloat(strInterest);
+        checkFloat(this.interest, INTEREST_MESSAGE_CONSTRAINTS);
 
         // check amount is valid float
         checkArgument(strPrincipal.matches(VALIDATION_REGEX), AMOUNT_MESSAGE_CONSTRAINTS);
         this.principal = Float.parseFloat(strPrincipal);
+        checkFloat(this.principal, AMOUNT_MESSAGE_CONSTRAINTS);
 
         // check interest
         checkArgument(this.interest >= 0, INTEREST_MESSAGE_CONSTRAINTS);
