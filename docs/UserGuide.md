@@ -113,10 +113,10 @@ Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​`
   > It must start with and **8** or a **9** and have only **8** digits in total.
   > 2 different people can have the same phone number
 
-- A person's **email** must be a **valid email address** and cannot be longer than **20 characters**.
+- A person's **email** must be a **valid email address** and cannot be longer than **30 characters**.
     > 2 different people can have the same email
 
-- An **address** can be **any alphanumeric text** and cannot be longer than **20 characters**.
+- An **address** can be **any alphanumeric text** and cannot be longer than **70 characters**.
     > 2 different people can have the same address
 
 - A person can have **any number of tags** (including 0).  
