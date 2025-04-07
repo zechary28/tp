@@ -3,6 +3,7 @@ package seedu.address.logic.parser;
 import static java.util.Objects.requireNonNull;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Optional;
@@ -145,28 +146,43 @@ public class ParserUtil {
                 if (tokens.length < 3) {
                     throw new ParseException("Insufficient Arguments");
                 }
+                checkOperatorLength(tokens[1], 1, "amount");
                 char op = tokens[1].charAt(0);
                 if (!(op == '<' || op == '>')) {
                     throw new ParseException("Amount operator must be < or >");
                 }
                 operator = Optional.of(op);
+                try {
+                    Float flt = Float.parseFloat(tokens[2]);
+                    if (flt < 0) {
+                        throw new ParseException("Amount must be non-negative");
+                    }
+                } catch (NumberFormatException e) {
+                    throw new ParseException("Amount must be a valid number and non-negative");
+                }
                 value = Optional.of(Float.parseFloat(tokens[2]));
                 date = Optional.empty();
             } else if (parameter == LoanPredicate.LoanParameter.DUE_DATE) {
                 if (tokens.length < 3) {
                     throw new ParseException("Insufficient Arguments");
                 }
+                checkOperatorLength(tokens[1], 1, "dueDate");
                 char op = tokens[1].charAt(0);
                 if (!(op == '<' || op == '>')) {
                     throw new ParseException("DueDate operator must be < or >");
                 }
                 operator = Optional.of(op);
                 value = Optional.empty();
-                date = Optional.of(LocalDate.parse(tokens[2]));
+                try {
+                    date = Optional.of(LocalDate.parse(tokens[2]));
+                } catch (DateTimeParseException e) {
+                    throw new ParseException("Date must be in format yyyy-mm-dd");
+                }
             } else if (parameter == LoanPredicate.LoanParameter.LOAN_TYPE) {
                 if (tokens.length < 2) {
                     throw new ParseException("Insufficient Arguments");
                 }
+                checkOperatorLength(tokens[1], 1, "loanType");
                 char op = tokens[1].charAt(0);
                 if (!(op == 's' || op == 'c')) {
                     throw new ParseException("LoanType operator must be s or c");
@@ -178,9 +194,10 @@ public class ParserUtil {
                 if (tokens.length < 2) {
                     throw new ParseException("Insufficient Arguments");
                 }
+                checkOperatorLength(tokens[1], 1, "IsPaid");
                 char op = tokens[1].charAt(0);
                 if (!(op == 'y' || op == 'n')) {
-                    throw new ParseException("Amount operator must be y or n");
+                    throw new ParseException("isPaid operator must be y or n");
                 }
                 operator = Optional.of(op);
                 value = Optional.empty();
@@ -193,6 +210,17 @@ public class ParserUtil {
         }
         Optional<Integer> index = Optional.empty();
         return new LoanPredicate(parameter, index, value, date, operator);
+    }
+
+    /**
+     * Checks length of string if it exceeds certain length
+     *
+     * @throws ParseException if length exceeds specified length
+     */
+    private static void checkOperatorLength(String str, int len, String opName) throws ParseException {
+        if (str.length() > len) {
+            throw new ParseException(String.format("%s operator must be %d character(s)", opName, len));
+        }
     }
 
     /**
