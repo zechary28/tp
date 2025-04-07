@@ -288,6 +288,9 @@ _Details coming soon ..._
 
 1. **When using multiple screens**, if you move the application to a secondary screen, and later switch to using only the primary screen, the GUI will open off-screen. The remedy is to delete the `preferences.json` file created by the application before running the application again.
 2. **If you minimize the Help Window** and then run the `help` command (or use the `Help` menu, or the keyboard shortcut `F1`) again, the original Help Window will remain minimized, and no new Help Window will appear. The remedy is to manually restore the minimized Help Window.
+3. **Compound interest loan amount** behaves strangely when using a flexible payment schedule (i.e. payments made anytime instead of monthly)
+  - As our algorithm assumes that the loanee will pay monthly for easier calculations, paying off-schedule can cause discrepancies in the remaining amount owed due to the way compound interest is calculated.
+  - An update to this will be coming in future, where we will introduce a more sophisticated algorithm capable of calculating compound interest on a flexible repayment basis.
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -312,6 +315,22 @@ _Details coming soon ..._
 ---
 
 ## Appendix
+
+### Notes on interest calculation for loans
+
+#### Simple Interest Loans
+- Calculated using the formula `I = Prt`, where:
+  - `I` is the interest amount
+  - `P` is the principal amount
+  - `r` is the rate of interest
+  - `t` is the number of time periods
+ 
+#### Compound Interest Loans
+- Calculated using the formula ![equation](https://github.com/user-attachments/assets/70d57e96-a2f1-42c2-93c4-e886e7d017a0), where:
+  - `A` is the periodic payment amount
+  - `P` is the principal amount
+  - `i` is the periodic interest rate
+  - `n` is the total number of payments
 
 ---
 
