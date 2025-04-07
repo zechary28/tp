@@ -74,6 +74,7 @@ public class LoanFilterCommand extends Command {
         // case for clearing
         if (clear) {
             model.filter(personIndex - 1, null);
+            result = "Filter Cleared.";
         } else {
             // default predicate will always resolve to true
             LoanPredicate combinedPred = new LoanPredicate(
@@ -94,59 +95,6 @@ public class LoanFilterCommand extends Command {
             model.filter(personIndex - 1, combinedPred);
         }
 
-        /*
-        if (!model.getIsChangeable()) {
-            //throw new CommandException(UniquePersonList.UNMODIFIABLE_MESSAGE);
-        }
-
-        List<Person> lastShownList = model.getFilteredPersonList();
-
-        if (personIndex == null) {
-            throw new CommandException("hi");
-        }
-
-        if (this.personIndex > lastShownList.size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
-        }
-        Person person = model.getFilteredPersonList().get(this.personIndex - 1);
-        List<Loan> filteredLoans = person.getLoanList().getLoans(); // todo demeter
-
-        // for all predicates, list -> filteredlist
-        for (LoanPredicate pred : predicateSet) {
-            filteredLoans = filterLoanList(filteredLoans, pred);
-        }
-
-        // handle empty result list
-        if (filteredLoans.isEmpty()) {
-            return new CommandResult("No loans found.");
-        }
-
-        // build string for result
-        StringBuilder result = new StringBuilder();
-        for (Loan loan : filteredLoans) {
-            result.append(loan + "\n");
-        }
-
-        return new CommandResult(result.toString().trim());
-        */
         return new CommandResult(result);
     }
-
-    /*
-    private List<Loan> filterLoanList(List<Loan> loans, LoanPredicate pred) {
-        List<Loan> result = new ArrayList<>();
-        for (Loan loan : loans) {
-            if (pred.test(loan)) {
-                result.add(loan);
-            }
-        }
-        return result;
-    }
-
-    public static void printList(List<Loan> loans) {
-        for (Loan loan: loans) {
-            System.out.println(loan.toString() + "\n");
-        }
-    }
-    */
 }
