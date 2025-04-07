@@ -703,6 +703,19 @@ Given below are instructions to test the app manually.
 
 ---
 
+### Loan Command
+
+1. **Test case:** `loan 1 s 1000.00 5.5 2030-12-31`
+   **Expected:** First person in list has a simple interest loan with principal `1000.00`, interest rate `5.5`, and due date `2030-12-31` added to their loan list.
+2. **Test case:** `loan 1 c 1000.00 5.5 2030-12-31`
+   **Expected:** First person in list has a compound interest loan with principal `1000.00`, interest rate `5.5`, and due date `2030-12-31` added to their loan list.
+3. **Test case:** `loan 0 s 1000.00 5.5 2030-12-31`
+   **Expected:** Error message: `Index is not a non-zero unsigned integer.`
+4. **Test case:** `loan abc`
+   **Expected:** Error message indicating invalid command format with correct usage.
+
+---
+
 ## **Appendix: Effort**
 
 Our team of 5 spent significant effort extending the base AB3 functionality into a **financial loan tracking application**.
