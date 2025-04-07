@@ -22,6 +22,7 @@ The Sharkives is a **desktop application for managing loan records**, optimized 
 - [FAQ](#faq)
 - [Known issues](#known-issues)
 - [Command summary](#command-summary)
+- [Appendix](#appendix)
 
 <page-nav-print />
 
@@ -295,3 +296,7 @@ _Details coming soon ..._
 | **Find**   | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`                                                                                                                                                 |
 | **List**   | `list`                                                                                                                                                                                                     |
 | **Help**   | `help`                                                                                                                                                                                                     |
+
+---
+
+## Appendix
