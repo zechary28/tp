@@ -15,7 +15,7 @@
 <?import javafx.scene.control.ScrollPane?>
 <HBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:id="cardPane" alignment="CENTER_LEFT">
     <!-- Button now fills the whole space -->
-    <Button fx:id="personButton" onAction="#handleCardClick" styleClass="transparent-button" HBox.hgrow="ALWAYS" maxWidth="Infinity" maxHeight="230">
+    <Button fx:id="personButton" onAction="#handleCardClick" styleClass="transparent-button" HBox.hgrow="ALWAYS" maxWidth="Infinity" maxHeight="210">
         <graphic>
             <StackPane>
                 <VBox fx:id="contentBox" alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
@@ -30,8 +30,8 @@
                     <Label fx:id="phone" styleClass="cell_small_label"/>
                     <Label fx:id="address" styleClass="cell_small_label"/>
                     <Label fx:id="email" styleClass="cell_small_label"/>
-                    <Label text="Loans: " styleClass="cell_small_label"/>
-                    <ListView fx:id="loanListView" onMouseClicked="#handleCardClick" style="-fx-background-color: transparent; -fx-padding: 0; -fx-background-insets: 0; -fx-border-insets: 0"/>
+                    <Label fx:id="loans" text="Loans: " styleClass="cell_small_label"/>
+                    <ListView fx:id="loanListView" onMouseClicked="#handleCardClick" styleClass="list-view" VBox.vgrow="NEVER"/>
                 </VBox>
             </StackPane>
         </graphic>

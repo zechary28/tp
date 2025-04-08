@@ -44,6 +44,8 @@ public class PersonCard extends UiPart<Region> {
     private FlowPane tags;
     @FXML
     private ListView<Loan> loanListView;
+    @FXML
+    private Label loans;
 
     /**
      * Creates a personcard controller
@@ -76,6 +78,9 @@ public class PersonCard extends UiPart<Region> {
 
     private void initializeLoanListView() {
         loanListView.setItems(person.getLoanList().getLoans());
+        if (person.getLoanList().getLoans().isEmpty()) {
+            loans.setText("No loans found.");
+        }
         loanListView.setCellFactory(listView -> new LoanListViewCell());
     }
 
