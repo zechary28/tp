@@ -434,6 +434,7 @@ _Details coming soon ..._
   a. As our algorithm assumes that the loanee will pay monthly for easier calculations, paying off-schedule can cause discrepancies in the remaining amount owed due to the way compound interest is calculated.<br>
   b. An update to this will be coming in future, where we will introduce a more sophisticated algorithm capable of calculating compound interest on a flexible repayment basis.
 4. **When using sort**, currently there exsists no unsort feature. However, it is 1 of the future features we plan to implement.
+5. The UI which displays monetary values may not always have accurate decimal placings, this is simply due rounding due to us forcing the display to be in 2dp.
 --------------------------------------------------------------------------------------------------------------------
 
 <div style="page-break-after: always;"></div>
