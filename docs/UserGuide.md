@@ -279,6 +279,7 @@ You can chain multiple predicates of different parameters.
 **Example:** `filter clear` (to clear all predicates)
 
 **Example Screenshot:**
+<img width="808" alt="image" src="https://github.com/user-attachments/assets/00eea531-a008-4c82-8856-4eb4d128e1c7" />
 
 ---
 
@@ -366,6 +367,9 @@ Edits the details of a loanee.
 * `edit 2 n/James Lee e/jameslee@example.com`
 * `edit 1 a/123 NUS Street t/Enemy`
 
+**Example Screenshot:**
+<img width="852" alt="image" src="https://github.com/user-attachments/assets/96a222f8-288c-4de8-95e0-274b2e7e2b6d" />
+
 ---
 
 ### Finding a name: `find`
@@ -391,6 +395,9 @@ Finds all persons whose names contain any of the specified keywords (case-insens
 </div>
 
 **Example:** `find James Jake` 
+
+**Example Screenshot:**
+<img width="852" alt="image" src="https://github.com/user-attachments/assets/de53fab8-745c-46df-8842-e3b6a40ef1fa" />
 
 ---
 
