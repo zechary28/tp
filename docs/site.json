@@ -1,8 +1,8 @@
 {
   "baseUrl": "",
-  "titlePrefix": "Sharkster",
+  "titlePrefix": "Sharkives",
   "titleSuffix": "AddressBook Level-3",
-  "faviconPath": "images/SeEduLogo.png",
+  "faviconPath": "images/sharkivesLogo.png",
   "style": {
     "codeTheme": "light"
   },
