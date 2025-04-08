@@ -279,7 +279,6 @@ You can chain multiple predicates of different parameters.
 **Example:** `filter clear` (to clear all predicates)
 
 **Example Screenshot:**
-![Uploading image.png…]()
 
 ---
 
