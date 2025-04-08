@@ -39,12 +39,12 @@ public class PayCommandParser implements Parser<PayCommand> {
             } else if (thirdArg.matches("\\d+M")) {
                 int months = Integer.parseInt(thirdArg.substring(0, thirdArg.length() - 1));
                 return new PayCommand(index, loanIndex, months);
-            } else {
+            } else if (thirdArg.matches("\\d+(\\.\\d{1,2})?")) {
                 float amount = Float.parseFloat(thirdArg);
                 return new PayCommand(index, loanIndex, amount);
+            } else {
+                throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, PayCommand.MESSAGE_USAGE));
             }
-        } catch (ParseException e) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, PayCommand.MESSAGE_USAGE), e);
         } catch (IllegalArgumentException e) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, e.getMessage()), e);
         }
