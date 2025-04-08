@@ -159,7 +159,7 @@ The `Model` component,
 
 **Note:** An alternative (arguably, a more OOP) model is given below. It has a `Tag` list in the `The Sharkives`, which `Person` references. This allows `The Sharkives` to only require one `Tag` object per unique tag, instead of each `Person` needing their own `Tag` objects.<br>
 
-![iamge](diagrams/BetterModelClassDiagram.png)
+![image](diagrams/BetterModelClassDiagram.png)
 
 </box>
 
@@ -203,7 +203,7 @@ Given below is an example usage scenario and how the `loan` feature behaves at e
 
 Step 1. The user adds a `Person` to Sharkives using an `add` command.
 
-Step 2. The user uses the `loan` command to add a loan to that `Person` (e.g., `loan 1 s 1000.00 5.5 2025-12-31`).
+Step 2. The user uses the `loan` command to add a loan to that `Person` (e.g., `loan 1 s 1000.00 5.5 2030-12-31`).
 
 Step 3. This input is read as a `loan` command, and the Ui creates a `LoanCommandParser` object with the args from the command.
 
@@ -300,13 +300,13 @@ Step 3. The user executes `add n/David …​` to add a new person. The `add` co
 <box type="info" seamless>
 
 
-**Note:** If a command fails its execution, it will not call `Model#commitSharkives()`, so the address book state will not be saved into the `SharkivesStateList`.
+**Note:** If a command fails its execution, it will not call `Model#commitSharkives()`, so the state will not be saved into the `SharkivesStateList`.
 
 
 </box>
 
 
-Step 4. The user now decides that adding the person was a mistake, and decides to undo that action by executing the `undo` command. The `undo` command will call `Model#undoSharkives()`, which will shift the `currentStatePointer` once to the left, pointing it to the previous address book state, and restores the address book to that state.
+Step 4. The user now decides that adding the person was a mistake, and decides to undo that action by executing the `undo` command. The `undo` command will call `Model#undoSharkives()`, which will shift the `currentStatePointer` once to the left, pointing it to the previous state, and restores The Sharkives to that state.
 
 
 ![image](diagrams/UndoRedoState3-After_command__undo_.png)
@@ -715,6 +715,44 @@ Given below are instructions to test the app manually.
    **Expected:** Error message indicating invalid command format with correct usage.
 
 ---
+
+### Pay Command
+
+**Prerequisites**:
+- At least one person in person list
+- First person must have at least one loan (add via `loan 1 s 1000.00 5.5 2030-12-31` if needed)
+
+1. **Test case:** `pay 1 1 100.00`  
+   **Expected:**  
+   - First loan of first person is reduced by $100.00  
+   - Status message shows payment confirmation
+   - Updated loan details visible in person's profile
+
+2. **Test case:** `pay 1 1 2M`  
+   **Expected:**
+   - First loan is reduced by 2 months worth of payments
+   - Detailed loan information shows updated installment schedule
+
+3. **Test case:** `pay 1 1 all`  
+   **Expected:**  
+   - Loan is fully paid and removed automatically from the person's loan list
+     
+4. **Test case:** `pay 0 1 100.00`  
+   **Expected:**  
+   - Error: `Index is not a non-zero unsigned integer.`  
+   - No changes to any loans
+
+5. **Test case:** `pay 1 1 0.00`  
+   **Expected:**  
+   - Error: `The amount must be a positive number.`  
+   - No balance changes
+
+6. **Test case:** `pay 1 1 9999.00` (when balance < $9999)  
+   **Expected:**  
+   - Error: `Payment exceeds the remaining owed!`  
+   - No balance changes
+
+1. 
 
 ## **Appendix: Effort**
 
