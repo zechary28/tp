@@ -193,7 +193,7 @@ The `loan` feature is facilitated by `Loanlist`, which contains an `ArrayList<Lo
 - `Loan`  —  an abstract class that dictates what a `Loan` class should do and contain.
 - `SimpleInterestLoan` and `CompoundInterestLoan`, each representing their respective loan type, with different calculations for interest and amount owed.
 - `LoanCommandParser`, which implements `Parser`. It is passed the arguments from a `loan` command by the Ui, and in turn generates a `LoanCommand` object.
-- `LoanCommand`  — , which inherits from `Commadn`. When executed, it creates a new loan based on the arguments (if they are all valid), and adds it to the `LoanList` of a specified `Person`.
+- `LoanCommand`  — , which inherits from `Command`. When executed, it creates a new loan based on the arguments (if they are all valid), and adds it to the `LoanList` of a specified `Person`.
 
 Below is the class diagram showing `Loan` and its child classes:
 
@@ -456,7 +456,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `*`      | ethical loanshark              | view a log of all reminders sent to a client                                | know when to schedule future reminders                    |
 |          | **Loan Tracking and Analysis** |
 | `* * *`  | ethical loanshark              | add loan by client                                                          | track when money is lent to a client loan                 |
-| `* * *`  | ethical loanshark              | delete loan by client                                                       | track when a client pays their loanloan                   |
+| `* * *`  | ethical loanshark              | delete loan by client                                                       | track when a client pays their loan                   |
 | `* * *`  | ethical loanshark              | view loans by client                                                        | track when a client pays their loan                       |
 | `* * *`  | ethical loanshark              | edit loans                                                                  | update details as needed                                  |
 | `* * *`  | ethical loanshark              | handle multiple interest calculation methods                                | use the most suitable one for each loan                   |
@@ -751,8 +751,6 @@ Given below are instructions to test the app manually.
    **Expected:**  
    - Error: `Payment exceeds the remaining owed!`  
    - No balance changes
-
-1. 
 
 ## **Appendix: Effort**
 
